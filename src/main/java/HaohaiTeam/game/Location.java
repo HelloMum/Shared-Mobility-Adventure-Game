@@ -1,4 +1,4 @@
-package Core;
+package HaohaiTeam.game;
 
 public class Location {
     private double X;
@@ -12,6 +12,8 @@ public class Location {
         this.size = size;
         this.name = name;
     }
+
+
 
     // Existing getters and setters for X, Y, and size
 
