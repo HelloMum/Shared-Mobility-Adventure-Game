@@ -5,7 +5,7 @@ import HaohaiTeam.Ui.GUI;
 import HaohaiTeam.Ui.MapPanel;
 // 定义一个事件监听器接口
 
-public class Player {
+public class Player implements Movable{
     private final String name;
     private int score;
     private int level;
