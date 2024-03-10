@@ -28,7 +28,8 @@ public class GUI extends JFrame implements PlayerListener {
     }
 
     private void initGame() {
-        gameMap = new Map(500, 500, 50, mapPanel); // 示例尺寸
+        gameMap = new Map(500, 500, 30); // 示例尺寸
+        gameMap.initializeMapElements();
         player = new Player("Player1", 0, 0, 0, 0, new Location(0, 0, 20, "Player1"), gameMap, this); // 初始化玩家对象并传递this作为监听器
         mapPanel = new MapPanel(gameMap, player); // 创建地图面板
     }

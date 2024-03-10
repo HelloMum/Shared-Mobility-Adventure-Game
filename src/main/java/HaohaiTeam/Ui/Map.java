@@ -14,7 +14,9 @@ public class Map {
         WALL(false),
         ROAD(true),
         START_POINT(true),
-        END_POINT(true);
+        END_POINT(true),
+        BUILDING(false),
+        TREE(false); // 增加建筑物和树木等不可通过的元素
 
         private final boolean passable;
 
@@ -27,7 +29,7 @@ public class Map {
         }
     }
 
-    public Map(int width, int height, int tileSize, MapPanel mapPanel) {
+    public Map(int width, int height, int tileSize) {
         this.width = width;
         this.height = height;
         this.tileSize = tileSize;
@@ -75,6 +77,31 @@ public class Map {
                 && // 这里根据实际地图数据结构判断当前位置是否为空地或可通行区域
                 getTileType(x, y).isPassable();
     }
+
+    public void initializeMapElements() {
+        // 假设有一个特定的区域我们想标记为建筑物
+        for (int row = 10; row < 15; row++) {
+            for (int col = 10; col < 15; col++) {
+                setTileType(col, row, TileType.BUILDING);
+            }
+        }
+
+        // 标记一条从地图左边到右边的道路
+        for (int col = 0; col < width; col++) {
+            setTileType(col, 20, TileType.ROAD);
+        }
+
+        // 在地图上随机位置添加一些树木
+        for (int i = 0; i < 50; i++) { // 假设添加50棵树
+            int x = (int) (Math.random() * width);
+            int y = (int) (Math.random() * height);
+            // 确保不在建筑物或道路上放置树木
+            if (getTileType(x, y) != TileType.BUILDING && getTileType(x, y) != TileType.ROAD) {
+                setTileType(x, y, TileType.TREE);
+            }
+        }
+    }
+
 
     public void playerMoved(Player player) {
         mapPanel.refreshPlayerLocation(player.getPlayer_location()); // 假设MapPanel有个刷新玩家位置的方法
