@@ -5,6 +5,7 @@ import HaohaiTeam.Game.Element.Gem;
 import HaohaiTeam.Game.Element.Player;
 import HaohaiTeam.Game.Element.Wall;
 import HaohaiTeam.Game.GUI.GameWindow;
+import HaohaiTeam.Game.Element.Transport.*;
 public class MapLoader {
     String[] level_1 = {
             "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
@@ -58,6 +59,18 @@ public class MapLoader {
                         placeReport("Player", posX, posY);
                         Player player = new Player(posX, posY);
                         gameWindow.addElement(player);
+                        break;
+                    case 'B':
+                        Bike bicycle = new Bike(posX, posY);
+                        gameWindow.addElement(bicycle);
+                        break;
+                    case 'U':
+                        Taxi taxi = new Taxi(posX, posY);
+                        gameWindow.addElement(taxi);
+                        break;
+                    case 'L':
+                        Luas luas = new Luas(posX, posY);
+                        gameWindow.addElement(luas);
                         break;
                 }
             }
