@@ -14,6 +14,11 @@ public class Player extends GameElement {
     // Assuming there is a status flag indicating whether the player is currently using a means of transportation.
     private boolean usingTransport = false;
     private TransportMode currentTransport;
+    public Player(int x, int y) {
+        super(x, y);
+        boolean beingControlled = true; // Set beingControlled to true by default
+
+    }
     public Player(int x, int y, Route route) {
         super(x, y);
         boolean beingControlled = true; // Set beingControlled to true by default
