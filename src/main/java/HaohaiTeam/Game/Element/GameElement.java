@@ -11,15 +11,15 @@ public abstract class GameElement {
     private static List<GameElement> elements;
     public int x;
     public int y;
-
-    private static final int MOVE_COUNTDOWN_LIMIT = 15;
-    private int moveCooldown = 0;
+    public int speed;
+    // This refers to the maximum speed of the element
     private GameElement linkedElement;
     public boolean beingControlled = false; // Flag to enable key control
 
     public GameElement(int x, int y) {
         this.x = x;
         this.y = y;
+        this.speed = 0;
     }
 
     public static void setElements(List<GameElement> elements) {
@@ -35,27 +35,10 @@ public abstract class GameElement {
     }
 
     public void move(int dx, int dy) {
-        if (moveCooldown == 0 && beingControlled) { // Check if movement is allowed based on cooldown and control flag
             // Calculate the next position
             int nextX = x + dx;
             int nextY = y + dy;
 
-            // Check if the next position is within the game window bounds
-            if (isWithinBounds(nextX, nextY)) {
-                // Check if the next position will cause a collision
-                if (!willCollide(nextX, nextY)) {
-                    x = nextX;
-                    y = nextY;
-
-                    // If linked, move the linked element too
-                    if (linkedElement != null) {
-                        linkedElement.move(dx, dy); // Recursively move linked element
-                    }
-
-                    moveCooldown = MOVE_COUNTDOWN_LIMIT; // Reset cooldown
-                }
-            }
-        }
     }
 
     // Method to handle key events for controlling movement
@@ -95,11 +78,6 @@ public abstract class GameElement {
         other.linkedElement = this; // Link the other element back
     }
 
-    public void update() {
-        if (moveCooldown > 0) {
-            moveCooldown--;
-        }
-    }
 
     public abstract void draw(Graphics2D g2d);
 
