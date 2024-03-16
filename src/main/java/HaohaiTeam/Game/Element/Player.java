@@ -9,10 +9,9 @@ import java.awt.event.KeyEvent;
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
 public class Player extends GameElement {
-    private static final Color PLAYER_COLOR = Color.BLUE;
     private Trip playerTrip;
     // Assuming there is a status flag indicating whether the player is currently using a means of transportation.
-    private boolean usingTransport = false;
+    public boolean usingTransport = false;
     private TransportMode currentTransport;
     public Player(int x, int y) {
         super(x, y);
@@ -56,7 +55,7 @@ public class Player extends GameElement {
         @Override
         public void move(int dx, int dy) {
             if (!usingTransport) {
-                super.move(dx, dy); // Move the player by walking
+                super.move(dx, dy); // Move the player by walking (Normal speed)
             }
             // The movement logic might vary when a means of transportation is being used
         }
@@ -64,10 +63,11 @@ public class Player extends GameElement {
         @Override
         public void draw(Graphics2D g2d) {
             if (!usingTransport) {
-                g2d.setColor(PLAYER_COLOR);
-                g2d.fillOval(getPosX(), getPosY(), CELL_SIZE, CELL_SIZE); // Draw the player
+                g2d.setColor(Color.BLUE);
+                g2d.fillOval(x, y, CELL_SIZE, CELL_SIZE);
             } else {
-                // The drawing logic might differ or not be handled here when a means of transportation is being used
+                g2d.setColor(Color.cyan);
+                g2d.fillOval(getPosX(), getPosY(), CELL_SIZE, CELL_SIZE); // Draw the player
             }
         }
 
