@@ -90,9 +90,6 @@ public class GameWindow {
     }
 
     private void updateGame() {
-        for (GameElement element : elements) {
-            element.update(); // Update all game elements
-        }
 
         // Repaint the frame after updating the game elements
         SwingUtilities.invokeLater(() -> {
