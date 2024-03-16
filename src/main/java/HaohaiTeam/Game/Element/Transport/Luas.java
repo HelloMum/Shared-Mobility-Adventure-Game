@@ -18,7 +18,7 @@ public class Luas extends TransportMode {
     @Override
     public void draw(Graphics2D g2d) {
         g2d.setColor(LUAS_COLOR);
-        g2d.fillRect(getPosX(), getPosY(), CELL_SIZE, CELL_SIZE); // draw the luas
+        g2d.fillRect(x, y, CELL_SIZE, CELL_SIZE); // draw the luas
     }
 }
 
