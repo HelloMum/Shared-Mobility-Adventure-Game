@@ -1,5 +1,6 @@
 package HaohaiTeam.Game.Element;
 
+import HaohaiTeam.Game.Element.Transport.TransportMode;
 import HaohaiTeam.Game.GUI.GameWindow;
 
 import java.awt.*;
@@ -14,7 +15,7 @@ public abstract class GameElement {
     private static final int MOVE_COUNTDOWN_LIMIT = 15;
     private int moveCooldown = 0;
     private GameElement linkedElement;
-    private boolean beingControlled = false; // Flag to enable key control
+    public boolean beingControlled = false; // Flag to enable key control
 
     public GameElement(int x, int y) {
         this.x = x;

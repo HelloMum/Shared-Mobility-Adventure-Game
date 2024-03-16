@@ -1,14 +1,21 @@
 package HaohaiTeam.Game.Element.Transport;
 
+import HaohaiTeam.Game.Navigation.Route;
+
 import java.awt.*;
-
+import java.awt.Point;
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
-
+import HaohaiTeam.Game.Navigation.Route;
 public class Bus extends TransportMode {
     private static final Color BUS_COLOR = Color.BLUE;
-
+    private Route busRoute;
     public Bus(int x, int y) {
         super(x, y, "Bus", 30.0, 0.3); // assume 30 km/h and 0.3 kg CO2/km
+        // Initialize the route
+        busRoute = new Route();
+        busRoute.addPoint(new Point(10, 10)); // Starting point
+        busRoute.addPoint(new Point(20, 10)); // Second point
+        busRoute.addPoint(new Point(20, 20)); // Third point......add more
     }
 
     @Override
