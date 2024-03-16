@@ -8,7 +8,9 @@ public class Taxi extends TransportMode {
     private static final Color TAXI_COLOR = Color.YELLOW;
 
     public Taxi(int x, int y) {
-        super(x, y, "Taxi", 60.0, 0.9); // assume taxi is 60km/h and 0.9 carbon footprint factor
+        super(x, y);
+        this.speed = 15;
+        this.carbonFootprint = 1;
     }
 
     @Override

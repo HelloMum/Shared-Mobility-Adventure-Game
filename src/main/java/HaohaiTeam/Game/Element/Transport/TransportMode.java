@@ -7,5 +7,6 @@ public abstract class TransportMode extends GameElement {
     public TransportMode(int x, int y) {
         super(x, y);
         this.carbonFootprint = 0;
+
     }
 }
