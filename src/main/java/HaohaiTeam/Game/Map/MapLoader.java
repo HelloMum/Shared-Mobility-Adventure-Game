@@ -17,7 +17,7 @@ public class MapLoader {
             "W       W    WWWWWW            W",
             "W    G  W         C     C      W",
             "W       W   C      C           W",
-            "W   C   W        G             W",
+            "W   C   W        G       T     W",
             "W       W             C        W",
             "W       W    WWW    C          W",
             "W       W    W   W             W",
@@ -61,14 +61,17 @@ public class MapLoader {
                         gameWindow.addElement(player);
                         break;
                     case 'B':
+                        placeReport("Bike", posX, posY);
                         Bike bicycle = new Bike(posX, posY);
                         gameWindow.addElement(bicycle);
                         break;
-                    case 'U':
+                    case 'T':
+                        placeReport("Taxi", posX, posY);
                         Taxi taxi = new Taxi(posX, posY);
                         gameWindow.addElement(taxi);
                         break;
                     case 'L':
+                        placeReport("Luas", posX, posY);
                         Luas luas = new Luas(posX, posY);
                         gameWindow.addElement(luas);
                         break;
