@@ -16,7 +16,7 @@ public class Taxi extends TransportMode {
     @Override
     public void draw(Graphics2D g2d) {
         g2d.setColor(TAXI_COLOR);
-        g2d.fillRect(getPosX(), getPosY(), CELL_SIZE, CELL_SIZE); // draw Taxi
+        g2d.fillRect(x, y, CELL_SIZE, CELL_SIZE); // draw Taxi
     }
 }
 
