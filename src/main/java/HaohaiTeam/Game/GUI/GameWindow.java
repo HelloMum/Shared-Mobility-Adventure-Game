@@ -1,6 +1,8 @@
 package HaohaiTeam.Game.GUI;
 
 import HaohaiTeam.Game.Element.GameElement;
+import HaohaiTeam.Game.Logic.ElementBehavior;
+import HaohaiTeam.Game.Map.MapLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,13 +17,18 @@ public class GameWindow {
     private static final long FRAME_TIME = 1000 / FPS; // Time per frame in milliseconds
     public static final int FRAME_WIDTH = CELL_SIZE * GRID_WIDTH; // This is equal to 720p resolution
     public static final int FRAME_HEIGHT = CELL_SIZE * GRID_HEIGHT;
+    private final GamePanel gamePanel;
     private final List<GameElement> elements;
     private long lastUpdateTime; // Time of the last update
 
+    ElementBehavior elementBehavior;
     public GameWindow() {
         elements = new ArrayList<>();
+        this.gamePanel = new GamePanel();
         lastUpdateTime = System.currentTimeMillis(); // Initialize last update time
     }
+
+
 
     public void addElement(GameElement element) {
         elements.add(element);
@@ -34,7 +41,7 @@ public class GameWindow {
         frame.setResizable(false); // Don't allow frame change
         frame.setLocationRelativeTo(null); // Center frame on the screen
         frame.setFocusable(true); // Ensure frame is focusable
-        frame.setContentPane(new GamePanel()); // Set custom GamePanel as content pane
+        frame.setContentPane(gamePanel); // Set custom GamePanel as content pane
         frame.setVisible(true);
         startGameLoop();
     }
@@ -90,13 +97,10 @@ public class GameWindow {
     }
 
     private void updateGame() {
+        // 更新游戏状态
+        // 此处可以添加更多逻辑，比如更新元素状态、检查游戏规则等
 
-        // Repaint the frame after updating the game elements
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(new GamePanel());
-            if (frame != null) {
-                frame.repaint();
-            }
-        });
+        // 直接请求重绘GamePanel，无需重新获取JFrame
+        gamePanel.repaint();
     }
 }

@@ -6,8 +6,17 @@ import HaohaiTeam.Game.Element.Player;
 import HaohaiTeam.Game.Element.Wall;
 import HaohaiTeam.Game.GUI.GameWindow;
 import HaohaiTeam.Game.Element.Transport.*;
+import HaohaiTeam.Game.Logic.ElementBehavior;
+
 public class MapLoader {
-    String[] level_1 = {
+
+    GameWindow gameWindow;
+    ElementBehavior elementBehavior;
+    public MapLoader(GameWindow gameWindow, ElementBehavior elementBehavior) {
+        this.gameWindow = gameWindow;
+        this.elementBehavior = elementBehavior;
+    }
+    public static String[] level_1 = {
             "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
             "W                     G        W",
             "W    P  W C      C            GW",
@@ -30,8 +39,6 @@ public class MapLoader {
 
     public void loadMap(String[] mapData) {
         System.out.println("No Saved Games, starting first level!");
-        GameWindow gameWindow = new GameWindow(); // Create an instance of GameWindow
-
         for (int y = 0; y < mapData.length; y++) {
             String line = mapData[y];
             for (int x = 0; x < line.length(); x++) {
@@ -78,8 +85,6 @@ public class MapLoader {
                 }
             }
         }
-
-        gameWindow.openWindow(); // Open the game window after loading the map
     }
     private void placeReport(String placeName, int posX , int posY) {
         // This reports the map import is working correctly
