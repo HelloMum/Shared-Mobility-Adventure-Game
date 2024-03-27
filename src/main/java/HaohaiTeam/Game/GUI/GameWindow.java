@@ -1,8 +1,7 @@
 package HaohaiTeam.Game.GUI;
 
 import HaohaiTeam.Game.Element.GameElement;
-import HaohaiTeam.Game.Logic.ElementBehavior;
-import HaohaiTeam.Game.Map.MapLoader;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,10 +17,10 @@ public class GameWindow {
     public static final int FRAME_WIDTH = CELL_SIZE * GRID_WIDTH; // This is equal to 720p resolution
     public static final int FRAME_HEIGHT = CELL_SIZE * GRID_HEIGHT;
     private final GamePanel gamePanel;
-    private final List<GameElement> elements;
+    public final List<GameElement> elements;
     private long lastUpdateTime; // Time of the last update
 
-    ElementBehavior elementBehavior;
+
     public GameWindow() {
         elements = new ArrayList<>();
         this.gamePanel = new GamePanel();
@@ -43,7 +42,6 @@ public class GameWindow {
         frame.setFocusable(true); // Ensure frame is focusable
         frame.setContentPane(gamePanel); // Set custom GamePanel as content pane
         frame.setVisible(true);
-        startGameLoop();
     }
 
     private class GamePanel extends JPanel {
@@ -52,12 +50,13 @@ public class GameWindow {
             super.paintComponent(g);
             renderMap(g); // Render the loaded map
             renderElements(g); // Render game elements
+            startGameLoop(g);
+
         }
     }
 
     private void renderMap(Graphics g) {
-
-        // Rendering map grid lines (if needed)
+        // Rendering map grid lines (for debugging)
         g.setColor(Color.GRAY);
         for (int x = 0; x <= FRAME_WIDTH; x += CELL_SIZE) {
             g.drawLine(x, 0, x, FRAME_HEIGHT);
@@ -75,14 +74,15 @@ public class GameWindow {
     }
 
     // This is just to keep the fps consistent so we can move at a certain speed or any other...
-    private void startGameLoop() {
+    private void startGameLoop (Graphics g) {
         new Thread(() -> {
             while (true) {
                 long currentTime = System.currentTimeMillis();
                 long elapsedTime = currentTime - lastUpdateTime;
 
                 if (elapsedTime >= FRAME_TIME) {
-                    updateGame();
+                    gamePanel.repaint();
+                    renderElements(g);
                     lastUpdateTime += FRAME_TIME; // Update lastUpdateTime for next frame
                 }
                 try {
@@ -96,11 +96,4 @@ public class GameWindow {
         }).start();
     }
 
-    private void updateGame() {
-        // 更新游戏状态
-        // 此处可以添加更多逻辑，比如更新元素状态、检查游戏规则等
-
-        // 直接请求重绘GamePanel，无需重新获取JFrame
-        gamePanel.repaint();
-    }
 }
