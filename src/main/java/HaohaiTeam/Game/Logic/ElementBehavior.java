@@ -5,8 +5,9 @@ import HaohaiTeam.Game.Element.GameElement;
 import HaohaiTeam.Game.Element.Gem;
 import HaohaiTeam.Game.Element.Transport.*;
 import HaohaiTeam.Game.Element.Player;
-
+import HaohaiTeam.Game.Navigation.Route;
 import java.awt.*;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -41,17 +42,24 @@ public class ElementBehavior {
             handleLuasBehavior((Luas) element);
         }
     }
+    public void moveElementAlongRoute(GameElement element, Route route) {
+        if (route.hasMorePoints()) {
+            Point nextPoint = route.getNextPoint();
 
+            element.x = nextPoint.x;
+            element.y = nextPoint.y;
+        }
+    }
     private void handleBikeBehavior(Bike bike) {
-        // 这里实现自行车的具体行为，例如调整速度或方向等
+        // Implement specific behaviors for the bike here, such as adjusting speed or direction, etc.
     }
 
     private void handleTaxiBehavior(Taxi taxi) {
-        // 这里实现出租车的具体行为，例如根据行程更改路线等
+        // Implement specific behaviors for the taxi here, such as changing routes based on trips, etc.
     }
 
     private void handleLuasBehavior(Luas luas) {
-        // 这里实现轻轨的具体行为，例如在固定轨道上移动等
+        // Implement specific behaviors for the Luas light rail system here, such as moving along predefined tracks, etc.
     }
 
     public void renderElements(Graphics2D g2d) {

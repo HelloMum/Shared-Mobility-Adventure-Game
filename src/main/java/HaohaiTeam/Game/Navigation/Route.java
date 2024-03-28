@@ -1,22 +1,27 @@
 package HaohaiTeam.Game.Navigation;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Route {
-    private List<Point> points;
+    private Queue<Point> points;
 
     public Route() {
-        this.points = new ArrayList<>();
+        this.points = new LinkedList<>();
     }
 
     public void addPoint(Point point) {
         points.add(point);
     }
 
-    public List<Point> getPoints() {
-        return points;
+    public Point getNextPoint() {
+        return points.poll(); // Retrieves and removes the head of this queue, or returns null if this queue is empty.
+    }
+
+    public boolean hasMorePoints() {
+        return !points.isEmpty();
     }
 }
+
 

@@ -19,18 +19,18 @@ public class MapLoader {
     public static String[] level_1 = {
             "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
             "W                     G        W",
-            "W    P  W C      C            GW",
+            "W    P  W C      C  L          GW",
             "W       W    WWWWWW            W",
             "W       W    WGGGGW            W",
             "W       W    WGGGG             W",
             "W       W    WWWWWW            W",
             "W    G  W         C     C      W",
             "W       W   C      C           W",
-            "W   C   W        G             W",
+            "W   C   W   B    G             W",
             "W       W             C        W",
             "W       W    WWW    C          W",
-            "W       W    W   W        BTL  W",
-            "W     C W    WG  W             W",
+            "W       W    W   W       T     W",
+            "W     C W    WG  W    U        W",
             "W            W   W     C       W",
             "W            W   W             W",
             "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
@@ -71,6 +71,11 @@ public class MapLoader {
                         placeReport("Bike", posX, posY);
                         Bike bicycle = new Bike(posX, posY);
                         gameWindow.addElement(bicycle);
+                        break;
+                    case 'U':
+                        placeReport("Bus", posX, posY);
+                        Bus bus = new Bus(posX, posY);
+                        gameWindow.addElement(bus);
                         break;
                     case 'T':
                         placeReport("Taxi", posX, posY);
