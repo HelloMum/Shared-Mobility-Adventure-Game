@@ -10,9 +10,11 @@ import java.util.List;
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
 public abstract class GameElement {
+
     private static List<GameElement> elements;
     public int x;
     public int y;
+    public boolean walkable;
     public int speed;
     // This refers to the maximum speed of the element
     private GameElement linkedElement;
@@ -22,6 +24,7 @@ public abstract class GameElement {
         this.x = x;
         this.y = y;
         this.speed = 0;
+        this.walkable = false;
     }
 
     public static void setElements(List<GameElement> elements) {
@@ -59,20 +62,27 @@ public abstract class GameElement {
         return (nextX >= 0 && nextX < GameWindow.FRAME_WIDTH && nextY >= 0 && nextY < GameWindow.FRAME_HEIGHT);
     }
 
-
-    // Detects if an element is going to crash into another, ignores selfZ
+    // Checks if the next position collides with any other game element
     private boolean checkCollision(int nextX, int nextY) {
-        // Null iterator need to be fixed
-//        for (GameElement element : elements) {
-//            // Check screen limits and sends collision if is not
-//            if (nextX >= 0 && nextX < GameWindow.FRAME_WIDTH && nextY >= 0 && nextY < GameWindow.FRAME_HEIGHT)
-//                continue;
-//
-//            // Check if the next position (nextX, nextY) collides with the current element's position (element.x, element.y)
-//            if (nextX == element.x && nextY == element.y) {
-//                return true; // Collision detected, return true
-//            }
-//        }
+        List<GameElement> elements = GameWindow.getElements();
+        if (beingControlled) {
+            for (GameElement element : elements) {
+                // Calculate the next step
+                int nextPosX = nextX * CELL_SIZE + this.x ;
+                int nextPosY = nextY * CELL_SIZE + this.y ;
+
+                // Check if the next position collides with the current position of the other element
+                if (nextPosX == element.x && nextPosY == element.y) {
+                    if (element.walkable) {
+                        System.out.println("Collision expected with element but is walkable: " + element);
+                        return false; // No collision detected, return false
+                    } else {
+                        System.out.println("Collision expected with element: " + element);
+                        return true; // Collision detected, return true
+                    }
+                }
+            }
+        }
         return false; // No collision detected, return false
     }
 
@@ -112,6 +122,7 @@ public abstract class GameElement {
         int key = e.getKeyCode();
         int dx = 0, dy = 0;
         if (beingControlled) {
+            System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
             if (key == KeyEvent.VK_LEFT) {
                 dx = -1;
             } else if (key == KeyEvent.VK_RIGHT) {
@@ -123,7 +134,7 @@ public abstract class GameElement {
             }
         }
 
-        System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
+
         move(dx, dy);
     }
 }
