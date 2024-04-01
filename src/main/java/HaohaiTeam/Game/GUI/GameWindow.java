@@ -2,9 +2,10 @@ package HaohaiTeam.Game.GUI;
 
 import HaohaiTeam.Game.Element.GameElement;
 
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class GameWindow {
     public static final int FRAME_WIDTH = CELL_SIZE * GRID_WIDTH; // This is equal to 720p resolution
     public static final int FRAME_HEIGHT = CELL_SIZE * GRID_HEIGHT;
     private final GamePanel gamePanel;
-    public final List<GameElement> elements;
+    private final List<GameElement> elements;
 
     public GameWindow() {
         elements = new ArrayList<>();
@@ -66,6 +67,18 @@ public class GameWindow {
     }
 
     private class GamePanel extends JPanel {
+        public GamePanel() {
+            setFocusable(true); // Allow panel to receive focus for key events
+            requestFocusInWindow(); // Request focus when the panel is displayed
+            addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    // Forward the key event to the game window
+                    handleKeyEvent(e);
+                }
+            });
+        }
+
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -89,6 +102,12 @@ public class GameWindow {
         for (GameElement element : elements) {
             element.updateList(elements);
             element.draw((Graphics2D) g); // Draw each game element
+        }
+    }
+
+    private void handleKeyEvent(KeyEvent e) {
+        for (GameElement element : elements) {
+            element.handleKeyEvent(e);
         }
     }
 }
