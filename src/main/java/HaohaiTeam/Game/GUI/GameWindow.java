@@ -16,13 +16,17 @@ public class GameWindow {
     public static final int FRAME_WIDTH = CELL_SIZE * GRID_WIDTH; // This is equal to 720p resolution
     public static final int FRAME_HEIGHT = CELL_SIZE * GRID_HEIGHT;
     private final GamePanel gamePanel;
-    private final List<GameElement> elements;
+    private static List<GameElement> elements = null;
 
     public GameWindow() {
         elements = new ArrayList<>();
         this.gamePanel = new GamePanel();
     }
 
+    // For logic checking, game elements can access this
+    public static List<GameElement> getElements() {
+        return elements;
+    }
     public void addElement(GameElement element) {
         elements.add(element);
     }
