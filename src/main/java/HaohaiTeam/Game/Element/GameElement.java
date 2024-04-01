@@ -47,22 +47,9 @@ public abstract class GameElement {
         return new Rectangle(x, y, CELL_SIZE, CELL_SIZE);
     }
     public void move(int dx, int dy) {
-        // If the object is not being controlled, then exit the method without performing any movement.
-        if (!beingControlled) return;
-
-        // Calculate the proposed next position for the object by adding the current x-coordinate and the product of the horizontal speed (dx) and the speed value.
-        int nextX = x + dx * speed;
-        // Similarly, calculate the proposed next position for the object along the y-axis by adding the current y-coordinate and the product of the vertical speed (dy) and the speed value.
-        int nextY = y + dy * speed;
-
-        // If the calculated next position is within the allowed bounds of the game area AND there's no predicted collision at that position,
-        if (isWithinBounds(nextX, nextY) && !checkCollision(nextX, nextY)) {
-            // Update the actual position of the object to the calculated next position.
-            x = nextX;
-            y = nextY;
-        }
-
-
+        // Update the actual position of the object to the calculated next position.
+        x += dx * CELL_SIZE;
+        y += dy * CELL_SIZE;
     }
 
     // Method to handle key events for controlling movement
@@ -91,10 +78,6 @@ public abstract class GameElement {
     private boolean checkCollision(int nextX, int nextY) {
         // We check all the elements to see if the nextX and nextY match their own positions
         for (GameElement element : elements) {
-            // Skip checking collision with itself
-            if (element == this) {
-                continue;
-            }
             // Check screen limits and sends collision if is not
             if (nextX >= 0 && nextX < GameWindow.FRAME_WIDTH && nextY >= 0 && nextY < GameWindow.FRAME_HEIGHT)
                 continue;
