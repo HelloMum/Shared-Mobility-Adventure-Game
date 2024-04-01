@@ -10,6 +10,7 @@ public class Player extends GameElement {
     public Player(int x, int y) {
         super(x, y);
         beingControlled = true; // Set beingControlled to true in the constructor
+        layer = 100; // Set the layer value higher than the road's layer
     }
     public currentTransport state = currentTransport.WALKING;
 
