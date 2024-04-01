@@ -76,36 +76,6 @@ public abstract class GameElement {
         return false; // No collision detected, return false
     }
 
-    // Method to handle key events for controlling movement
-    public void handleKeyEvent(KeyEvent e) {
-        if (beingControlled) {
-            int keyCode = e.getKeyCode();
-            // Print the key code for debugging
-            System.out.println("Key pressed: " + keyCode);
-
-            // Check if arrow key is pressed
-            if (keyCode == KeyEvent.VK_UP) {
-                move(0, -1); // Move up
-                System.out.println("Moving up");
-            } else if (keyCode == KeyEvent.VK_DOWN) {
-                move(0, 1); // Move down
-                System.out.println("Moving down");
-            } else if (keyCode == KeyEvent.VK_LEFT) {
-                move(-1, 0); // Move left
-                System.out.println("Moving left");
-            } else if (keyCode == KeyEvent.VK_RIGHT) {
-                move(1, 0); // Move right
-                System.out.println("Moving right");
-            } else {
-                // Print unknown key press for debugging
-                System.out.println("Unknown key pressed");
-            }
-        } else {
-            // Print message if not being controlled for debugging
-            System.out.println("Not being controlled");
-        }
-    }
-
     public void linkElement(GameElement other) {
         this.linkedElement = other;
         other.linkedElement = this; // Link the other element back
@@ -124,5 +94,24 @@ public abstract class GameElement {
 
     public void setBeingControlled(boolean beingControlled) {
         this.beingControlled = beingControlled;
+    }
+
+    public void handleKeyEvent(KeyEvent e) {
+        int key = e.getKeyCode();
+        int dx = 0, dy = 0;
+        if (beingControlled) {
+            if (key == KeyEvent.VK_LEFT) {
+                dx = -1;
+            } else if (key == KeyEvent.VK_RIGHT) {
+                dx = 1;
+            } else if (key == KeyEvent.VK_UP) {
+                dy = -1;
+            } else if (key == KeyEvent.VK_DOWN) {
+                dy = 1;
+            }
+        }
+
+        System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
+        move(dx, dy);
     }
 }

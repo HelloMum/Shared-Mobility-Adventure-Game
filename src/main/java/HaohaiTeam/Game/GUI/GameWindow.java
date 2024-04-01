@@ -13,8 +13,6 @@ public class GameWindow {
     public static final int CELL_SIZE = 30; // Size of each cell in pixels
     private static final int GRID_WIDTH = 32; // Number of grid cells horizontally
     private static final int GRID_HEIGHT = 18; // Number of grid cells vertically
-    private static final int FPS = 30; // Target Frames Per Second
-    private static final long FRAME_TIME = 1000 / FPS; // Time per frame in milliseconds
     public static final int FRAME_WIDTH = CELL_SIZE * GRID_WIDTH; // This is equal to 720p resolution
     public static final int FRAME_HEIGHT = CELL_SIZE * GRID_HEIGHT;
     private final GamePanel gamePanel;
@@ -39,44 +37,21 @@ public class GameWindow {
         frame.setContentPane(gamePanel); // Set custom GamePanel as content pane
         frame.setVisible(true);
 
-        // Start the game loop
-        new Thread(this::gameLoop).start();
-    }
-
-    private void gameLoop() {
-        while (true) {
-            long startTime = System.currentTimeMillis();
-
-            updateGame();
-            gamePanel.repaint();
-
-            long elapsedTime = System.currentTimeMillis() - startTime;
-            long sleepTime = FRAME_TIME - elapsedTime;
-            if (sleepTime > 0) {
-                try {
-                    Thread.sleep(sleepTime);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        // Start listening to key events
+        gamePanel.requestFocusInWindow();
+        gamePanel.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // Forward the key event to the game window
+                handleKeyEvent(e);
             }
-        }
-    }
-
-    private void updateGame() {
-        // Update game state here
+        });
     }
 
     private class GamePanel extends JPanel {
         public GamePanel() {
+            setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT)); // Set preferred size
             setFocusable(true); // Allow panel to receive focus for key events
-            requestFocusInWindow(); // Request focus when the panel is displayed
-            addKeyListener(new KeyAdapter() {
-                @Override
-                public void keyPressed(KeyEvent e) {
-                    // Forward the key event to the game window
-                    handleKeyEvent(e);
-                }
-            });
         }
 
         @Override
@@ -100,7 +75,6 @@ public class GameWindow {
 
     private void renderElements(Graphics g) {
         for (GameElement element : elements) {
-            element.updateList(elements);
             element.draw((Graphics2D) g); // Draw each game element
         }
     }
@@ -109,5 +83,6 @@ public class GameWindow {
         for (GameElement element : elements) {
             element.handleKeyEvent(e);
         }
+        gamePanel.repaint(); // Repaint the panel after handling key event
     }
 }
