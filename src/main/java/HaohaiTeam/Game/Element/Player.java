@@ -51,11 +51,12 @@ public class Player extends GameElement {
     public void draw(Graphics2D g2d) {
         if (getState() != currentTransport.WALKING) { // Check if the player is not in the walking state
             g2d.setColor(Color.BLUE);
-            g2d.fillOval(getPosX(), getPosY(), CELL_SIZE, CELL_SIZE);
+            g2d.fillOval(x, y, CELL_SIZE, CELL_SIZE);
         } else {
             g2d.setColor(Color.CYAN);
-            g2d.fillOval(getPosX(), getPosY(), CELL_SIZE, CELL_SIZE); // Draw the player
+            g2d.fillOval(x, y, CELL_SIZE, CELL_SIZE); // Draw the player
         }
     }
+
 
     }
