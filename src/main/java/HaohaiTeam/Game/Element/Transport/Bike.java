@@ -9,7 +9,8 @@ import java.awt.image.BufferedImage;
 
 public class Bike extends TransportMode {
     private static final Color BIKE_COLOR = Color.GREEN;
-    private BufferedImage bikeImage;
+    private BufferedImage bikeImage; // this will be used later when we need use the real pics
+
 
     public Bike(int x, int y) {
         super(x, y); // assume 15km per hour and carbon footprint of 1.0 kg per km

@@ -110,6 +110,18 @@ public abstract class GameElement {
         this.linkedElement = other;
         other.linkedElement = this; // Link the other element back
     }
+    // need to get the linkedElement
+    public GameElement getLinkedElement() {
+        return this.linkedElement;
+    }
+    // need unlinkElement method to release the link so it can be used again
+    public void unlinkElement() {
+        if (this.linkedElement != null) {
+            this.linkedElement.setBeingControlled(false);
+            this.linkedElement = null;
+            this.setBeingControlled(true); // 玩家恢复直接控制
+        }
+    }
 
     public abstract void draw(Graphics2D g2d);
 

@@ -24,6 +24,7 @@ public class Player extends GameElement {
     public void stopUsingTransport() {
         this.state = currentTransport.WALKING; // Reset to walking state
         // Update the player's position and visibility as necessary after stopping the transport
+        this.beingControlled = true; // to make player move we need set beingControlled to true
     }
 
     @Override
@@ -36,6 +37,4 @@ public class Player extends GameElement {
             g2d.fillOval(x, y, CELL_SIZE, CELL_SIZE); // Draw the player
         }
     }
-
-
-    }
+}
