@@ -14,6 +14,7 @@ public abstract class GameElement {
     private static List<GameElement> elements;
     public int x;
     public int y;
+    public int layer;
     public boolean walkable;
     public int speed;
     // This refers to the maximum speed of the element
@@ -25,6 +26,7 @@ public abstract class GameElement {
         this.y = y;
         this.speed = 0;
         this.walkable = false;
+        this.layer = 99; // Default layer 
     }
 
     public static void setElements(List<GameElement> elements) {
@@ -49,12 +51,13 @@ public abstract class GameElement {
     public Rectangle getBounds() {
         return new Rectangle(x, y, CELL_SIZE, CELL_SIZE);
     }
-    public void move(int dx, int dy) {
+    public boolean move(int dx, int dy) {
         // Update the actual position of the object to the calculated next position.
         if (checkCollision(dx, dy)){
             x += dx * CELL_SIZE;
             y += dy * CELL_SIZE;
         }
+        return false;
     }
 
     private boolean isWithinBounds(int nextX, int nextY) {
@@ -63,7 +66,7 @@ public abstract class GameElement {
     }
 
     // Checks if the next position collides with any other game element
-    boolean checkCollision(int nextX, int nextY) {
+    protected boolean checkCollision(int nextX, int nextY) {
         List<GameElement> elements = GameWindow.getElements();
         if (beingControlled) {
             for (GameElement element : elements) {
@@ -141,5 +144,9 @@ public abstract class GameElement {
 
 
         move(dx, dy);
+    }
+
+    public int getLayer() {
+        return layer;
     }
 }
