@@ -1,14 +1,18 @@
 package HaohaiTeam.Game.Element;
+
 import HaohaiTeam.Game.Logic.currentTransport;
+
 import java.awt.*;
+
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
 public class Player extends GameElement {
     public Player(int x, int y) {
         super(x, y);
+        beingControlled = true; // Set beingControlled to true in the constructor
     }
     public currentTransport state = currentTransport.WALKING;
-    public boolean beingControlled = true;
+
 
     //Setter method currentTransport
     public void setState(currentTransport state) {
