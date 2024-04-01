@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class GameWindow {
@@ -50,6 +51,10 @@ public class GameWindow {
                 handleKeyEvent(e);
             }
         });
+
+        // Create a timer to update the screen every 0.1 seconds
+        Timer timer = new Timer(100, e -> gamePanel.repaint());
+        timer.start();
     }
 
     private class GamePanel extends JPanel {
@@ -78,6 +83,9 @@ public class GameWindow {
     }
 
     private void renderElements(Graphics g) {
+        // Sort elements based on their layer
+        elements.sort(Comparator.comparingInt(GameElement::getLayer));
+
         for (GameElement element : elements) {
             element.draw((Graphics2D) g); // Draw each game element
         }
