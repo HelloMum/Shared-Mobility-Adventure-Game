@@ -27,14 +27,6 @@ public class Player extends GameElement {
     }
 
     @Override
-    public void move(int dx, int dy) {
-        if (getState() != currentTransport.WALKING) {
-            super.move(dx, dy); // Move the player by walking (Normal speed)
-        }
-        // The movement logic might vary when a means of transportation is being used
-    }
-
-    @Override
     public void draw(Graphics2D g2d) {
         if (getState() != currentTransport.WALKING) { // Check if the player is not in the walking state
             g2d.setColor(Color.BLUE);
