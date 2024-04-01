@@ -18,16 +18,11 @@ public class GameWindow {
     public static final int FRAME_HEIGHT = CELL_SIZE * GRID_HEIGHT;
     private final GamePanel gamePanel;
     public final List<GameElement> elements;
-    private long lastUpdateTime; // Time of the last update
-
 
     public GameWindow() {
         elements = new ArrayList<>();
         this.gamePanel = new GamePanel();
-        lastUpdateTime = System.currentTimeMillis(); // Initialize last update time
     }
-
-
 
     public void addElement(GameElement element) {
         elements.add(element);
@@ -42,6 +37,32 @@ public class GameWindow {
         frame.setFocusable(true); // Ensure frame is focusable
         frame.setContentPane(gamePanel); // Set custom GamePanel as content pane
         frame.setVisible(true);
+
+        // Start the game loop
+        new Thread(this::gameLoop).start();
+    }
+
+    private void gameLoop() {
+        while (true) {
+            long startTime = System.currentTimeMillis();
+
+            updateGame();
+            gamePanel.repaint();
+
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            long sleepTime = FRAME_TIME - elapsedTime;
+            if (sleepTime > 0) {
+                try {
+                    Thread.sleep(sleepTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void updateGame() {
+        // Update game state here
     }
 
     private class GamePanel extends JPanel {
@@ -50,8 +71,6 @@ public class GameWindow {
             super.paintComponent(g);
             renderMap(g); // Render the loaded map
             renderElements(g); // Render game elements
-            startGameLoop(g);
-
         }
     }
 
@@ -72,28 +91,4 @@ public class GameWindow {
             element.draw((Graphics2D) g); // Draw each game element
         }
     }
-
-    // This is just to keep the fps consistent so we can move at a certain speed or any other...
-    private void startGameLoop (Graphics g) {
-        new Thread(() -> {
-            while (true) {
-                long currentTime = System.currentTimeMillis();
-                long elapsedTime = currentTime - lastUpdateTime;
-
-                if (elapsedTime >= FRAME_TIME) {
-                    gamePanel.repaint();
-                    renderElements(g);
-                    lastUpdateTime += FRAME_TIME; // Update lastUpdateTime for next frame
-                }
-                try {
-                    // Calculate time to sleep until next frame
-                    long sleepTime = Math.max(0, FRAME_TIME - elapsedTime);
-                    Thread.sleep(sleepTime);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
 }
