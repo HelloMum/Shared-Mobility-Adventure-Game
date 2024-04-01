@@ -8,6 +8,7 @@ import java.util.TimerTask;
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
 public class Debugger extends GameElement {
+    public boolean beingControlled = true;
     private static final Color DEBUGGER_COLOR = Color.RED;
     private static final int MOVE_INTERVAL_MS = 1000; // Move every 1 second
     private final Random random;
