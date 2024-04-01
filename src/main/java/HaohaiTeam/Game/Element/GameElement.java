@@ -51,7 +51,7 @@ public abstract class GameElement {
     }
     public void move(int dx, int dy) {
         // Update the actual position of the object to the calculated next position.
-        if (!checkCollision(dx, dy)){
+        if (checkCollision(dx, dy)){
             x += dx * CELL_SIZE;
             y += dy * CELL_SIZE;
         }
@@ -63,7 +63,7 @@ public abstract class GameElement {
     }
 
     // Checks if the next position collides with any other game element
-    private boolean checkCollision(int nextX, int nextY) {
+    boolean checkCollision(int nextX, int nextY) {
         List<GameElement> elements = GameWindow.getElements();
         if (beingControlled) {
             for (GameElement element : elements) {
@@ -75,15 +75,20 @@ public abstract class GameElement {
                 if (nextPosX == element.x && nextPosY == element.y) {
                     if (element.walkable) {
                         System.out.println("Collision expected with element but is walkable: " + element);
-                        return false; // No collision detected, return false
+                        element.onBeingWalkedOver();
+                        return true; // No collision detected, return false
                     } else {
                         System.out.println("Collision expected with element: " + element);
-                        return true; // Collision detected, return true
+                        return false; // Collision detected, return true
                     }
                 }
             }
         }
-        return false; // No collision detected, return false
+        return true; // No collision detected, return false
+    }
+    public void onBeingWalkedOver() {
+        // Implement the behavior when this element is being walked over
+        System.out.println("Element " + this + " is being walked over.");
     }
 
     public void linkElement(GameElement other) {
