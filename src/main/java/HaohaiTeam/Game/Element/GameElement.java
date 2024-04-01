@@ -95,6 +95,10 @@ public abstract class GameElement {
             if (element == this) {
                 continue;
             }
+            // Check screen limits and sends collision if is not
+            if (nextX >= 0 && nextX < GameWindow.FRAME_WIDTH && nextY >= 0 && nextY < GameWindow.FRAME_HEIGHT)
+                continue;
+
             // Check if the next position (nextX, nextY) collides with the current element's position (element.x, element.y)
             if (nextX == element.x && nextY == element.y) {
                 return true; // Collision detected, return true
@@ -102,7 +106,6 @@ public abstract class GameElement {
         }
         return false; // No collision detected, return false
     }
-
     public void linkElement(GameElement other) {
         this.linkedElement = other;
         other.linkedElement = this; // Link the other element back
