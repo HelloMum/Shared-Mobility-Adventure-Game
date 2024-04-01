@@ -31,6 +31,7 @@ public class MapLoader {
             "W  r  C W    WG  W          r  W",
             "W  r         W   W     C   Ur  W",
             "W  rrrrrrrrrrrrrrrrrrrrrrrrrr  W",
+            "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
             "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
     };
     // This should be implemented in an external file but for now it suits the purpose of testing
