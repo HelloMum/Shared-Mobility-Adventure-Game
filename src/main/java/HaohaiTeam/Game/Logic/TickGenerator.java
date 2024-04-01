@@ -14,13 +14,14 @@ public class TickGenerator {
     }
 
     //Method to start the ticks
-    public void start()
-    //Method to start ticks - the method calls the onTick method for all listeners in the listener list
-    {
+    public void start() {
         running = true;
         while (running) {
-
-            Thread.sleep(tickRate); //Wait for the tick rate
+            try {
+                Thread.sleep(tickRate); //Wait for the tick rate
+            } catch (InterruptedException ignored) {
+                // Do nothing or log the exception
+            }
 
             //Call 'onTick' method for listeners on each tick
             for (int i = 0; i < listeners.size(); i++) {
