@@ -1,10 +1,8 @@
 package HaohaiTeam.Game.Map;
 
-import HaohaiTeam.Game.Element.Coin;
-import HaohaiTeam.Game.Element.Gem;
-import HaohaiTeam.Game.Element.Player;
-import HaohaiTeam.Game.Element.Wall;
+
 import HaohaiTeam.Game.GUI.GameWindow;
+import HaohaiTeam.Game.Element.*;
 import HaohaiTeam.Game.Element.Transport.*;
 import HaohaiTeam.Game.Logic.ElementBehavior;
 
@@ -21,7 +19,7 @@ public class MapLoader {
             "W                     G        W",
             "W    P  W C      C  L          W",
             "W       W    WWWWWW            W",
-            "W       W    WGGGGW            W",
+            "W       W    WGGGGW      D     W",
             "W       W    WGGGG             W",
             "W       W    WWWWWW            W",
             "W    G  W         C     C      W",
@@ -86,6 +84,11 @@ public class MapLoader {
                         placeReport("Luas", posX, posY);
                         Luas luas = new Luas(posX, posY);
                         gameWindow.addElement(luas);
+                        break;
+                    case 'D':
+                        placeReport("Debugger", posX, posY);
+                        Debugger debugger = new Debugger(posX, posY);
+                        gameWindow.addElement(debugger);
                         break;
                 }
             }
