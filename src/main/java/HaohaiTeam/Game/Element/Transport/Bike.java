@@ -1,7 +1,7 @@
 package HaohaiTeam.Game.Element.Transport;
 
 
-import HaohaiTeam.Game.Logic.PlayerTransportState;
+import HaohaiTeam.Game.Logic.currentTransport;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
@@ -18,8 +18,8 @@ public class Bike extends TransportMode {
     }
 
     @Override
-    public PlayerTransportState getTransportState() {
-        return PlayerTransportState.RIDING_BIKE;
+    public currentTransport getTransportState() {
+        return currentTransport.RIDING_BIKE;
     }
 
 

@@ -1,6 +1,6 @@
 package HaohaiTeam.Game.Element.Transport;
 
-import HaohaiTeam.Game.Logic.PlayerTransportState;
+import HaohaiTeam.Game.Logic.currentTransport;
 
 import java.awt.*;
 
@@ -18,8 +18,8 @@ public class Luas extends TransportMode {
     }
 
     @Override
-    public PlayerTransportState getTransportState() {
-        return PlayerTransportState.RIDING_LUAS;
+    public currentTransport getTransportState() {
+        return currentTransport.RIDING_LUAS;
     }
 
     @Override

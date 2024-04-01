@@ -1,6 +1,6 @@
 package HaohaiTeam.Game.Element.Transport;
 
-import HaohaiTeam.Game.Logic.PlayerTransportState;
+import HaohaiTeam.Game.Logic.currentTransport;
 
 import java.awt.*;
 
@@ -16,8 +16,8 @@ public class Taxi extends TransportMode {
     }
 
     @Override
-    public PlayerTransportState getTransportState() {
-        return PlayerTransportState.RIDING_TAXI;
+    public currentTransport getTransportState() {
+        return currentTransport.RIDING_TAXI;
     }
 
     @Override

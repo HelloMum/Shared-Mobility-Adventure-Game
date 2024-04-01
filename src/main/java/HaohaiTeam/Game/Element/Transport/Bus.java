@@ -1,6 +1,6 @@
 package HaohaiTeam.Game.Element.Transport;
 
-import HaohaiTeam.Game.Logic.PlayerTransportState;
+import HaohaiTeam.Game.Logic.currentTransport;
 import HaohaiTeam.Game.Navigation.Route;
 
 import java.awt.*;
@@ -24,8 +24,8 @@ public class Bus extends TransportMode {
     }
 
     @Override
-    public PlayerTransportState getTransportState() {
-        return PlayerTransportState.RIDING_BUS;
+    public currentTransport getTransportState() {
+        return currentTransport.RIDING_BUS;
     }
     @Override
     public void draw(Graphics2D g2d) {
