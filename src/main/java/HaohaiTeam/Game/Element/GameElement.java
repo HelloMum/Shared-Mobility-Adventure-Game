@@ -1,6 +1,5 @@
 package HaohaiTeam.Game.Element;
 
-import HaohaiTeam.Game.Element.Transport.TransportMode;
 import HaohaiTeam.Game.GUI.GameWindow;
 
 import java.awt.*;
@@ -28,15 +27,22 @@ public abstract class GameElement {
     public static void setElements(List<GameElement> elements) {
         GameElement.elements = elements; // Assign the list of elements
     }
-
+    //These two can be used to locate the x and y of the element, real center DON'T USE FOR LOGIC
     protected int getPosX() {
-        return x * CELL_SIZE; // Use GameWindow.CELL_SIZE
+        return x * CELL_SIZE;
     }
-
     protected int getPosY() {
-        return y * CELL_SIZE; // Use GameWindow.CELL_SIZE
+        return y * CELL_SIZE;
     }
 
+    //These implement a return for the real grid position, for the logic implementation
+    public int logicPosX() {
+        return x ;
+    }
+    public int logicPosY() {
+        return y ;
+    }
+    //
     public Rectangle getBounds() {
         return new Rectangle(x, y, CELL_SIZE, CELL_SIZE);
     }
@@ -50,7 +56,7 @@ public abstract class GameElement {
         int nextY = y + dy * speed;
 
         // If the calculated next position is within the allowed bounds of the game area AND there's no predicted collision at that position,
-        if (isWithinBounds(nextX, nextY) && !willCollide(nextX, nextY)) {
+        if (isWithinBounds(nextX, nextY) && !checkCollision(nextX, nextY)) {
             // Update the actual position of the object to the calculated next position.
             x = nextX;
             y = nextY;
@@ -80,22 +86,18 @@ public abstract class GameElement {
         return (nextX >= 0 && nextX < GameWindow.FRAME_WIDTH && nextY >= 0 && nextY < GameWindow.FRAME_HEIGHT);
     }
 
-    private boolean willCollide(int nextX, int nextY) {
-        // Create a rectangle representing the next position
-        Rectangle nextBounds = new Rectangle(nextX, nextY, CELL_SIZE, CELL_SIZE);
 
-        // Iterate through all elements to check for collisions
+    // Detects if an element is going to crash into another, ignores selfZ
+    private boolean checkCollision(int nextX, int nextY) {
+        // We check all the elements to see if the nextX and nextY match their own positions
         for (GameElement element : elements) {
-            // Exclude self from collision checks
-            if (element != this) {
-                // Obtain the bounds of the current game element
-                Rectangle elementBounds = element.getBounds();
-
-                // If the rectangle of the next position intersects with any element's rectangle,
-                // return true indicating a collision has occurred
-                if (nextBounds.intersects(elementBounds)) {
-                    return true;
-                }
+            // Skip checking collision with itself
+            if (element == this) {
+                continue;
+            }
+            // Check if the next position (nextX, nextY) collides with the current element's position (element.x, element.y)
+            if (nextX == element.x && nextY == element.y) {
+                return true; // Collision detected, return true
             }
         }
         return false; // No collision detected, return false
@@ -105,7 +107,6 @@ public abstract class GameElement {
         this.linkedElement = other;
         other.linkedElement = this; // Link the other element back
     }
-
 
     public abstract void draw(Graphics2D g2d);
 
