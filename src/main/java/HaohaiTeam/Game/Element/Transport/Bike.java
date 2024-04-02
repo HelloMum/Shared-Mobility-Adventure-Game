@@ -13,9 +13,10 @@ public class Bike extends TransportMode {
 
 
     public Bike(int x, int y) {
-        super(x, y); // assume 15km per hour and carbon footprint of 1.0 kg per km
+        super(x, y); // assume 10km per hour and carbon footprint of 1.0 kg per km
         this.speed = 10;
         this.carbonFootprint = 1;
+        this.walkable = false;
     }
 
     @Override

@@ -89,7 +89,7 @@ public abstract class GameElement {
         }
         return true; // No collision detected, return false
     }
-    public void onBeingWalkedOver() {
+    public void onBeingWalkedOver() { // like an abstract method
         // Implement the behavior when this element is being walked over
         System.out.println("Element " + this + " is being walked over.");
     }
