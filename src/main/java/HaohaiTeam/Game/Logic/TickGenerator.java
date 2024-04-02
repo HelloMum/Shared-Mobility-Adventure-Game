@@ -17,19 +17,25 @@ public class TickGenerator {
     public void start() {
         running = true;
         while (running) {
+
             try {
                 Thread.sleep(tickRate); //Wait for the tick rate
-            } catch (InterruptedException ignored) {
+            } catch (InterruptedException e) {
                 // Do nothing or log the exception
+                System.out.println(e.toString());
             }
 
             //Call 'onTick' method for listeners on each tick
             for (int i = 0; i < listeners.size(); i++) {
                 TickListener listener = listeners.get(i);
                 listener.onTick();
+
+        }
+
+
             }
         }
-    }
+
     //Method to stop the ticks
     public void stop() {
         running = false;
