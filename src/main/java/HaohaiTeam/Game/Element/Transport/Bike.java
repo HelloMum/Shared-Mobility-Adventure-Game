@@ -1,6 +1,7 @@
 package HaohaiTeam.Game.Element.Transport;
 
 
+import HaohaiTeam.Game.Element.Player;
 import HaohaiTeam.Game.Logic.currentTransport;
 import java.awt.Graphics2D;
 import java.awt.Color;
@@ -24,7 +25,18 @@ public class Bike extends TransportMode {
         return currentTransport.RIDING_BIKE;
     }
 
-
+    public void endInteraction() {
+        // end interaction with player
+        this.setBeingControlled(false);
+        // hide the bike
+        this.setVisible(false);
+        // 将玩家的状态设置回行走
+        Player player = (Player) this.getLinkedElement();
+        if (player != null) {
+            player.setVisible(true);
+            player.setState(currentTransport.WALKING);
+        }
+    }
     @Override
     public void draw(Graphics2D g2d) {
         int wheelRadius = CELL_SIZE / 4;

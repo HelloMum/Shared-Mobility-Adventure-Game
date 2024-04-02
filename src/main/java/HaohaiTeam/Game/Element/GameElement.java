@@ -21,6 +21,8 @@ public abstract class GameElement {
     private GameElement linkedElement;
     public boolean beingControlled = false; // Flag to enable key control
 
+    private boolean isVisible = true; // add a flag to control visibility
+
     public GameElement(int x, int y) {
         this.x = x;
         this.y = y;
@@ -28,7 +30,14 @@ public abstract class GameElement {
         this.walkable = false;
         this.layer = 99; // Default layer 
     }
+    public void setVisible(boolean visible) {
+        this.isVisible = visible;
+    }
 
+
+    public boolean isVisible() {
+        return isVisible;
+    }
     public static void setElements(List<GameElement> elements) {
         GameElement.elements = elements; // Assign the list of elements
     }
@@ -60,7 +69,7 @@ public abstract class GameElement {
         return false;
     }
 
-    private boolean isWithinBounds(int nextX, int nextY) {
+    public boolean isWithinBounds(int nextX, int nextY) {
         // Check if the next position is within the game window bounds
         return (nextX >= 0 && nextX < GameWindow.FRAME_WIDTH && nextY >= 0 && nextY < GameWindow.FRAME_HEIGHT);
     }
