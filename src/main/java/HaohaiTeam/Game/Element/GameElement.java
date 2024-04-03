@@ -234,13 +234,27 @@ public abstract class GameElement {
     // Trigger by being walked over by something
     // Default sends self to the cell that you are upon
     public void interactKeyPressedByYou() {
+        System.out.println(this + " wants to interact");
         int currentLogicalPosX = this.getLogicalPosX();
         int currentLogicalPosY = this.getLogicalPosY();
-
         List<GameElement> elements = GameWindow.getElements();
-        // Iterate through the elements
+        // Change to the cell that you are looking into
+//        switch (direction) {
+//            case UP:
+//                currentLogicalPosY -= 1; // Move up
+//                break;
+//            case DOWN:
+//                currentLogicalPosY += 1; // Move down
+//                break;
+//            case LEFT:
+//                currentLogicalPosX -= 1; // Move left
+//                break;
+//            case RIGHT:
+//                currentLogicalPosX += 1; // Move right
+//                break;
+//        }
         for (GameElement element : elements) {
-            // Check if the element is on the same cell as the current object
+            // Check the element the element is looking into
             if (element != this && element.getLogicalPosX() == currentLogicalPosX && element.getLogicalPosY() == currentLogicalPosY) {
                 // Call a method on the element to handle the interaction
                 element.interactKeyPressedOnYou(this);
