@@ -1,21 +1,33 @@
 package HaohaiTeam.Game.Element.Transport;
 
 
-import HaohaiTeam.Game.Logic.currentTransport;
+import HaohaiTeam.Game.Element.GameElement;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 import java.awt.image.BufferedImage;
 
 public class Bike extends TransportMode {
-    private static final Color BIKE_COLOR = Color.GREEN;
+    private static final Color BIKE_COLOR = Color.darkGray;
     private BufferedImage bikeImage; // this will be used later when we need use the real pics
-
 
     public Bike(int x, int y) {
         super(x, y); // assume 15km per hour and carbon footprint of 1.0 kg per km
-        this.speed = 10;
-        this.carbonFootprint = 1;
+        speed = 10;
+        carbonFootprint = 1;
+        walkable = true;
+        layer = 105; // Default layer
+    }
+    @Override
+    public void interactKeyPressedOnYou(GameElement gameElement) {
+        System.out.println(gameElement + " wants to interact with" + this );
+        if (gameElement.getLinkedElement() == this) {
+            // If gameElement is already linked to this, unlink them
+            gameElement.unlinkElement();
+        } else {
+            // If gameElement is not linked to this, link them
+            gameElement.linkElement(this);
+        }
     }
 
     @Override

@@ -39,7 +39,6 @@ public class Bus extends TransportMode {
             @Override
             public void run() {
                 moveOnRoad();
-                System.out.println("Bus position: (" + x + ", " + y + ")");
             }
         }, 0, MOVE_INTERVAL_MS);
     }
