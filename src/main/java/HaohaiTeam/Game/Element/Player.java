@@ -33,14 +33,6 @@ public class Player extends GameElement {
         this.beingControlled = true; // to make player move we need set beingControlled to true
     }
 
-    public void interactWith(TransportMode other) {
-        this.setVisible(false);
-        other.setBeingControlled(true);
-        this.x = other.x;
-        this.y = other.y;
-        this.setState(other.getTransportState());
-    }
-
     @Override
     public void draw(Graphics2D g2d) {
         g2d.setColor(Color.CYAN);
