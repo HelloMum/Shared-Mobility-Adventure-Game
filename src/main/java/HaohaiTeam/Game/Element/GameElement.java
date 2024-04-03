@@ -3,7 +3,6 @@ package HaohaiTeam.Game.Element;
 import HaohaiTeam.Game.GUI.GameWindow;
 
 import java.awt.*;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
@@ -12,14 +11,13 @@ import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 public abstract class GameElement {
 
     private static List<GameElement> elements;
-    public int x;
-    public int y;
-    public int layer;
-    public boolean walkable;
-    public int speed;
-    // This refers to the maximum speed of the element
-    private GameElement linkedElement;
-    public boolean beingControlled = false; // Flag to enable key control
+    public int x; // These x coordinates uses the pixel position for drawing
+    public int y; // These y coordinates uses the pixel position for drawing
+    public int layer; // This refers if the that is going to be drawn, higher number higher preference.
+    public boolean walkable; // This refers if the element can be walked though
+    public int speed; // This refers to the maximum speed of the element
+    private GameElement linkedElement; // This to link two element on the same cell so one follows the other, it also overdrives the control of the other
+    public boolean beingControlled = false; // Flag to enable key control by keys
 
     public GameElement(int x, int y) {
         this.x = x;
@@ -29,40 +27,40 @@ public abstract class GameElement {
         this.layer = 99; // Default layer 
     }
 
-    public static void setElements(List<GameElement> elements) {
-        GameElement.elements = elements; // Assign the list of elements
+    /// LOCATING THE GAME ELEMENTS USING LOGICAL POSITIONS
+    //These two can be used to locate the x and y of the element in the logical cell grid
+    // Should be the only one using convert cell_size
+    public int convertToLogicalPos(int unitToConvert) {
+        return unitToConvert * CELL_SIZE ;
     }
-    //These two can be used to locate the x and y of the element, real center DON'T USE FOR LOGIC
-    protected int getPosX() {
-        return x * CELL_SIZE;
+    public void getLogicalPosX(int posX) {
+        convertToLogicalPos(x);
     }
-    protected int getPosY() {
-        return y * CELL_SIZE;
+    public void getLogicalPosY(int posY) {
+        convertToLogicalPos(y);
+    }
+    //These implement a return for the real grid position, for the logic implementation
+    public void setToLogicalPosX(int posX) {
+        x += convertToLogicalPos(posX);
+    }
+    public void setToLogicalPosY(int posY) {
+        y += convertToLogicalPos(posY);
     }
 
-    //These implement a return for the real grid position, for the logic implementation
-    public int logicPosX() {
-        return x ;
-    }
-    public int logicPosY() {
-        return y ;
-    }
-    //
-    public Rectangle getBounds() {
-        return new Rectangle(x, y, CELL_SIZE, CELL_SIZE);
-    }
-    public boolean move(int dx, int dy) {
+    // Legacy move, this is to move the elements using pixels
+    public void logicalMove(int dx, int dy) {
         // Update the actual position of the object to the calculated next position.
         if (checkCollision(dx, dy)){
-            x += dx * CELL_SIZE;
-            y += dy * CELL_SIZE;
+            setToLogicalPosX(dx);
+            setToLogicalPosY(dy);
         }
-        return false;
     }
-
-    private boolean isWithinBounds(int nextX, int nextY) {
-        // Check if the next position is within the game window bounds
-        return (nextX >= 0 && nextX < GameWindow.FRAME_WIDTH && nextY >= 0 && nextY < GameWindow.FRAME_HEIGHT);
+    public void moveLogical(int dx, int dy) {
+        // Update the actual position of the object based on logic
+        if (checkCollision(dx, dy)){
+            setToLogicalPosX(dx);
+            setToLogicalPosY(dy);
+        }
     }
 
     // Checks if the next position collides with any other game element
@@ -71,8 +69,8 @@ public abstract class GameElement {
         if (beingControlled) {
             for (GameElement element : elements) {
                 // Calculate the next step
-                int nextPosX = nextX * CELL_SIZE + this.x ;
-                int nextPosY = nextY * CELL_SIZE + this.y ;
+                int nextPosX = convertToLogicalPos(nextX) + this.x ;
+                int nextPosY = convertToLogicalPos(nextY) + this.y ;
 
                 // Check if the next position collides with the current position of the other element
                 if (nextPosX == element.x && nextPosY == element.y) {
@@ -94,6 +92,8 @@ public abstract class GameElement {
         System.out.println("Element " + this + " is being walked over.");
     }
 
+
+    // Linking elements, to link different elements
     public void linkElement(GameElement other) {
         this.linkedElement = other;
         other.linkedElement = this; // Link the other element back
@@ -102,7 +102,7 @@ public abstract class GameElement {
     public GameElement getLinkedElement() {
         return this.linkedElement;
     }
-    // need unlinkElement method to release the link so it can be used again
+    // need unlinkElement method to release the link, so it can be used again
     public void unlinkElement() {
         if (this.linkedElement != null) {
             this.linkedElement.setBeingControlled(false);
@@ -111,12 +111,7 @@ public abstract class GameElement {
         }
     }
 
-    public abstract void draw(Graphics2D g2d);
-
-    public void updateList(List<GameElement> elements) {
-        GameElement.elements = elements; // Update the static list of elements
-    }
-
+    /// Keys controls
     // Getter and setter for beingControlled flag
     public boolean isBeingControlled() {
         return beingControlled;
@@ -141,10 +136,11 @@ public abstract class GameElement {
                 dy = 1;
             }
         }
-
-
-        move(dx, dy);
+        logicalMove(dx, dy);
     }
+
+    // Drawing the elements
+    public abstract void draw(Graphics2D g2d);
 
     public int getLayer() {
         return layer;

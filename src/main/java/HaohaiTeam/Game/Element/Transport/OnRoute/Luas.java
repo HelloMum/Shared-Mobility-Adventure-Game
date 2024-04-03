@@ -1,5 +1,6 @@
-package HaohaiTeam.Game.Element.Transport;
+package HaohaiTeam.Game.Element.Transport.OnRoute;
 
+import HaohaiTeam.Game.Element.Transport.TransportMode;
 import HaohaiTeam.Game.Logic.currentTransport;
 
 import java.awt.*;
@@ -15,11 +16,6 @@ public class Luas extends TransportMode {
         this.speed = 20;
         this.carbonFootprint = 1;
 
-    }
-
-    @Override
-    public currentTransport getTransportState() {
-        return currentTransport.RIDING_LUAS;
     }
 
     @Override
