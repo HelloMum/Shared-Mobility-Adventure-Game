@@ -6,7 +6,6 @@ public class TimeController {
     }
 
     public void controlTime() {
-        // Method to control time
-        System.out.println("Controlling time");
+
     }
 }

@@ -22,7 +22,6 @@ public class TickGenerator {
                 Thread.sleep(tickRate); //Wait for the tick rate
             } catch (InterruptedException e) {
                 // Do nothing or log the exception
-                System.out.println(e.toString());
             }
 
             //Call 'onTick' method for listeners on each tick
