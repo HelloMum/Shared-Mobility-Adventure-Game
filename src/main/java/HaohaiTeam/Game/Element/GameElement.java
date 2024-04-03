@@ -263,6 +263,7 @@ public abstract class GameElement {
     }
     public void interactKeyPressedOnYou(GameElement gameElement) {
         System.out.println(gameElement + " wants to interact with" + this);
+        // Override in your class
     }
 }
 
