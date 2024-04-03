@@ -87,28 +87,14 @@ public class GameWindow {
     private void renderElements(Graphics g) {
         // Sort elements based on their layer
         elements.sort(Comparator.comparingInt(GameElement::getLayer));
-
         for (GameElement element : elements) {
-            if (element.isVisible()) { // 只渲染可见的元素
+            if (element.isVisible()) { // not draw if is not visible
                 element.draw((Graphics2D) g);
             }
         }
     }
 
     private void handleKeyEvent(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            for (GameElement element : elements) {
-                if (element instanceof Player) {
-                    Player player = (Player) element;
-                    for (GameElement otherElement : elements) {
-                        if (otherElement instanceof Bike && otherElement.isWithinBounds(player.x, player.y)) {
-                            player.interactWith((Bike) otherElement);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
         for (GameElement element : elements) {
             element.handleKeyEvent(e);
         }
