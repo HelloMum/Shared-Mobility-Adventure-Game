@@ -1,6 +1,7 @@
 package HaohaiTeam.Game.Element;
 
 import HaohaiTeam.Game.Element.Transport.Bike;
+import HaohaiTeam.Game.Element.Transport.TransportMode;
 import HaohaiTeam.Game.Logic.currentTransport;
 
 import java.awt.*;
@@ -29,19 +30,15 @@ public class Player extends GameElement {
     // This method discontinues the use of any transportation and resets it to walking.
     public void stopUsingTransport() {
         this.state = currentTransport.WALKING; // Reset to walking state
-        // Update the player's position and visibility as necessary after stopping the transport
         this.beingControlled = true; // to make player move we need set beingControlled to true
     }
 
-    public void interactWith(Bike bike) {
-        // 隐藏玩家
+    public void interactWith(TransportMode other) {
         this.setVisible(false);
-        // 激活自行车
-        bike.setBeingControlled(true);
-        // 将玩家的位置设置为自行车的位置
-        this.x = bike.x;
-        this.y = bike.y;
-        this.setState(currentTransport.RIDING_BIKE);
+        other.setBeingControlled(true);
+        this.x = other.x;
+        this.y = other.y;
+        this.setState(other.getTransportState());
     }
 
     @Override
