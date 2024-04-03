@@ -1,7 +1,7 @@
-package HaohaiTeam.Game.Element.Transport.OnRoute;
+package HaohaiTeam.Game.Element.Transport;
 
+import HaohaiTeam.Game.Element.Coin;
 import HaohaiTeam.Game.Element.GameElement;
-import HaohaiTeam.Game.Element.Transport.TransportMode;
 import HaohaiTeam.Game.GUI.GameWindow;
 import HaohaiTeam.Game.Logic.currentTransport;
 
@@ -48,7 +48,7 @@ public class Bus extends TransportMode {
         int nextX = x + headingX * CELL_SIZE;
         int nextY = y + headingY * CELL_SIZE;
         if (isRoadAtPosition(nextX, nextY, elements)) {
-            logicalMove(headingX, headingY);
+            move(headingX, headingY);
             return;
         }
 
@@ -59,7 +59,7 @@ public class Bus extends TransportMode {
         nextY = y + rightTurnY * CELL_SIZE;
         if (isRoadAtPosition(nextX, nextY, elements)) {
             updateHeading(rightTurnX, rightTurnY);
-            logicalMove(rightTurnX, rightTurnY);
+            move(rightTurnX, rightTurnY);
             return;
         }
 
@@ -70,7 +70,7 @@ public class Bus extends TransportMode {
         nextY = y + leftTurnY * CELL_SIZE;
         if (isRoadAtPosition(nextX, nextY, elements)) {
             updateHeading(leftTurnX, leftTurnY);
-            logicalMove(leftTurnX, leftTurnY);
+            move(leftTurnX, leftTurnY);
             return;
         }
 
@@ -81,7 +81,7 @@ public class Bus extends TransportMode {
         nextY = y + backY * CELL_SIZE;
         if (isRoadAtPosition(nextX, nextY, elements)) {
             updateHeading(backX, backY);
-            logicalMove(backX, backY);
+            move(backX, backY);
             return;
         }
 

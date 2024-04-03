@@ -1,4 +1,4 @@
-package HaohaiTeam.Game.Element.Transport.OnRoute;
+package HaohaiTeam.Game.Element.Transport;
 
 import HaohaiTeam.Game.Element.GameElement;
 import HaohaiTeam.Game.GUI.GameWindow;

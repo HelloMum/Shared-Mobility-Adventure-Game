@@ -16,8 +16,13 @@ public class Bike extends TransportMode {
         super(x, y); // assume 15km per hour and carbon footprint of 1.0 kg per km
         this.speed = 10;
         this.carbonFootprint = 1;
-        this.layer = 102; // Drawn over player and roads
     }
+
+    @Override
+    public currentTransport getTransportState() {
+        return currentTransport.RIDING_BIKE;
+    }
+
 
     @Override
     public void draw(Graphics2D g2d) {

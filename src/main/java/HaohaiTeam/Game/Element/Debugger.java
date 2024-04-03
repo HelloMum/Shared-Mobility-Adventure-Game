@@ -34,7 +34,7 @@ public class Debugger extends GameElement {
         // Generate random movement
         int dx = random.nextInt(3) - 1; // Random value between -1, 0, 1
         int dy = random.nextInt(3) - 1; // Random value between -1, 0, 1
-        logicalMove(dx, dy);
+        move(dx, dy);
     }
 
     @Override
