@@ -18,23 +18,28 @@ public class Coin extends GameElement {
         g2d.fillOval(x, y, CELL_SIZE, CELL_SIZE);
     }
     @Override
-    public void onBeingWalkedOver(GameElement gameElement) {
+    public void onBeingWalkedOverStart(GameElement gameElement) {
         List<GameElement> elements = GameWindow.getElements();
-        System.out.println("Element " + this + " is being walked over.");
-        int newX = 0;
-        int newY = 0;
+        System.out.println("Element " + gameElement + " is starting to walk on me " + this);
+
+        int newX = 0; // Start from the far right side of the screen
+        int newY = 0; // top of the window
         boolean spotOccupied;
+
         do {
             spotOccupied = false; // Reset flag for each new position
             for (GameElement element : elements) {
+                // Check if the current element is a Gem and its position matches the new position
                 if (element instanceof Coin && element.x == newX && element.y == newY) {
-                    spotOccupied = true;
-                    newX = newX + CELL_SIZE; // Move to the next x position and continue trying
+                    spotOccupied = true; // Set flag to true if spot is occupied by a Gem
+                    newX = newX - CELL_SIZE; // Move to the next x position and continue trying
+                    break; // Exit the loop to avoid unnecessary iterations
                 }
             }
-        } while (spotOccupied);
+        } while (spotOccupied); // Repeat until an empty spot is found
+
         // Set the position based on the found empty spot
-        this.x = newX ;
-        this.y = 0;
+        this.x = newX;
+        this.y = newY; // Adjust y position based on the grid size
     }
 }
