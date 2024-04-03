@@ -18,7 +18,7 @@ public class Gem extends GameElement {
         g2d.fillOval(x, y, CELL_SIZE, CELL_SIZE);
     }
     @Override
-    public void onBeingWalkedOver() {
+    public void onBeingWalkedOver(GameElement gameElement) {
         List<GameElement> elements = GameWindow.getElements();
         System.out.println("Element " + this + " is being walked over.");
 
