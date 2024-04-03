@@ -9,17 +9,16 @@ import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
 public abstract class GameElement {
 
-    private static List<GameElement> elements;
+    public static List<GameElement> elements;
     public int x; // These x coordinates uses the pixel position for drawing
     public int y; // These y coordinates uses the pixel position for drawing
     public int layer; // This refers if the that is going to be drawn, higher number higher preference.
     public boolean walkable; // This refers if the element can be walked though
     public int speed; // This refers to the maximum speed of the element
-    private GameElement linkedElement; // This to link two element on the same cell so one follows the other, it also overdrives the control of the other
+    public GameElement linkedElement; // This to link two element on the same cell so one follows the other, it also overdrives the control of the other
     public boolean beingControlled = false; // Flag to enable key control by keys
     public boolean isVisible; // hide the visibility
-    public boolean spotOccupied;
-
+    public boolean playerOnTop;
 
     public GameElement(int x, int y) {
         this.x = x;
@@ -28,6 +27,7 @@ public abstract class GameElement {
         this.walkable = false;
         this.layer = 99; // Default layer
         this.isVisible = true;
+        this.playerOnTop =false;
     }
 
     /// LOCATING THE GAME ELEMENTS USING LOGICAL POSITIONS
@@ -36,9 +36,11 @@ public abstract class GameElement {
     public int convertToLogicalPos(int unitToConvert) {
         return unitToConvert * CELL_SIZE;
     }
+
     public int getLogicalPosX() {
         return convertToLogicalPos(x);
     }
+
     public int getLogicalPosY() {
         return convertToLogicalPos(y);
     }
@@ -47,6 +49,7 @@ public abstract class GameElement {
     public void setToLogicalPosX(int posX) {
         x += convertToLogicalPos(posX);
     }
+
     public void setToLogicalPosY(int posY) {
         y += convertToLogicalPos(posY);
     }
@@ -54,14 +57,20 @@ public abstract class GameElement {
     // Legacy move, this is to move the elements using pixels
     public void logicalMove(int dx, int dy) {
         // Update the actual position of the object to the calculated next position.
-        if (checkCollision(dx, dy)){
+        if (checkCollision(dx, dy)) {
             setToLogicalPosX(dx);
             setToLogicalPosY(dy);
+            if (this.linkedElement != null) {
+                linkedElement.setToLogicalPosX(dx);
+                linkedElement.setToLogicalPosY(dy);
+            }
         }
+
     }
+
     public void moveLogical(int dx, int dy) {
         // Update the actual position of the object based on logic
-        if (checkCollision(dx, dy)){
+        if (checkCollision(dx, dy)) {
             setToLogicalPosX(dx);
             setToLogicalPosY(dy);
         }
@@ -78,13 +87,17 @@ public abstract class GameElement {
         if (beingControlled) {
             for (GameElement element : elements) {
                 // Calculate the next step
-                int nextPosX = convertToLogicalPos(nextX) + this.x ;
-                int nextPosY = convertToLogicalPos(nextY) + this.y ;
+                int nextPosX = convertToLogicalPos(nextX) + this.x;
+                int nextPosY = convertToLogicalPos(nextY) + this.y;
 
                 // Check if the next position collides with the current position of the other element
                 if (nextPosX == element.x && nextPosY == element.y) {
                     if (element.walkable) {
                         System.out.println("Collision expected with element but is walkable: " + element);
+                        if (element instanceof Player && element.x == this.x && element.y == this.y) {
+                            element.playerOnTop = true;
+                        }
+                            System.out.println("Element " + element + " is being stepped by" + this);
                         element.onBeingWalkedOver(this);
                         return true; // No collision detected, return false
                     } else {
@@ -96,27 +109,34 @@ public abstract class GameElement {
         }
         return true; // No collision detected, return false
     }
-    public void onBeingWalkedOver(GameElement gameElement) {
-        // Implement the behavior when this element is being walked over
-        System.out.println("Element " + this + " is being walked over.");
-    }
 
 
-    // Linking elements, to link different elements
+    // Linking elements, to link different elements to same x and Y
     public void linkElement(GameElement other) {
         this.linkedElement = other;
-        other.linkedElement = this; // Link the other element back
+        System.out.println(this + " has added linked to " + other );
+        this.linkedElement = other; // Link the other element back
     }
-    // need to get the linkedElement
+
+    // Get the linkedElement
     public GameElement getLinkedElement() {
         return this.linkedElement;
     }
-    // need unlinkElement method to release the link, so it can be used again
+
+    // Unlink elements to release the link, so it can be used again
     public void unlinkElement() {
         if (this.linkedElement != null) {
-            this.linkedElement.setBeingControlled(false);
+            this.linkedElement.linkedElement = null; // Unlink the other element
             this.linkedElement = null;
-            this.setBeingControlled(true); // 玩家恢复直接控制
+        }
+    }
+
+    // Toggle the link state
+    public void toggleLink(GameElement other) {
+        if (this.linkedElement == other) {
+            unlinkElement();
+        } else {
+            linkElement(other);
         }
     }
 
@@ -133,20 +153,32 @@ public abstract class GameElement {
     public void handleKeyEvent(KeyEvent e) {
         int key = e.getKeyCode();
         int dx = 0, dy = 0;
+        if (key == KeyEvent.VK_ESCAPE){
+            System.exit(0); // Exit the program gracefully
+        }
         if (beingControlled) {
             System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
             if (key == KeyEvent.VK_LEFT) {
                 dx = -1;
+                logicalMove(dx, dy);
             } else if (key == KeyEvent.VK_RIGHT) {
                 dx = 1;
+                logicalMove(dx, dy);
             } else if (key == KeyEvent.VK_UP) {
                 dy = -1;
+                logicalMove(dx, dy);
             } else if (key == KeyEvent.VK_DOWN) {
                 dy = 1;
+                logicalMove(dx, dy);
+            }else if (key == KeyEvent.VK_SPACE) {
+                interactKeyPressedByYou(); // Send interact to the item that has control
             }
+
         }
-        logicalMove(dx, dy);
+
+
     }
+
 
     // Drawing the elements
     public abstract void draw(Graphics2D g2d);
@@ -158,31 +190,51 @@ public abstract class GameElement {
     public boolean isVisible() {
         return isVisible;
     }
+
     public void setVisible(boolean bool) {
-        isVisible = bool;
+        if (isVisible != bool) { // Check if the visibility is actually changing
+            isVisible = bool;
+            System.out.println("Visibility has changed for: " + this);
+        }
     }
-    public void onBeingWalkedOverStart() {//
-    System.out.println("Element " + this + " is being walked over.");
-    //     @Override on your class
+    public void toggleVisibility() {
+        // Toggle the visibility of the element
+        isVisible = !isVisible;
+        System.out.println("Visibility of the element has changed to: " + isVisible);
     }
-    public void onBeingWalkedOverStop() {//
-        System.out.println("Element " + this + " is stop being walked over.");
-        //     @Override on your class
+    public void onBeingWalkedOver(GameElement gameElement) {
+        // Triggered when something walks over this element, probably a player
+        if (gameElement instanceof Player) {
+            onBeingWalkedOverStart(gameElement); // Call the method for start walking over
+        }
     }
-    // Trigger of being stepped by player
-    public void onBeingWalkedOverTrigger() {
+
+    public void onBeingWalkedOverStart(GameElement gameElement) {
+        //     @Override on your class, someone on top
+    }
+
+    public void onBeingWalkedOverStop(GameElement gameElement) {
+        //     @Override on your class, someone on top left
+    }
+
+    // Trigger by being walked over by something
+    // Default sends self to the cell that you are upon
+    public void interactKeyPressedByYou() {
+        int currentLogicalPosX = this.getLogicalPosX();
+        int currentLogicalPosY = this.getLogicalPosY();
+
         List<GameElement> elements = GameWindow.getElements();
-        spotOccupied = true;
-        do {
-            spotOccupied = false; // Reset flag for each new position
-            for (GameElement element : elements) {
-                if (element instanceof Player && element.x == this.x && element.y == this.y) {
-                    spotOccupied = true;
-                    break;
-                }
+        // Iterate through the elements
+        for (GameElement element : elements) {
+            // Check if the element is on the same cell as the current object
+            if (element != this && element.getLogicalPosX() == currentLogicalPosX && element.getLogicalPosY() == currentLogicalPosY) {
+                // Call a method on the element to handle the interaction
+                element.interactKeyPressedOnYou(this);
             }
-        } while (spotOccupied);
-        // Not walked over anymore
+        }
+    }
+    public void interactKeyPressedOnYou(GameElement gameElement) {
+        System.out.println(gameElement + " wants to interact with" + this);
     }
 }
 

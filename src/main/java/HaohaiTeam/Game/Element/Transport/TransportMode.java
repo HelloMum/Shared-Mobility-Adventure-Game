@@ -19,4 +19,5 @@ public abstract class TransportMode extends GameElement {
     public void setTransportState(currentTransport newState) {
         this.transportType = newState; // Set the current transport state
     }
+
 }
