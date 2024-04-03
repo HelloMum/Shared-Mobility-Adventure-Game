@@ -32,7 +32,7 @@ public class Coin extends GameElement {
                 // Check if the current element is a Gem and its position matches the new position
                 if (element instanceof Coin && element.x == newX && element.y == newY) {
                     spotOccupied = true; // Set flag to true if spot is occupied by a Gem
-                    newX = newX - CELL_SIZE; // Move to the next x position and continue trying
+                    newX = newX + CELL_SIZE; // Move to the next x position and continue trying
                     break; // Exit the loop to avoid unnecessary iterations
                 }
             }
