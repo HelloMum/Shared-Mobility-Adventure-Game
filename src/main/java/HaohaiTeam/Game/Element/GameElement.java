@@ -5,7 +5,6 @@ import HaohaiTeam.Game.GUI.GameWindow;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
-
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
 public abstract class GameElement {
@@ -18,37 +17,30 @@ public abstract class GameElement {
     public int speed; // This refers to the maximum speed of the element
     private GameElement linkedElement; // This to link two element on the same cell so one follows the other, it also overdrives the control of the other
     public boolean beingControlled = false; // Flag to enable key control by keys
+    public boolean isVisible; // hide the visibility
+    public boolean spotOccupied;
 
-    private boolean isVisible = true; // add a flag to control visibility
 
     public GameElement(int x, int y) {
         this.x = x;
         this.y = y;
         this.speed = 0;
         this.walkable = false;
-        this.layer = 99; // Default layer 
-    }
-    public void setVisible(boolean visible) {
-        this.isVisible = visible;
+        this.layer = 99; // Default layer
+        this.isVisible = true;
     }
 
     /// LOCATING THE GAME ELEMENTS USING LOGICAL POSITIONS
     //These two can be used to locate the x and y of the element in the logical cell grid
     // Should be the only one using convert cell_size
     public int convertToLogicalPos(int unitToConvert) {
-        return unitToConvert * CELL_SIZE ;
-
-    public boolean isVisible() {
-        return isVisible;
+        return unitToConvert * CELL_SIZE;
     }
-    public static void setElements(List<GameElement> elements) {
-        GameElement.elements = elements; // Assign the list of elements
+    public int getLogicalPosX() {
+        return convertToLogicalPos(x);
     }
-    public void getLogicalPosX(int posX) {
-        convertToLogicalPos(x);
-    }
-    public void getLogicalPosY(int posY) {
-        convertToLogicalPos(y);
+    public int getLogicalPosY() {
+        return convertToLogicalPos(y);
     }
 
     //These implement a return for the real grid position, for the logic implementation
@@ -73,7 +65,6 @@ public abstract class GameElement {
             setToLogicalPosX(dx);
             setToLogicalPosY(dy);
         }
-        return false;
     }
 
     private boolean isWithinBounds(int nextX, int nextY) {
@@ -94,7 +85,7 @@ public abstract class GameElement {
                 if (nextPosX == element.x && nextPosY == element.y) {
                     if (element.walkable) {
                         System.out.println("Collision expected with element but is walkable: " + element);
-                        element.onBeingWalkedOver();
+                        element.onBeingWalkedOver(this);
                         return true; // No collision detected, return false
                     } else {
                         System.out.println("Collision expected with element: " + element);
@@ -105,7 +96,7 @@ public abstract class GameElement {
         }
         return true; // No collision detected, return false
     }
-    public void onBeingWalkedOver() {
+    public void onBeingWalkedOver(GameElement gameElement) {
         // Implement the behavior when this element is being walked over
         System.out.println("Element " + this + " is being walked over.");
     }
@@ -163,4 +154,35 @@ public abstract class GameElement {
     public int getLayer() {
         return layer;
     }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+    public void setVisible(boolean bool) {
+        isVisible = bool;
+    }
+    public void onBeingWalkedOverStart() {//
+    System.out.println("Element " + this + " is being walked over.");
+    //     @Override on your class
+    }
+    public void onBeingWalkedOverStop() {//
+        System.out.println("Element " + this + " is stop being walked over.");
+        //     @Override on your class
+    }
+    // Trigger of being stepped by player
+    public void onBeingWalkedOverTrigger() {
+        List<GameElement> elements = GameWindow.getElements();
+        spotOccupied = true;
+        do {
+            spotOccupied = false; // Reset flag for each new position
+            for (GameElement element : elements) {
+                if (element instanceof Player && element.x == this.x && element.y == this.y) {
+                    spotOccupied = true;
+                    break;
+                }
+            }
+        } while (spotOccupied);
+        // Not walked over anymore
+    }
 }
+
