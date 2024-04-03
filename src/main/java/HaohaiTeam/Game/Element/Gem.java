@@ -23,7 +23,7 @@ public class Gem extends GameElement {
         System.out.println("Element " + this + " is being walked over.");
 
         int newX = GameWindow.FRAME_WIDTH - CELL_SIZE; // Start from the far right side of the screen
-        int newY = 0;
+        int newY = 0; // top of the window
         boolean spotOccupied;
 
         do {

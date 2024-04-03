@@ -16,6 +16,9 @@ import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 public class Bus extends TransportMode {
     private static final Color BUS_COLOR = Color.GREEN;
     private static final int MOVE_INTERVAL_MS = 200; // Move every 1 second
+
+    // HeadingX and HeadingY: initially point to the lower right (due east-south),
+    // indicating the current direction of parking.
     private int headingX = 0;
     private int headingY = 1;
 
@@ -41,6 +44,10 @@ public class Bus extends TransportMode {
         }, 0, MOVE_INTERVAL_MS);
     }
     private void moveOnRoad() {
+        // First copy the current scene's list of game elements and then try to move in the current direction of travel.
+        // If there is no road ahead, try turning right, turning left, and then backing up.
+        // If you still can't find the road, stay where you are.
+        // Specific steering rules and road detection logic are implemented within the method.
         // Find the road
         List<GameElement> elements = new ArrayList<>(GameWindow.getElements()); // Create a copy of the list
 

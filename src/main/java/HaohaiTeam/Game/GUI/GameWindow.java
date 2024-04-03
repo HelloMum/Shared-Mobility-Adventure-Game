@@ -1,6 +1,8 @@
 package HaohaiTeam.Game.GUI;
 
 import HaohaiTeam.Game.Element.GameElement;
+import HaohaiTeam.Game.Element.Player;
+import HaohaiTeam.Game.Element.Transport.Bike;
 
 import javax.swing.*;
 import java.awt.*;
@@ -87,11 +89,26 @@ public class GameWindow {
         elements.sort(Comparator.comparingInt(GameElement::getLayer));
 
         for (GameElement element : elements) {
-            element.draw((Graphics2D) g); // Draw each game element
+            if (element.isVisible()) { // 只渲染可见的元素
+                element.draw((Graphics2D) g);
+            }
         }
     }
 
     private void handleKeyEvent(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            for (GameElement element : elements) {
+                if (element instanceof Player) {
+                    Player player = (Player) element;
+                    for (GameElement otherElement : elements) {
+                        if (otherElement instanceof Bike && otherElement.isWithinBounds(player.x, player.y)) {
+                            player.interactWith((Bike) otherElement);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         for (GameElement element : elements) {
             element.handleKeyEvent(e);
         }

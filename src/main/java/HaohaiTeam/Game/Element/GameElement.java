@@ -19,6 +19,8 @@ public abstract class GameElement {
     private GameElement linkedElement; // This to link two element on the same cell so one follows the other, it also overdrives the control of the other
     public boolean beingControlled = false; // Flag to enable key control by keys
 
+    private boolean isVisible = true; // add a flag to control visibility
+
     public GameElement(int x, int y) {
         this.x = x;
         this.y = y;
@@ -26,12 +28,21 @@ public abstract class GameElement {
         this.walkable = false;
         this.layer = 99; // Default layer 
     }
+    public void setVisible(boolean visible) {
+        this.isVisible = visible;
+    }
 
     /// LOCATING THE GAME ELEMENTS USING LOGICAL POSITIONS
     //These two can be used to locate the x and y of the element in the logical cell grid
     // Should be the only one using convert cell_size
     public int convertToLogicalPos(int unitToConvert) {
         return unitToConvert * CELL_SIZE ;
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+    public static void setElements(List<GameElement> elements) {
+        GameElement.elements = elements; // Assign the list of elements
     }
     public void getLogicalPosX(int posX) {
         convertToLogicalPos(x);
@@ -39,6 +50,7 @@ public abstract class GameElement {
     public void getLogicalPosY(int posY) {
         convertToLogicalPos(y);
     }
+
     //These implement a return for the real grid position, for the logic implementation
     public void setToLogicalPosX(int posX) {
         x += convertToLogicalPos(posX);
@@ -61,6 +73,12 @@ public abstract class GameElement {
             setToLogicalPosX(dx);
             setToLogicalPosY(dy);
         }
+        return false;
+    }
+
+    private boolean isWithinBounds(int nextX, int nextY) {
+        // Check if the next position is within the game window bounds
+        return (nextX >= 0 && nextX < GameWindow.FRAME_WIDTH && nextY >= 0 && nextY < GameWindow.FRAME_HEIGHT);
     }
 
     // Checks if the next position collides with any other game element
