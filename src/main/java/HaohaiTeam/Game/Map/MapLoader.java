@@ -1,6 +1,10 @@
 package HaohaiTeam.Game.Map;
 
 
+import HaohaiTeam.Game.Element.Transport.OnRoute.Bus;
+import HaohaiTeam.Game.Element.Transport.OnRoute.Luas;
+import HaohaiTeam.Game.Element.Transport.OnRoute.Road;
+import HaohaiTeam.Game.Element.Transport.OnRoute.Taxi;
 import HaohaiTeam.Game.GUI.GameWindow;
 import HaohaiTeam.Game.Element.*;
 import HaohaiTeam.Game.Element.Transport.*;
