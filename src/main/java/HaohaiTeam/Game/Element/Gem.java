@@ -14,8 +14,10 @@ public class Gem extends GameElement {
 
     @Override
     public void draw(Graphics2D g2d) {
+        int centerX = x + CELL_SIZE / 4; // Calculate the x-coordinate of the center of the cell
+        int centerY = y + CELL_SIZE / 4; // Calculate the y-coordinate of the center of the cell
         g2d.setColor(GEM_COLOR);
-        g2d.fillOval(x, y, CELL_SIZE, CELL_SIZE);
+        g2d.fillOval(centerX, centerY, CELL_SIZE / 2, CELL_SIZE / 2); // Draw the circle at the center of the cell
     }
     @Override
     public void onBeingWalkedOverStart(GameElement gameElement) {
