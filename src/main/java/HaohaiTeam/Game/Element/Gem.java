@@ -5,7 +5,7 @@ import java.util.List;
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
 public class Gem extends GameElement {
-    private static final Color GEM_COLOR = Color.PINK;
+    private static final Color GEM_COLOR = Color.MAGENTA;
 
     public Gem(int x, int y) {
         super(x, y);
