@@ -98,6 +98,5 @@ public class GameWindow {
         for (GameElement element : elements) {
             element.handleKeyEvent(e);
         }
-        gamePanel.repaint(); // Repaint the panel after handling key event
     }
 }
