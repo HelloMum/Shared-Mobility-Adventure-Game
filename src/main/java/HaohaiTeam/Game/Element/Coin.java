@@ -18,7 +18,7 @@ public class Coin extends GameElement {
         g2d.fillOval(x, y, CELL_SIZE, CELL_SIZE);
     }
     @Override
-    public void onBeingWalkedOver() {
+    public void onBeingWalkedOver(GameElement gameElement) {
         List<GameElement> elements = GameWindow.getElements();
         System.out.println("Element " + this + " is being walked over.");
         int newX = 0;
@@ -33,7 +33,6 @@ public class Coin extends GameElement {
                 }
             }
         } while (spotOccupied);
-
         // Set the position based on the found empty spot
         this.x = newX ;
         this.y = 0;

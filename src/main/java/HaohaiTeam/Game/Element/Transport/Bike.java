@@ -16,28 +16,8 @@ public class Bike extends TransportMode {
         super(x, y); // assume 15km per hour and carbon footprint of 1.0 kg per km
         this.speed = 10;
         this.carbonFootprint = 1;
-        this.layer = 102; // Drawn over player and roads
-        this.walkable = false;
     }
 
-    @Override
-        // I would check on the classes above as I think it could be implemented there
-    public currentTransport getTransportState() {
-        return currentTransport.RIDING_BIKE;
-    }
-
-    public void endInteraction() {
-        // end interaction with player
-        this.setBeingControlled(false);
-        // hide the bike
-        this.setVisible(false);
-        // 将玩家的状态设置回行走
-        Player player = (Player) this.getLinkedElement();
-        if (player != null) {
-            player.setVisible(true);
-            player.setState(currentTransport.WALKING);
-        }
-    }
     @Override
     public void draw(Graphics2D g2d) {
         int wheelRadius = CELL_SIZE / 4;
