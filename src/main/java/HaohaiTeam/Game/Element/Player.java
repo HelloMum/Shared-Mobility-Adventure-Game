@@ -43,12 +43,29 @@ public class Player extends GameElement {
 
     @Override
     public void draw(Graphics2D g2d) {
-        if (getState() != currentTransport.WALKING) { // Check if the player is not in the walking state
-            g2d.setColor(Color.BLUE);
-            g2d.fillOval(x, y, CELL_SIZE, CELL_SIZE);
-        } else {
-            g2d.setColor(Color.CYAN);
-            g2d.fillOval(x, y, CELL_SIZE, CELL_SIZE); // Draw the player
+        g2d.setColor(Color.CYAN);
+        g2d.fillOval(x, y, CELL_SIZE, CELL_SIZE);
+
+        // Draw eyes based on movement direction
+        g2d.setColor(Color.BLACK);
+        switch (direction) {
+            case UP:
+                g2d.fillOval(x + 8, y + 2, 4, 4); // Left eye
+                g2d.fillOval(x + 16, y + 2, 4, 4); // Right eye
+                break;
+            case DOWN:
+                g2d.fillOval(x + 8, y + 20, 4, 4); // Left eye
+                g2d.fillOval(x + 16, y + 20, 4, 4); // Right eye
+                break;
+            case LEFT:
+                g2d.fillOval(x + 4, y + 6, 4, 4); // Left eye
+                g2d.fillOval(x + 12, y + 6, 4, 4); // Right eye
+                break;
+            case RIGHT:
+                g2d.fillOval(x + 12, y + 6, 4, 4); // Left eye
+                g2d.fillOval(x + 20, y + 6, 4, 4); // Right eye
+                break;
+            default:
+                break;
         }
-    }
-}
+    }}

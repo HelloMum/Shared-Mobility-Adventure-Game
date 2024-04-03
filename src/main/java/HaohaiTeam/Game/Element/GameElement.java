@@ -19,6 +19,8 @@ public abstract class GameElement {
     public boolean beingControlled = false; // Flag to enable key control by keys
     public boolean isVisible; // hide the visibility
     public boolean playerOnTop;
+    public Direction direction; // Direction the element is facing
+
 
     public GameElement(int x, int y) {
         this.x = x;
@@ -28,6 +30,14 @@ public abstract class GameElement {
         this.layer = 99; // Default layer
         this.isVisible = true;
         this.playerOnTop =false;
+        this.direction = Direction.DOWN; // Default direction
+    }
+    // direction that the element is facing
+    public enum Direction {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
     }
 
     /// LOCATING THE GAME ELEMENTS USING LOGICAL POSITIONS
@@ -159,15 +169,19 @@ public abstract class GameElement {
         if (beingControlled) {
             System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
             if (key == KeyEvent.VK_LEFT) {
+                direction = Direction.LEFT;
                 dx = -1;
                 logicalMove(dx, dy);
             } else if (key == KeyEvent.VK_RIGHT) {
+                direction = Direction.RIGHT;
                 dx = 1;
                 logicalMove(dx, dy);
             } else if (key == KeyEvent.VK_UP) {
+                direction = Direction.UP;
                 dy = -1;
                 logicalMove(dx, dy);
             } else if (key == KeyEvent.VK_DOWN) {
+                direction = Direction.DOWN;
                 dy = 1;
                 logicalMove(dx, dy);
             }else if (key == KeyEvent.VK_SPACE) {
