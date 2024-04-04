@@ -29,7 +29,11 @@ public class Bike extends TransportMode {
             gameElement.linkElement(this);
         }
     }
-
+    // We need to implement something for the real stepping on
+//    @Override
+//    public void goingToBeWalkedOverBy(GameElement gameElement) {
+//        this.interactKeyPressedOnYou(gameElement);
+//    }
     @Override
     public void draw(Graphics2D g2d) {
         int wheelRadius = CELL_SIZE / 4;
