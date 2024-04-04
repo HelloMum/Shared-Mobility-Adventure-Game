@@ -12,7 +12,7 @@ public class Road extends GameElement {
 
     public Road(int x, int y) {
         super(x, y);
-        this.walkable = true;
+        this.walkable = false;
     }
 
     @Override
