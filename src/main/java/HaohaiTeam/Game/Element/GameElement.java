@@ -178,36 +178,67 @@ public abstract class GameElement {
 
     public void handleKeyEvent(KeyEvent e) {
         int key = e.getKeyCode();
-        int dx = 0, dy = 0;
-        if (key == KeyEvent.VK_ESCAPE){
+        if (key == KeyEvent.VK_ESCAPE) {
             System.exit(0); // Exit the program gracefully
         }
         if (beingControlled) {
             System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
-            if (key == KeyEvent.VK_LEFT) {
-                direction = Direction.LEFT;
-                dx = -1;
-                logicalMove(dx, dy);
-            } else if (key == KeyEvent.VK_RIGHT) {
-                direction = Direction.RIGHT;
-                dx = 1;
-                logicalMove(dx, dy);
-            } else if (key == KeyEvent.VK_UP) {
-                direction = Direction.UP;
-                dy = -1;
-                logicalMove(dx, dy);
-            } else if (key == KeyEvent.VK_DOWN) {
-                direction = Direction.DOWN;
-                dy = 1;
-                logicalMove(dx, dy);
-            }else if (key == KeyEvent.VK_SPACE) {
-                interactKeyPressedByYou(); // Send interact to the item that has control
+            switch (key) {
+                case KeyEvent.VK_A:
+                case KeyEvent.VK_LEFT:
+                    direction = Direction.LEFT;
+                    break;
+                case KeyEvent.VK_D:
+                case KeyEvent.VK_RIGHT:
+                    direction = Direction.RIGHT;
+                    break;
+                case KeyEvent.VK_W:
+                case KeyEvent.VK_UP:
+                    direction = Direction.UP;
+                    break;
+                case KeyEvent.VK_S:
+                case KeyEvent.VK_DOWN:
+                    direction = Direction.DOWN;
+                    break;
+                case KeyEvent.VK_SPACE:
+                    interactKeyPressedByYou(); // Send interact to the item that has control
+                    break;
             }
-
+            moveFacing(); // Move the player in the direction it is facing
         }
-
-
     }
+
+    public void moveFacing() {
+        int[] direction = getDirectionBasedMovement();
+        logicalMove(direction[0], direction[1]);
+    }
+
+    public void getFacingXY() {
+        int[] direction = getDirectionBasedMovement();
+        // This could implement giving back the item that is looking at or the XY
+    }
+
+    private int[] getDirectionBasedMovement() {
+        int[] movement = new int[2];
+        // Adjust movement direction based on the player's direction
+        switch (direction) {
+            case UP:
+                movement[1] = -1; // dy = -1
+                break;
+            case DOWN:
+                movement[1] = 1;  // dy = 1
+                break;
+            case LEFT:
+                movement[0] = -1; // dx = -1
+                break;
+            case RIGHT:
+                movement[0] = 1;  // dx = 1
+                break;
+        }
+        return movement;
+    }
+
+
 
 
     ////  Drawing methods
@@ -251,6 +282,7 @@ public abstract class GameElement {
     // Default sends self to the cell that you are upon
     public void interactKeyPressedByYou() {
         System.out.println(this + " wants to interact");
+        // this.moveFacing();
         int currentLogicalPosX = this.getLogicalPosX();
         int currentLogicalPosY = this.getLogicalPosY();
         List<GameElement> elements = GameWindow.getElements();
