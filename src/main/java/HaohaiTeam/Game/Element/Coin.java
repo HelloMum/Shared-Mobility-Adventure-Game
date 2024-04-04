@@ -20,7 +20,7 @@ public class Coin extends GameElement {
         g2d.fillOval(centerX, centerY, CELL_SIZE / 2, CELL_SIZE / 2); // Draw the circle at the center of the cell
     }
     @Override
-    public void onBeingWalkedOverStart(GameElement gameElement) {
+    public void goingToBeWalkedOverBy(GameElement gameElement) {
         List<GameElement> elements = GameWindow.getElements();
         System.out.println("Element " + gameElement + " is starting to walk on me " + this);
 
