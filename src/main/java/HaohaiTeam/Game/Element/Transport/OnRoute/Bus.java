@@ -15,7 +15,7 @@ import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
 public class Bus extends TransportMode {
     private static final Color BUS_COLOR = Color.GREEN;
-    private static final int MOVE_INTERVAL_MS = 200; // Move every 1 second
+    private static final int MOVE_INTERVAL_MS = 100; // Move every 1 second
 
     // HeadingX and HeadingY: initially point to the lower right (due east-south),
     // indicating the current direction of parking.
