@@ -7,7 +7,7 @@ import java.awt.*;
 
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
-public class Luas extends TransportMode {
+public class Luas extends Bus {
     private static final Color LUAS_COLOR = Color.DARK_GRAY;
 
 
@@ -15,7 +15,6 @@ public class Luas extends TransportMode {
         super(x, y); // assume speed is 45 km/h and carbon footprint is 0.6 kg/km
         this.speed = 20;
         this.carbonFootprint = 1;
-
     }
 
     @Override
