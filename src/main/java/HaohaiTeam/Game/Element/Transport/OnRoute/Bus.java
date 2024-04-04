@@ -28,10 +28,6 @@ public class Bus extends TransportMode {
         layer = 102; // Drawn over player and roads
     }
 
-    @Override
-    public currentTransport getTransportState() {
-        return null;
-    }
 
     private void startMoving() {
         Timer timer = new Timer();
