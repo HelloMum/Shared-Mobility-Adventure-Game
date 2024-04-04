@@ -1,13 +1,12 @@
 package HaohaiTeam.Game.Map;
 
 
-import HaohaiTeam.Game.Element.Transport.OnRoute.Bus;
-import HaohaiTeam.Game.Element.Transport.OnRoute.Luas;
-import HaohaiTeam.Game.Element.Transport.OnRoute.Road;
-import HaohaiTeam.Game.Element.Transport.OnRoute.Taxi;
+import HaohaiTeam.Game.Element.Transport.OnRoute.*;
 import HaohaiTeam.Game.GUI.GameWindow;
 import HaohaiTeam.Game.Element.*;
 import HaohaiTeam.Game.Element.Transport.*;
+import HaohaiTeam.Game.Element.Transport.OnRoute.*;
+
 //import HaohaiTeam.Game.Logic.ElementBehavior;
 
 public class MapLoader {
@@ -21,18 +20,18 @@ public class MapLoader {
     public static String[] level_1 = {
             "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
             "W  rrrrrrrrr                   W",
-            "W  r P  W Cr     C  LL     B   W",
-            "W  r    W  r WWWWWW            W",
-            "W  r    W  r WGGGGW            W",
-            "W  r    W  r WGGGG             W",
+            "W  r P  W Cr     C    LLL   B  W",
+            "W  r    W  c WWWWWW  rrrrrrr   W",
+            "W  r    W  r WGGGGW  r     r   W",
+            "W  r    W  r WGGGG   rrrrrrr   W",
             "W  r    W  r WWWWWW            W",
             "W  r G  W  r      C     C      W",
             "W  r    W  rC      C     rrrr  W",
-            "W  rC   W  rrrrrrrrrrrrrrr  r  W",
+            "W  rC   W  rrrrrrrrrrrrrrrT r  W",
             "W  r    W             C     r  W",
             "W  r    W    WWW    C       r  W",
-            "W  r    W    W   W       T  r  W",
-            "W  r  C W    WG  W          r  W",
+            "W  r    W    W   W          r  W",
+            "W  c  C W    WG  W          c  W",
             "W  r         W   W     C   Ur  W",
             "W  rrrrrrrrrrrrrrrrrrrrrrrrrr  W",
             "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
@@ -99,6 +98,11 @@ public class MapLoader {
                         placeReport("Road", posX, posY);
                         Road road = new Road(posX, posY);
                         gameWindow.addElement(road);
+                        break;
+                    case 'c':
+                        placeReport("Crosswalk", posX, posY);
+                        Crosswalk crosswalk = new Crosswalk(posX, posY);
+                        gameWindow.addElement(crosswalk);
                         break;
                 }
             }
