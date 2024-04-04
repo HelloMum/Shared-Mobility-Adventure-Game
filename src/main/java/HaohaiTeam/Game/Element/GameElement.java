@@ -9,6 +9,8 @@ import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
 public abstract class GameElement {
 
+    /// The basics of the Game element
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static List<GameElement> elements;
     public int x; // These x coordinates uses the pixel position for drawing
     public int y; // These y coordinates uses the pixel position for drawing
@@ -41,7 +43,9 @@ public abstract class GameElement {
     }
 
 
-    /// LOCATING THE GAME ELEMENTS USING LOGICAL POSITIONS this section is for moving
+    /// Moving and locating elements
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     //These two can be used to locate the x and y of the element in the logical cell grid
     // Should be the only one using convert cell_size
     public int convertToLogicalPos(int unitToConvert) {
@@ -78,7 +82,6 @@ public abstract class GameElement {
         }
 
     }
-
     public void moveLogical(int dx, int dy) {
         // Update the actual position of the object based on logic
         if (checkCollision(dx, dy)) {
@@ -101,7 +104,8 @@ public abstract class GameElement {
         return (nextX >= 0 && nextX < GameWindow.FRAME_WIDTH && nextY >= 0 && nextY < GameWindow.FRAME_HEIGHT);
     }
 
-    // Checks if the next position collides with any other game element
+    // Collision checker and element parsing to create reactions
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     protected boolean checkCollision(int nextX, int nextY) {
         List<GameElement> elements = GameWindow.getElements();
         if (beingControlled) {
@@ -118,7 +122,7 @@ public abstract class GameElement {
                             element.playerOnTop = true;
                         }
                             System.out.println("Element " + element + " is being stepped by" + this);
-                        element.onBeingWalkedOver(this);
+                        element.goingToBeWalkedOverBy(this);
                         return true; // No collision detected, return false
                     } else {
                         onBeingCollidedByYou(element); // Tell the element that something is crashing onto him
@@ -131,7 +135,8 @@ public abstract class GameElement {
     }
 
 
-    ////  Linking elements, to link different elements to same x and Y
+    ////  Linking elements
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void linkElement(GameElement other) {
         this.linkedElement = other;
         System.out.println(this + " has added linked to " + other );
@@ -161,7 +166,8 @@ public abstract class GameElement {
     }
 
     ////  Keys controls
-    // Getter and setter for beingControlled flag
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public boolean isBeingControlled() {
         return beingControlled;
     }
@@ -205,6 +211,8 @@ public abstract class GameElement {
 
 
     ////  Drawing methods
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public abstract void draw(Graphics2D g2d);
 
     public int getLayer() {
@@ -227,20 +235,16 @@ public abstract class GameElement {
         System.out.println("Visibility of the element has changed to: " + isVisible);
     }
 
+
     //// Interactions with the rest of the elements
-    public void onBeingWalkedOver(GameElement gameElement) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void goingToBeWalkedOverBy(GameElement gameElement) {
         // Triggered when something walks over this element, probably a player
-        if (gameElement instanceof Player) {
-            onBeingWalkedOverStart(gameElement); // Call the method for start walking over
-        }
+        //     @Override on your class, someone / something on top
     }
-
-    public void onBeingWalkedOverStart(GameElement gameElement) {
-        //     @Override on your class, someone on top
-    }
-
-    public void onBeingWalkedOverStop(GameElement gameElement) {
-        //     @Override on your class, someone on top left
+    public void goingToBeWalkOn(GameElement gameElement) {
+        // Triggered when something walks over this element, probably a player
+        //     @Override on your class, someone / something on top
     }
 
     // Trigger by being walked over by something
@@ -266,7 +270,7 @@ public abstract class GameElement {
 //                break;
 //        }
         for (GameElement element : elements) {
-            // Check the element the element is looking into
+            // Check the element that this is on
             if (element != this && element.getLogicalPosX() == currentLogicalPosX && element.getLogicalPosY() == currentLogicalPosY) {
                 // Call a method on the element to handle the interaction
                 element.interactKeyPressedOnYou(this);
