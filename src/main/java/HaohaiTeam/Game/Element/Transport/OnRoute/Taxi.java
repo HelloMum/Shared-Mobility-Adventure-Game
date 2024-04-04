@@ -7,7 +7,7 @@ import java.awt.*;
 
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
-public class Taxi extends TransportMode {
+public class Taxi extends Bus {
     private static final Color TAXI_COLOR = Color.YELLOW;
 
     public Taxi(int x, int y) {
