@@ -40,7 +40,8 @@ public abstract class GameElement {
         RIGHT
     }
 
-    /// LOCATING THE GAME ELEMENTS USING LOGICAL POSITIONS
+
+    /// LOCATING THE GAME ELEMENTS USING LOGICAL POSITIONS this section is for moving
     //These two can be used to locate the x and y of the element in the logical cell grid
     // Should be the only one using convert cell_size
     public int convertToLogicalPos(int unitToConvert) {
@@ -85,7 +86,16 @@ public abstract class GameElement {
             setToLogicalPosY(dy);
         }
     }
+    /// Check for the direction of the element
+    // Getter method for direction
+    public Direction getDirection() {
+        return direction;
+    }
 
+    // Setter method for direction
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
     private boolean isWithinBounds(int nextX, int nextY) {
         // Check if the next position is within the game window bounds
         return (nextX >= 0 && nextX < GameWindow.FRAME_WIDTH && nextY >= 0 && nextY < GameWindow.FRAME_HEIGHT);
@@ -111,7 +121,7 @@ public abstract class GameElement {
                         element.onBeingWalkedOver(this);
                         return true; // No collision detected, return false
                     } else {
-                        System.out.println("Collision expected with element: " + element);
+                        onBeingCollidedByYou(element); // Tell the element that something is crashing onto him
                         return false; // Collision detected, return true
                     }
                 }
@@ -121,7 +131,7 @@ public abstract class GameElement {
     }
 
 
-    // Linking elements, to link different elements to same x and Y
+    ////  Linking elements, to link different elements to same x and Y
     public void linkElement(GameElement other) {
         this.linkedElement = other;
         System.out.println(this + " has added linked to " + other );
@@ -150,7 +160,7 @@ public abstract class GameElement {
         }
     }
 
-    /// Keys controls
+    ////  Keys controls
     // Getter and setter for beingControlled flag
     public boolean isBeingControlled() {
         return beingControlled;
@@ -194,7 +204,7 @@ public abstract class GameElement {
     }
 
 
-    // Drawing the elements
+    ////  Drawing methods
     public abstract void draw(Graphics2D g2d);
 
     public int getLayer() {
@@ -216,6 +226,8 @@ public abstract class GameElement {
         isVisible = !isVisible;
         System.out.println("Visibility of the element has changed to: " + isVisible);
     }
+
+    //// Interactions with the rest of the elements
     public void onBeingWalkedOver(GameElement gameElement) {
         // Triggered when something walks over this element, probably a player
         if (gameElement instanceof Player) {
@@ -264,6 +276,16 @@ public abstract class GameElement {
     public void interactKeyPressedOnYou(GameElement gameElement) {
         System.out.println(gameElement + " wants to interact with" + this);
         // Override in your class
+    }
+    public void onBeingCollidedByYou(GameElement gameElement) {
+        System.out.println(this + " collision on the element " + gameElement);
+        //// Hey other class, this silly guy wants to go through you! , and you are not walkable
+        // Tell the other class with the element that is bouncing him
+        gameElement.onBeingCollidedOnYou(this);
+
+    }
+    public void onBeingCollidedOnYou(GameElement gameElement) {
+        //// What a stupid guy I won't move as only my children will implement this behaviour  by using @Override
     }
 }
 
