@@ -1,8 +1,9 @@
 package HaohaiTeam.Game.GUI;
 
 import HaohaiTeam.Game.Element.GameElement;
-import HaohaiTeam.Game.Element.Player;
-import HaohaiTeam.Game.Element.Transport.Bike;
+import HaohaiTeam.Game.Input.CommandListener;
+import HaohaiTeam.Game.Logic.GameStatus;
+import HaohaiTeam.Game.Logic.OverlayHUD;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +23,8 @@ public class GameWindow {
     public static final int FRAME_HEIGHT = CELL_SIZE * GRID_HEIGHT;
     private final GamePanel gamePanel;
     private static List<GameElement> elements = null;
+    private OverlayHUD overlayHUD; // Reference to the HUD overlay
+    private CommandListener commandListener = new GameStatus();
 
     private double scaleX = 1.0; // Scale factor for X-axis
     private double scaleY = 1.0; // Scale factor for Y-axis
@@ -29,6 +32,7 @@ public class GameWindow {
     public GameWindow() {
         elements = new ArrayList<>();
         this.gamePanel = new GamePanel();
+        this.overlayHUD = new OverlayHUD(new GameStatus()); // Initialize OverlayHUD with a new GameStatus object
     }
 
     // For logic checking, game elements can access this
@@ -37,6 +41,7 @@ public class GameWindow {
     }
 
     public void addElement(GameElement element) {
+        element.setCommandListener(commandListener);
         elements.add(element);
     }
 
@@ -89,6 +94,17 @@ public class GameWindow {
             g2d.scale(scaleX, scaleY);
             renderMap(g2d); // Render the loaded map
             renderElements(g2d); // Render game elements
+            // Update OverlayHUD with the current GameStatus before rendering
+            renderHUD(g2d); // Render the HUD overlay
+            g2d.dispose();
+        }
+    }
+
+    private void renderHUD(Graphics g) {
+        if (overlayHUD != null) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            overlayHUD.update(new GameStatus()); // Update OverlayHUD with the current GameStatus
+            overlayHUD.render(g2d); // Render the HUD overlay
             g2d.dispose();
         }
     }
