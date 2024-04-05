@@ -6,6 +6,8 @@ import HaohaiTeam.Game.Element.Transport.Bike;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -21,6 +23,9 @@ public class GameWindow {
     private final GamePanel gamePanel;
     private static List<GameElement> elements = null;
 
+    private double scaleX = 1.0; // Scale factor for X-axis
+    private double scaleY = 1.0; // Scale factor for Y-axis
+
     public GameWindow() {
         elements = new ArrayList<>();
         this.gamePanel = new GamePanel();
@@ -30,6 +35,7 @@ public class GameWindow {
     public static List<GameElement> getElements() {
         return elements;
     }
+
     public void addElement(GameElement element) {
         elements.add(element);
     }
@@ -38,7 +44,7 @@ public class GameWindow {
         JFrame frame = new JFrame("Game Window");
         frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false); // Don't allow frame change
+        frame.setResizable(true); // Allow frame to be resized
         frame.setLocationRelativeTo(null); // Center frame on the screen
         frame.setFocusable(true); // Ensure frame is focusable
         frame.setContentPane(gamePanel); // Set custom GamePanel as content pane
@@ -51,6 +57,16 @@ public class GameWindow {
             public void keyPressed(KeyEvent e) {
                 // Forward the key event to the game window
                 handleKeyEvent(e);
+            }
+        });
+
+        // Add a component listener to listen for resize events
+        frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                // Recalculate scale factors when the frame is resized
+                scaleX = (double) frame.getContentPane().getWidth() / FRAME_WIDTH;
+                scaleY = (double) frame.getContentPane().getHeight() / FRAME_HEIGHT;
             }
         });
 
@@ -68,12 +84,16 @@ public class GameWindow {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            renderMap(g); // Render the loaded map
-            renderElements(g); // Render game elements
+            Graphics2D g2d = (Graphics2D) g.create();
+            // Apply scaling transformation
+            g2d.scale(scaleX, scaleY);
+            renderMap(g2d); // Render the loaded map
+            renderElements(g2d); // Render game elements
+            g2d.dispose();
         }
     }
 
-    private void renderMap(Graphics g) {
+    private void renderMap(Graphics2D g) {
         // Rendering map grid lines (for debugging)
         g.setColor(Color.GRAY);
         for (int x = 0; x <= FRAME_WIDTH; x += CELL_SIZE) {
@@ -84,12 +104,12 @@ public class GameWindow {
         }
     }
 
-    private void renderElements(Graphics g) {
+    private void renderElements(Graphics2D g) {
         // Sort elements based on their layer
         elements.sort(Comparator.comparingInt(GameElement::getLayer));
         for (GameElement element : elements) {
             if (element.isVisible()) { // not draw if is not visible
-                element.draw((Graphics2D) g);
+                element.draw(g);
             }
         }
     }
