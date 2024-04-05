@@ -1,7 +1,7 @@
 package HaohaiTeam.App;
+import HaohaiTeam.Game.Element.GameElement;
 import HaohaiTeam.Game.GameStarter;
 import HaohaiTeam.Game.Logic.TickGenerator;
-import HaohaiTeam.Game.Logic.DefaultListener;
 
 public class AppStarter {
 
@@ -13,7 +13,7 @@ public class AppStarter {
 
         // add main code to start ticks
         TickGenerator tickGenerator = new TickGenerator(100);
-        DefaultListener exampleListener = new DefaultListener();
+        GameElement.DefaultListener exampleListener = new GameElement.DefaultListener();
         tickGenerator.addTickListener(exampleListener);
         tickGenerator.start();
     }

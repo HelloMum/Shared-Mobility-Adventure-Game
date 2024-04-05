@@ -34,7 +34,7 @@ public class MapLoader {
             "W  c  C W    WG  W          c  W",
             "W  r         W   W     C   Ur  W",
             "W  rrrrrrrrrrrrrrrrrrrrrrrrrr  W",
-            "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+            "W                              W",
             "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
     };
     // This should be implemented in an external file but for now it suits the purpose of testing
@@ -88,11 +88,6 @@ public class MapLoader {
                         placeReport("Luas", posX, posY);
                         Luas luas = new Luas(posX, posY);
                         gameWindow.addElement(luas);
-                        break;
-                    case 'D':
-                        placeReport("Debugger", posX, posY);
-                        Debugger debugger = new Debugger(posX, posY);
-                        gameWindow.addElement(debugger);
                         break;
                     case 'r':
                         placeReport("Road", posX, posY);
