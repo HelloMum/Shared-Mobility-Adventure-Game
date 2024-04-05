@@ -39,7 +39,7 @@ public class Gem extends GameElement {
                 }
             }
         } while (spotOccupied); // Repeat until an empty spot is found
-
+        this.commandListener.onPickedGem(this);
         // Set the position based on the found empty spot
         this.x = newX;
         this.y = newY; // Adjust y position based on the grid size
