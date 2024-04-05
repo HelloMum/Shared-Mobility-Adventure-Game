@@ -26,7 +26,7 @@ public class MapLoader {
             "W  r    W  r WGGGG   rrrrrrr   W",
             "W  r    W  r WWWWWW            W",
             "W  r G  W  r      C     C      W",
-            "W  r    W  rC      C     rrrr  W",
+            "W  r    W  rC  F   C     rrrr  W",
             "W  rC   W  rrrrrrrrrrrrrrrT r  W",
             "W  r    W             C     r  W",
             "W  r    W    WWW    C       r  W",
@@ -98,6 +98,11 @@ public class MapLoader {
                         placeReport("Crosswalk", posX, posY);
                         Crosswalk crosswalk = new Crosswalk(posX, posY);
                         gameWindow.addElement(crosswalk);
+                        break;
+                    case 'F':
+                        placeReport("CameraEntity", posX, posY);
+                        CameraEntity cameraEntity = new CameraEntity(posX, posY);
+                        gameWindow.addElement(cameraEntity);
                         break;
                 }
             }

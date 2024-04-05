@@ -1,6 +1,8 @@
 package HaohaiTeam.Game.GUI;
 
+import HaohaiTeam.Game.Element.CameraEntity;
 import HaohaiTeam.Game.Element.GameElement;
+import HaohaiTeam.Game.Element.Player;
 import HaohaiTeam.Game.Input.CommandListener;
 import HaohaiTeam.Game.Logic.GameStatus;
 import HaohaiTeam.Game.Logic.OverlayHUD;
@@ -21,6 +23,11 @@ public class GameWindow {
     private static final int GRID_HEIGHT = 18; // Number of grid cells vertically
     public static final int FRAME_WIDTH = CELL_SIZE * GRID_WIDTH; // This is equal to 720p resolution
     public static final int FRAME_HEIGHT = CELL_SIZE * GRID_HEIGHT;
+    // keep player position
+    private GameElement player;
+    // Calculate camera offset
+    private double cameraOffsetX = 0;
+    private double cameraOffsetY = 0;
     private final GamePanel gamePanel;
     private static List<GameElement> elements = null;
     private OverlayHUD overlayHUD; // Reference to the HUD overlay
@@ -33,7 +40,9 @@ public class GameWindow {
         elements = new ArrayList<>();
         this.gamePanel = new GamePanel();
         this.overlayHUD = new OverlayHUD(new GameStatus()); // Initialize OverlayHUD with a new GameStatus object
+        elements.sort(Comparator.comparingInt(GameElement::getLayer));
     }
+
 
     // For logic checking, game elements can access this
     public static List<GameElement> getElements() {
@@ -91,13 +100,28 @@ public class GameWindow {
             Graphics2D g2d = (Graphics2D) g.create();
             // Apply scaling transformation
             g2d.scale(scaleX, scaleY);
-            renderMap(g2d); // Render the loaded map
+            // Apply translation to center the camera on the player
+            g2d.translate(cameraOffsetX, cameraOffsetY);
+//            renderMap(g2d); // Render the loaded map
             renderElements(g2d); // Render game elements
             // Update OverlayHUD with the current GameStatus before rendering
             overlayHUD.update(new GameStatus());
             renderHUD(g2d); // Render the HUD overlay
             g2d.dispose();
         }
+    }
+
+    // Update camera position
+    public void updateCameraPosition(GameElement element) {
+        // Calculate the center of the screen
+        double centerX = FRAME_WIDTH / 2.0;
+        double centerY = FRAME_HEIGHT / 2.0;
+
+        // Calculate the offset to center the camera
+        cameraOffsetX = centerX - element.getRenderX(); // Assuming getX() returns camera's x-coordinate
+        cameraOffsetY = centerY - element.getRenderY(); // Assuming getY() returns camera's y-coordinate
+        System.out.println("Camera OffsetX: " + element.getRenderX() + ", Camera OffsetY: " + cameraOffsetY);
+
     }
 
     private void renderHUD(Graphics g) {
@@ -107,28 +131,49 @@ public class GameWindow {
             g2d.dispose();
         }
     }
-
-    private void renderMap(Graphics2D g) {
-//        // Rendering map grid lines (for debugging)
-//        //g.setColor(Color.GRAY);
-//        for (int x = 0; x <= FRAME_WIDTH; x += CELL_SIZE) {
-//            g.drawLine(x, 0, x, FRAME_HEIGHT);
-//        }
-//        for (int y = 0; y <= FRAME_HEIGHT; y += CELL_SIZE) {
-//            g.drawLine(0, y, FRAME_WIDTH, y);
-//        }
-    }
+//
+//    private void renderMap(Graphics2D g) {
+////        // Rendering map grid lines (for debugging)
+////        //g.setColor(Color.GRAY);
+////        for (int x = 0; x <= FRAME_WIDTH; x += CELL_SIZE) {
+////            g.drawLine(x, 0, x, FRAME_HEIGHT);
+////        }
+////        for (int y = 0; y <= FRAME_HEIGHT; y += CELL_SIZE) {
+////            g.drawLine(0, y, FRAME_WIDTH, y);
+////        }
+//    }
 
     private void renderElements(Graphics2D g) {
         // Sort elements based on their layer
         elements.sort(Comparator.comparingInt(GameElement::getLayer));
 
+        GameElement player = null;
+        GameElement camera = null;
+
+        // Find the player and camera in the list of elements
         for (GameElement element : elements) {
             if (element.isVisible()) {
                 element.helperDrawer(g);
             }
+            if (element instanceof Player) {
+                player = element;
+            } else if (element instanceof CameraEntity) {
+                camera = element;
+            }
+        }
+
+        // Ensure camera is linked to player only if they are not already linked
+        if (player != null && camera != null && camera.getLinkedElement() != player) {
+            camera.linkElement(player);
+        }
+
+        // Move the camera to the linked player's position
+        if (camera != null && camera.getLinkedElement() != null) {
+            camera.moveToLinked();
+            updateCameraPosition(camera);
         }
     }
+
 
     private void handleKeyEvent(KeyEvent e) {
         for (GameElement element : elements) {

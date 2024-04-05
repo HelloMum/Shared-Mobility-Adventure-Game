@@ -100,7 +100,6 @@ public abstract class GameElement {
                 linkedElement.setToLogicalPosY(dy);
             }
         }
-
     }
     public void moveLogical(int dx, int dy) {
         // Update the actual position of the object based on logic
@@ -175,7 +174,11 @@ public abstract class GameElement {
             this.linkedElement = null;
         }
     }
-
+    public void moveToLinked() {
+        // Move this element to the same position as the linked element
+        this.X = linkedElement.X;
+        this.Y = linkedElement.Y;
+    }
     // Toggle the link state
     public void toggleLink(GameElement other) {
         if (this.linkedElement == other) {
@@ -380,4 +383,12 @@ public void helperDrawer(Graphics2D g2d) {
     this.prevX = X;
     this.prevY = Y;
 }
+
+    public int getRenderX() {
+        return renderX;
+    }
+
+    public int getRenderY(){
+        return renderY;
+    }
 }
