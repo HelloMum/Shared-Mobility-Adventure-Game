@@ -75,8 +75,7 @@ public class GameWindow {
             }
         });
 
-        // Create a timer to update the screen every 7 ms casually 144 times per second approx
-        Timer timer = new Timer(7, e -> gamePanel.repaint());
+        Timer timer = new Timer(5, e -> gamePanel.repaint());
         timer.start();
     }
 
