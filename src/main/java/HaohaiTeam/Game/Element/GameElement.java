@@ -1,6 +1,7 @@
 package HaohaiTeam.Game.Element;
 
 import HaohaiTeam.Game.GUI.GameWindow;
+import HaohaiTeam.Game.Input.CommandListener;
 import HaohaiTeam.Game.Logic.TickListener;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -22,6 +23,7 @@ public abstract class GameElement {
     public boolean isVisible; // hide the visibility
     public boolean playerOnTop;
     public Direction direction; // Direction the element is facing
+    CommandListener commandListener;
 
 
     public GameElement(int x, int y) {
@@ -33,7 +35,16 @@ public abstract class GameElement {
         this.isVisible = true;
         this.playerOnTop =false;
         this.direction = Direction.DOWN; // Default direction
+        this.commandListener = null; // we need to start this later
     }
+    public void setCommandListener(CommandListener commandListener) { // set up a command listen
+        this.commandListener = commandListener;
+    }
+
+    public String getName() {
+        return this.getClass().getSimpleName();
+    }
+
     // direction that the element is facing
     public enum Direction {
         UP,
