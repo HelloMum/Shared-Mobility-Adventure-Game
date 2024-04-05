@@ -75,8 +75,8 @@ public class GameWindow {
             }
         });
 
-        // Create a timer to update the screen every 0.1 seconds
-        Timer timer = new Timer(100, e -> gamePanel.repaint());
+        // Create a timer to update the screen every 7 ms casually 144 times per second approx
+        Timer timer = new Timer(7, e -> gamePanel.repaint());
         timer.start();
     }
 
@@ -95,6 +95,7 @@ public class GameWindow {
             renderMap(g2d); // Render the loaded map
             renderElements(g2d); // Render game elements
             // Update OverlayHUD with the current GameStatus before rendering
+            overlayHUD.update(new GameStatus());
             renderHUD(g2d); // Render the HUD overlay
             g2d.dispose();
         }
@@ -103,29 +104,29 @@ public class GameWindow {
     private void renderHUD(Graphics g) {
         if (overlayHUD != null) {
             Graphics2D g2d = (Graphics2D) g.create();
-            overlayHUD.update(new GameStatus()); // Update OverlayHUD with the current GameStatus
-            overlayHUD.render(g2d); // Render the HUD overlay
+            overlayHUD.render(g2d);
             g2d.dispose();
         }
     }
 
     private void renderMap(Graphics2D g) {
-        // Rendering map grid lines (for debugging)
-        g.setColor(Color.GRAY);
-        for (int x = 0; x <= FRAME_WIDTH; x += CELL_SIZE) {
-            g.drawLine(x, 0, x, FRAME_HEIGHT);
-        }
-        for (int y = 0; y <= FRAME_HEIGHT; y += CELL_SIZE) {
-            g.drawLine(0, y, FRAME_WIDTH, y);
-        }
+//        // Rendering map grid lines (for debugging)
+//        //g.setColor(Color.GRAY);
+//        for (int x = 0; x <= FRAME_WIDTH; x += CELL_SIZE) {
+//            g.drawLine(x, 0, x, FRAME_HEIGHT);
+//        }
+//        for (int y = 0; y <= FRAME_HEIGHT; y += CELL_SIZE) {
+//            g.drawLine(0, y, FRAME_WIDTH, y);
+//        }
     }
 
     private void renderElements(Graphics2D g) {
         // Sort elements based on their layer
         elements.sort(Comparator.comparingInt(GameElement::getLayer));
+
         for (GameElement element : elements) {
-            if (element.isVisible()) { // not draw if is not visible
-                element.draw(g);
+            if (element.isVisible()) {
+                element.helperDrawer(g);
             }
         }
     }

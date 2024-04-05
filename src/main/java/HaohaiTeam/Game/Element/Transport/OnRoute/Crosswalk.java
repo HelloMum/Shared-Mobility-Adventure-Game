@@ -25,18 +25,18 @@ public class Crosswalk extends Road {
     public void draw(Graphics2D g2d) {
         // Draw black background square
         g2d.setColor(Color.BLACK);
-        g2d.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+        g2d.fillRect(renderX, renderY, CELL_SIZE, CELL_SIZE);
 
         // Draw white lines on the road for the crosswalk
         g2d.setColor(Color.WHITE);
 
         // Draw the first line of the crosswalk
-        g2d.fillRect(x + CELL_SIZE / 4, y, CELL_SIZE / 10, CELL_SIZE);
+        g2d.fillRect(renderX + CELL_SIZE / 4, renderY, CELL_SIZE / 10, CELL_SIZE);
 
         // Draw the second line of the crosswalk
-        g2d.fillRect(x + CELL_SIZE / 2, y, CELL_SIZE / 10, CELL_SIZE);
+        g2d.fillRect(renderX + CELL_SIZE / 2, renderY, CELL_SIZE / 10, CELL_SIZE);
 
         // Draw the third line of the crosswalk
-        g2d.fillRect(x + 3 * CELL_SIZE / 4, y, CELL_SIZE / 10, CELL_SIZE);
+        g2d.fillRect(renderX + 3 * CELL_SIZE / 4, renderY, CELL_SIZE / 10, CELL_SIZE);
     }
 }

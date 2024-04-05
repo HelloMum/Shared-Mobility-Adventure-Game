@@ -40,11 +40,11 @@ public class Bike extends TransportMode {
         int frameSize = wheelRadius * 2;
 
         // Calculate the positions of the wheel centers and other key points
-        int frontWheelCenterX = x + (CELL_SIZE / 4);
-        int rearWheelCenterX = x + (3 * CELL_SIZE / 4);
-        int wheelCenterY = y + CELL_SIZE - wheelRadius;
-        int seatX = x + (CELL_SIZE / 2);
-        int seatY = y + (CELL_SIZE / 2);
+        int frontWheelCenterX = renderX + (CELL_SIZE / 4);
+        int rearWheelCenterX = renderX + (3 * CELL_SIZE / 4);
+        int wheelCenterY = renderY + CELL_SIZE - wheelRadius;
+        int seatX = renderX + (CELL_SIZE / 2);
+        int seatY = renderY + (CELL_SIZE / 2);
 
         // Draw the wheels
         g2d.setColor(Color.BLACK);
@@ -55,15 +55,15 @@ public class Bike extends TransportMode {
         g2d.setColor(BIKE_COLOR);
         g2d.drawLine(frontWheelCenterX, wheelCenterY, seatX, seatY); // Front triangle
         g2d.drawLine(rearWheelCenterX, wheelCenterY, seatX, seatY); // Rear triangle
-        g2d.drawLine(seatX, seatY, seatX, y); // Seat post
+        g2d.drawLine(seatX, seatY, seatX, renderY); // Seat post
         g2d.drawLine(frontWheelCenterX, wheelCenterY, rearWheelCenterX, wheelCenterY); // Down tube
-        g2d.drawLine(seatX, seatY, frontWheelCenterX, y + CELL_SIZE / 3); // Top tube
+        g2d.drawLine(seatX, seatY, frontWheelCenterX, renderY + CELL_SIZE / 3); // Top tube
 
         // Draw the bike seat
-        g2d.fillRect(seatX - (wheelRadius / 2), y + (CELL_SIZE / 2) - (wheelRadius / 4), wheelRadius, wheelRadius / 4);
+        g2d.fillRect(seatX - (wheelRadius / 2), renderY + (CELL_SIZE / 2) - (wheelRadius / 4), wheelRadius, wheelRadius / 4);
 
         // Draw the handlebars
-        int handleBarY = y + CELL_SIZE / 3;
+        int handleBarY = renderY + CELL_SIZE / 3;
         g2d.drawLine(frontWheelCenterX, handleBarY, frontWheelCenterX - wheelRadius, handleBarY - wheelRadius / 2);
         g2d.drawLine(frontWheelCenterX, handleBarY, frontWheelCenterX + wheelRadius, handleBarY - wheelRadius / 2);
         g2d.drawLine(seatX, seatY, frontWheelCenterX, handleBarY); // Handlebar stem

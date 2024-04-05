@@ -28,7 +28,7 @@ public abstract class AnyRoute extends TransportMode {
             @Override
             public void run() {
                 moveOnRoad();
-                System.out.println("Bus position: (" + x + ", " + y + ")");
+                System.out.println("Bus position: (" + renderX + ", " + renderY + ")");
             }
         }, 0, MOVE_INTERVAL_MS);
     }
@@ -37,8 +37,8 @@ public abstract class AnyRoute extends TransportMode {
         java.util.List<GameElement> elements = new ArrayList<>(GameWindow.getElements()); // Create a copy of the list
 
         // Try moving in the current heading direction first
-        int nextX = x + headingX * CELL_SIZE;
-        int nextY = y + headingY * CELL_SIZE;
+        int nextX = renderX + headingX * CELL_SIZE;
+        int nextY = renderY + headingY * CELL_SIZE;
         if (isRoadAtPosition(nextX, nextY, elements)) {
             logicalMove(headingX, headingY);
             return;
@@ -47,8 +47,8 @@ public abstract class AnyRoute extends TransportMode {
         // If no road found in the current direction, try turning right
         int rightTurnX = headingY;
         int rightTurnY = -headingX;
-        nextX = x + rightTurnX * CELL_SIZE;
-        nextY = y + rightTurnY * CELL_SIZE;
+        nextX = renderX + rightTurnX * CELL_SIZE;
+        nextY = renderY + rightTurnY * CELL_SIZE;
         if (isRoadAtPosition(nextX, nextY, elements)) {
             updateHeading(rightTurnX, rightTurnY);
             logicalMove(rightTurnX, rightTurnY);
@@ -58,8 +58,8 @@ public abstract class AnyRoute extends TransportMode {
         // If no road found by turning right, try turning left
         int leftTurnX = -headingY;
         int leftTurnY = headingX;
-        nextX = x + leftTurnX * CELL_SIZE;
-        nextY = y + leftTurnY * CELL_SIZE;
+        nextX = renderX + leftTurnX * CELL_SIZE;
+        nextY = renderY + leftTurnY * CELL_SIZE;
         if (isRoadAtPosition(nextX, nextY, elements)) {
             updateHeading(leftTurnX, leftTurnY);
             logicalMove(leftTurnX, leftTurnY);
@@ -69,8 +69,8 @@ public abstract class AnyRoute extends TransportMode {
         // If no road found by turning left, try turning back
         int backX = -headingX;
         int backY = -headingY;
-        nextX = x + backX * CELL_SIZE;
-        nextY = y + backY * CELL_SIZE;
+        nextX = renderX + backX * CELL_SIZE;
+        nextY = renderY + backY * CELL_SIZE;
         if (isRoadAtPosition(nextX, nextY, elements)) {
             updateHeading(backX, backY);
             logicalMove(backX, backY);
@@ -82,7 +82,7 @@ public abstract class AnyRoute extends TransportMode {
 
     private boolean isRoadAtPosition(int x, int y, List<GameElement> elements) {
         for (GameElement element : elements) {
-            if (element instanceof Road && element.x == x && element.y == y) {
+            if (element instanceof Road && element.renderX == x && element.renderY == y) {
                 return true;
             }
         }

@@ -25,7 +25,7 @@ public class Debugger extends GameElement {
             @Override
             public void run() {
                 moveRandomly();
-                System.out.println("Debugger position: (" + x + ", " + y + ")");
+                System.out.println("Debugger position: (" + renderX + ", " + renderY + ")");
             }
         }, 0, MOVE_INTERVAL_MS);
     }
@@ -40,6 +40,6 @@ public class Debugger extends GameElement {
     @Override
     public void draw(Graphics2D g2d) {
         g2d.setColor(DEBUGGER_COLOR);
-        g2d.fillOval(x, y, CELL_SIZE, CELL_SIZE);
+        g2d.fillOval(renderX, renderY, CELL_SIZE, CELL_SIZE);
     }
 }

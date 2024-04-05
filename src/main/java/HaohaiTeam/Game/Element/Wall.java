@@ -9,11 +9,13 @@ public class Wall extends GameElement {
 
     public Wall(int x, int y) {
         super(x, y);
+        layer = 101;
     }
 
     @Override
     public void draw(Graphics2D g2d) {
         g2d.setColor(WALL_COLOR);
-        g2d.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+        g2d.fillRect(renderX, renderY, CELL_SIZE, CELL_SIZE);
     }
+
 }

@@ -1,5 +1,4 @@
 package HaohaiTeam.Game.Element.Transport.OnRoute;
-import HaohaiTeam.Game.Element.Transport.TransportMode;
 
 import java.awt.*;
 
@@ -18,14 +17,14 @@ public class Taxi extends Bus {
     @Override
     public void draw(Graphics2D g2d) {
         g2d.setColor(TAXI_COLOR);
-        g2d.fillOval(x, y, CELL_SIZE, CELL_SIZE);
+        g2d.fillOval(renderX, renderY, CELL_SIZE, CELL_SIZE);
 
 
         // Add highlights to the taxi's body for a more realistic effect
         g2d.setColor(Color.WHITE);
         // Draw the taxi sign
         g2d.setColor(Color.BLACK);
-        g2d.drawString("Taxi", x + CELL_SIZE / 8, y + CELL_SIZE / 2 );
+        g2d.drawString("Taxi", renderX + CELL_SIZE / 8, renderY + CELL_SIZE / 2 );
 
     }
 }

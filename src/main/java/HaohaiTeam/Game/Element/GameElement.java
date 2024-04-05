@@ -13,8 +13,14 @@ public abstract class GameElement {
     /// The basics of the Game element
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static List<GameElement> elements;
-    public int x; // These x coordinates uses the pixel position for drawing
-    public int y; // These y coordinates uses the pixel position for drawing
+    public int renderX; // These x coordinates uses the pixel position for drawing
+    public int renderY; // These y coordinates uses the pixel position for drawing
+    public int previousRenderX; // These x coordinates uses the pixel position for drawing
+    public int previousRenderY; // These x coordinates uses the pixel position for drawing
+    public int X; // These y coordinates uses the pixel position for drawing
+    public int Y; // These y coordinates uses the pixel position for drawing
+    public int prevX; // These x coordinates uses the pixel position for drawing
+    public int prevY; // These y coordinates uses the pixel position for drawing
     public int layer; // This refers if the that is going to be drawn, higher number higher preference.
     public boolean walkable; // This refers if the element can be walked though
     public int speed; // This refers to the maximum speed of the element
@@ -27,8 +33,8 @@ public abstract class GameElement {
 
 
     public GameElement(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.renderX = x; // just for rendering
+        this.renderY = y;
         this.speed = 0;
         this.walkable = false;
         this.layer = 99; // Default layer
@@ -36,6 +42,8 @@ public abstract class GameElement {
         this.playerOnTop =false;
         this.direction = Direction.DOWN; // Default direction
         this.commandListener = null; // we need to start this later
+        this.X = x; // Real pixel position
+        this.Y = y; // Real pixel position
     }
     public void setCommandListener(CommandListener commandListener) { // set up a command listen
         this.commandListener = commandListener;
@@ -44,6 +52,7 @@ public abstract class GameElement {
     public String getName() {
         return this.getClass().getSimpleName();
     }
+
 
     // direction that the element is facing
     public enum Direction {
@@ -64,20 +73,20 @@ public abstract class GameElement {
     }
 
     public int getLogicalPosX() {
-        return convertToLogicalPos(x);
+        return convertToLogicalPos(X);
     }
 
     public int getLogicalPosY() {
-        return convertToLogicalPos(y);
+        return convertToLogicalPos(Y);
     }
 
     //These implement a return for the real grid position, for the logic implementation
     public void setToLogicalPosX(int posX) {
-        x += convertToLogicalPos(posX);
+        X += convertToLogicalPos(posX);
     }
 
     public void setToLogicalPosY(int posY) {
-        y += convertToLogicalPos(posY);
+        Y += convertToLogicalPos(posY);
     }
 
     // Legacy move, this is to move the elements using pixels
@@ -122,14 +131,14 @@ public abstract class GameElement {
         if (beingControlled) {
             for (GameElement element : elements) {
                 // Calculate the next step
-                int nextPosX = convertToLogicalPos(nextX) + this.x;
-                int nextPosY = convertToLogicalPos(nextY) + this.y;
+                int nextPosX = convertToLogicalPos(nextX) + this.X;
+                int nextPosY = convertToLogicalPos(nextY) + this.Y;
 
                 // Check if the next position collides with the current position of the other element
-                if (nextPosX == element.x && nextPosY == element.y) {
+                if (nextPosX == element.X && nextPosY == element.Y) {
                     if (element.walkable) {
                         System.out.println("Collision expected with element but is walkable: " + element);
-                        if (element instanceof Player && element.x == this.x && element.y == this.y) {
+                        if (element instanceof Player && element.X == this.X && element.Y == this.Y) {
                             element.playerOnTop = true;
                         }
                             System.out.println("Element " + element + " is being stepped by" + this);
@@ -342,5 +351,33 @@ public abstract class GameElement {
 
         }
     }
-}
+    /// Fancy stupid hack for moving things smooth, I will see you all in git blame
+public void helperDrawer(Graphics2D g2d) {
+    // Define a constant step to get closer to objetive
+    int stepSize = 2;
 
+    // Calculate the direction of movement
+    int dx = prevX - renderX;
+    int dy = prevY - renderY;
+
+    // Move renderX and renderY towards prevX and prevY by the step size
+    if (Math.abs(dx) > stepSize) {
+        renderX += (int) (Math.signum(dx) * stepSize);
+    } else {
+        renderX = prevX;
+    }
+
+    if (Math.abs(dy) > stepSize) {
+        renderY += (int) (Math.signum(dy) * stepSize);
+    } else {
+        renderY = prevY;
+    }
+
+    // Draw using the updated positions
+    draw(g2d);
+
+    // Save the current position for next pass
+    this.prevX = X;
+    this.prevY = Y;
+}
+}

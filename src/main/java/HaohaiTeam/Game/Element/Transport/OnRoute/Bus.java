@@ -46,8 +46,8 @@ public class Bus extends TransportMode {
         List<GameElement> elements = new ArrayList<>(GameWindow.getElements()); // Create a copy of the list
 
         // Try moving in the current heading direction first
-        int nextX = x + headingX * CELL_SIZE;
-        int nextY = y + headingY * CELL_SIZE;
+        int nextX = X + headingX * CELL_SIZE;
+        int nextY = Y + headingY * CELL_SIZE;
         if (isRoadAtPosition(nextX, nextY, elements)) {
             logicalMove(headingX, headingY);
             return;
@@ -56,8 +56,8 @@ public class Bus extends TransportMode {
         // If no road found in the current direction, try turning right
         int rightTurnX = headingY;
         int rightTurnY = -headingX;
-        nextX = x + rightTurnX * CELL_SIZE;
-        nextY = y + rightTurnY * CELL_SIZE;
+        nextX = X + rightTurnX * CELL_SIZE;
+        nextY = Y + rightTurnY * CELL_SIZE;
         if (isRoadAtPosition(nextX, nextY, elements)) {
             updateHeading(rightTurnX, rightTurnY);
             logicalMove(rightTurnX, rightTurnY);
@@ -67,8 +67,8 @@ public class Bus extends TransportMode {
         // If no road found by turning right, try turning left
         int leftTurnX = -headingY;
         int leftTurnY = headingX;
-        nextX = x + leftTurnX * CELL_SIZE;
-        nextY = y + leftTurnY * CELL_SIZE;
+        nextX = X + leftTurnX * CELL_SIZE;
+        nextY = Y + leftTurnY * CELL_SIZE;
         if (isRoadAtPosition(nextX, nextY, elements)) {
             updateHeading(leftTurnX, leftTurnY);
             logicalMove(leftTurnX, leftTurnY);
@@ -78,9 +78,9 @@ public class Bus extends TransportMode {
         // If no road found by turning left, try turning back
         int backX = -headingX;
         int backY = -headingY;
-        nextX = x + backX * CELL_SIZE;
-        nextY = y + backY * CELL_SIZE;
-        if (isRoadAtPosition(nextX, nextY, elements)) {
+        nextX = X + backX * CELL_SIZE;
+        if (isRoadAtPosition(nextX, nextY, elements))
+            nextY = Y + backY * CELL_SIZE;{
             updateHeading(backX, backY);
             logicalMove(backX, backY);
             return;
@@ -91,7 +91,7 @@ public class Bus extends TransportMode {
 
     private boolean isRoadAtPosition(int x, int y, List<GameElement> elements) {
         for (GameElement element : elements) {
-            if (element instanceof Road && element.x == x && element.y == y) {
+            if (element instanceof Road && element.X == x && element.Y == y) {
                 return true;
             }
         }
@@ -108,6 +108,6 @@ public class Bus extends TransportMode {
     @Override
     public void draw(Graphics2D g2d) {
         g2d.setColor(BUS_COLOR);
-        g2d.fillOval(x, y, CELL_SIZE, CELL_SIZE); // Draw the bus
+        g2d.fillOval(renderX, renderY, CELL_SIZE, CELL_SIZE); // Draw the bus
     }
 }

@@ -10,12 +10,13 @@ public class Gem extends GameElement {
     public Gem(int x, int y) {
         super(x, y);
         this.walkable = true;
+        layer = 102;
     }
 
     @Override
     public void draw(Graphics2D g2d) {
-        int centerX = x + CELL_SIZE / 4; // Calculate the x-coordinate of the center of the cell
-        int centerY = y + CELL_SIZE / 4; // Calculate the y-coordinate of the center of the cell
+        int centerX = renderX + CELL_SIZE / 4; // Calculate the x-coordinate of the center of the cell
+        int centerY = renderY + CELL_SIZE / 4; // Calculate the y-coordinate of the center of the cell
         g2d.setColor(GEM_COLOR);
         g2d.fillOval(centerX, centerY, CELL_SIZE / 2, CELL_SIZE / 2); // Draw the circle at the center of the cell
     }
@@ -32,7 +33,7 @@ public class Gem extends GameElement {
             spotOccupied = false; // Reset flag for each new position
             for (GameElement element : elements) {
                 // Check if the current element is a Gem and its position matches the new position
-                if (element instanceof Gem && element.x == newX && element.y == newY) {
+                if (element instanceof Gem && element.X == newX && element.Y == newY) {
                     spotOccupied = true; // Set flag to true if spot is occupied by a Gem
                     newX = newX - CELL_SIZE; // Move to the next x position and continue trying
                     break; // Exit the loop to avoid unnecessary iterations
@@ -41,7 +42,7 @@ public class Gem extends GameElement {
         } while (spotOccupied); // Repeat until an empty spot is found
         this.commandListener.onPickedGem(this);
         // Set the position based on the found empty spot
-        this.x = newX;
-        this.y = newY; // Adjust y position based on the grid size
+        this.X = newX;
+        this.Y = newY; // Adjust y position based on the grid size
     }
 }
