@@ -1,9 +1,6 @@
 package HaohaiTeam.Game.Input;
 
-import HaohaiTeam.Game.Element.Coin;
 import HaohaiTeam.Game.Element.GameElement;
-import HaohaiTeam.Game.Element.Gem;
-import HaohaiTeam.Game.Element.Transport.TransportMode;
 
 public class CommandHandler implements CommandListener {
     @Override
@@ -26,5 +23,10 @@ public class CommandHandler implements CommandListener {
     @Override
     public void onTransportExited(GameElement element) {
         // Handle transport exited event
+    }
+
+    @Override
+    public void onTick() {
+
     }
 }

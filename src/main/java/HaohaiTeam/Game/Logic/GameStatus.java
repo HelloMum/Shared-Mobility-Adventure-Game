@@ -100,4 +100,9 @@ public class GameStatus implements CommandListener {
     public void onTransportExited(GameElement element) {
 
     }
+
+    @Override
+    public void onTick() {
+
+    }
 }
