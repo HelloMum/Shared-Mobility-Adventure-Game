@@ -1,7 +1,7 @@
 package HaohaiTeam.Game.Element;
 
 import HaohaiTeam.Game.GUI.GameWindow;
-
+import HaohaiTeam.Game.Logic.TickListener;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -322,6 +322,14 @@ public abstract class GameElement {
     }
     public void onBeingCollidedOnYou(GameElement gameElement) {
         //// What a stupid guy I won't move as only my children will implement this behaviour  by using @Override
+    }
+
+    public static class DefaultListener implements TickListener {
+
+        @Override
+        public void onTick() {
+
+        }
     }
 }
 
