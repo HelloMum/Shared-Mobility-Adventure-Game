@@ -1,7 +1,7 @@
 package HaohaiTeam.Game.Logic;
 
-public class PlayerModifiers {
-    public PlayerModifiers() {
+public class PlayerModifiersBehaviour {
+    public PlayerModifiersBehaviour() {
         // Constructor
     }
 

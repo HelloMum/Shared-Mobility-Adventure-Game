@@ -16,7 +16,9 @@ public class GameStatus implements CommandListener {
     public void addScore(int points) {
         this.score += points;
     }
-
+    public enum currentTransport {
+/// implement current transport
+    }
     public void loseLife() {
         this.lives--;
         if (this.lives <= 0) {

@@ -10,4 +10,5 @@ public interface CommandListener {
     void onPickedGem(GameElement element);
     void onTransportEntered(GameElement element);
     void onTransportExited(GameElement element);
+
 }

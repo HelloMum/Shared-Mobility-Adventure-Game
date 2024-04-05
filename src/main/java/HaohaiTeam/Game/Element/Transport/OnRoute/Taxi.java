@@ -1,7 +1,5 @@
 package HaohaiTeam.Game.Element.Transport.OnRoute;
-
 import HaohaiTeam.Game.Element.Transport.TransportMode;
-import HaohaiTeam.Game.Logic.currentTransport;
 
 import java.awt.*;
 
@@ -16,10 +14,6 @@ public class Taxi extends Bus {
         this.carbonFootprint = 1;
     }
 
-    @Override
-    public currentTransport getTransportState() {
-        return currentTransport.TAXI;
-    }
 
     @Override
     public void draw(Graphics2D g2d) {

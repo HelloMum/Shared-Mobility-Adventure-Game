@@ -1,7 +1,7 @@
 package HaohaiTeam.Game.Logic;
 
-public class PowerUp {
-    public PowerUp() {
+public class PowerUpBehaviours {
+    public PowerUpBehaviours() {
         // Constructor
     }
 

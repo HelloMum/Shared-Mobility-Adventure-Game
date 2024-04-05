@@ -3,7 +3,6 @@ package HaohaiTeam.Game.Element.Transport.OnRoute;
 import HaohaiTeam.Game.Element.GameElement;
 import HaohaiTeam.Game.Element.Transport.TransportMode;
 import HaohaiTeam.Game.GUI.GameWindow;
-import HaohaiTeam.Game.Logic.currentTransport;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -21,11 +20,6 @@ public abstract class AnyRoute extends TransportMode {
 
     public AnyRoute(int x, int y) {
         super(x, y);
-    }
-
-    @Override
-    public currentTransport getTransportState() {
-        return null;
     }
 
     private void startMoving() {

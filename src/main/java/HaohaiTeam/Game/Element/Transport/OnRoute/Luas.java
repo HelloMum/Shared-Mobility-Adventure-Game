@@ -1,7 +1,5 @@
 package HaohaiTeam.Game.Element.Transport.OnRoute;
-
 import HaohaiTeam.Game.Element.Transport.TransportMode;
-import HaohaiTeam.Game.Logic.currentTransport;
 
 import java.awt.*;
 
