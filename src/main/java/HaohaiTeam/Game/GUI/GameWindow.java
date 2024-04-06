@@ -120,7 +120,6 @@ public class GameWindow {
         // Calculate the offset to center the camera
         cameraOffsetX = centerX - element.getRenderX(); // Assuming getX() returns camera's x-coordinate
         cameraOffsetY = centerY - element.getRenderY(); // Assuming getY() returns camera's y-coordinate
-        System.out.println("Camera OffsetX: " + element.getRenderX() + ", Camera OffsetY: " + cameraOffsetY);
 
     }
 
