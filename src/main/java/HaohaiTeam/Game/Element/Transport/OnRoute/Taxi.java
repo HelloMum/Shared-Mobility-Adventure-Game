@@ -6,7 +6,7 @@ import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
 public class Taxi extends AutoMoveTransport {
     public Taxi(int x, int y) {
-        super(x, y, Color.YELLOW, 12, 3);
+        super(x, y, Color.YELLOW, 15, 3);
     }
 
 

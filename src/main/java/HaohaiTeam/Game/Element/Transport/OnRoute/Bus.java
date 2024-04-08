@@ -19,17 +19,6 @@ public class Bus extends AutoMoveTransport {
         layer = 102; // Drawn over player and roads
     }
 
-
-    protected boolean isRoadAtPosition(int x, int y, List<GameElement> elements) {
-        return super.isRoadAtPosition(x, y, elements);
-    }
-
-
-    protected void updateHeading(int dx, int dy) {
-        // Update the heading direction based on the road
-        super.updateHeading(dx, dy);
-    }
-
     @Override
     public void draw(Graphics2D g2d) {
         super.draw(g2d);

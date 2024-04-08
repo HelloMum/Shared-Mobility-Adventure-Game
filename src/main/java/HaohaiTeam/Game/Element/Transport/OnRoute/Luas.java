@@ -6,7 +6,7 @@ import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
 public class Luas extends AutoMoveTransport {
     public Luas(int x, int y) {
-        super(x, y, Color.DARK_GRAY,15,1.5); // set color
+        super(x, y, Color.DARK_GRAY,20,1); // set color
     }
 
     @Override
