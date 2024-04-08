@@ -4,21 +4,14 @@ import java.awt.*;
 
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
-public class Luas extends Bus {
-    private static final Color LUAS_COLOR = Color.DARK_GRAY;
-
-
+public class Luas extends AutoMoveTransport {
     public Luas(int x, int y) {
-        super(x, y); // assume speed is 45 km/h and carbon footprint is 0.6 kg/km
-        this.speed = 20;
-        this.carbonFootprint = 1;
+        super(x, y, Color.DARK_GRAY,15,1.5); // set color
     }
 
     @Override
     public void draw(Graphics2D g2d) {
-        g2d.setColor(LUAS_COLOR);
-        g2d.fillOval(renderX, renderY, CELL_SIZE, CELL_SIZE);
-
+        super.draw(g2d);
         // Draw a horizontal yellow line through the ball
         g2d.setColor(Color.YELLOW);
         g2d.setStroke(new BasicStroke(3)); // Adjust the thickness as needed
@@ -28,5 +21,6 @@ public class Luas extends Bus {
         g2d.drawLine(lineStartX, lineY, lineEndX, lineY);
     }
 }
+
 
 

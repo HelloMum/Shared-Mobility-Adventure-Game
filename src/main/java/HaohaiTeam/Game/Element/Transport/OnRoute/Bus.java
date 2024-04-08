@@ -12,102 +12,26 @@ import java.util.TimerTask;
 
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
-public class Bus extends TransportMode {
-    private static final Color BUS_COLOR = Color.GREEN;
-    private static final int MOVE_INTERVAL_MS = 100; // Move every 1 second
-
-    // HeadingX and HeadingY: initially point to the lower right (due east-south),
-    // indicating the current direction of parking.
-    private int headingX = 0;
-    private int headingY = 1;
+public class Bus extends AutoMoveTransport {
 
     public Bus(int x, int y) {
-        super(x, y);
-        startMoving(); // Call startMoving() to schedule bus movement
+        super(x, y, Color.GREEN, 1, 0.0);
         layer = 102; // Drawn over player and roads
     }
 
 
-    private void startMoving() {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                moveOnRoad();
-            }
-        }, 0, MOVE_INTERVAL_MS);
-    }
-    private void moveOnRoad() {
-        // First copy the current scene's list of game elements and then try to move in the current direction of travel.
-        // If there is no road ahead, try turning right, turning left, and then backing up.
-        // If you still can't find the road, stay where you are.
-        // Specific steering rules and road detection logic are implemented within the method.
-        // Find the road
-        List<GameElement> elements = new ArrayList<>(GameWindow.getElements()); // Create a copy of the list
-
-        // Try moving in the current heading direction first
-        int nextX = X + headingX * CELL_SIZE;
-        int nextY = Y + headingY * CELL_SIZE;
-        if (isRoadAtPosition(nextX, nextY, elements)) {
-            logicalMove(headingX, headingY);
-            return;
-        }
-
-        // If no road found in the current direction, try turning right
-        int rightTurnX = headingY;
-        int rightTurnY = -headingX;
-        nextX = X + rightTurnX * CELL_SIZE;
-        nextY = Y + rightTurnY * CELL_SIZE;
-        if (isRoadAtPosition(nextX, nextY, elements)) {
-            updateHeading(rightTurnX, rightTurnY);
-            logicalMove(rightTurnX, rightTurnY);
-            return;
-        }
-
-        // If no road found by turning right, try turning left
-        int leftTurnX = -headingY;
-        int leftTurnY = headingX;
-        nextX = X + leftTurnX * CELL_SIZE;
-        nextY = Y + leftTurnY * CELL_SIZE;
-        if (isRoadAtPosition(nextX, nextY, elements)) {
-            updateHeading(leftTurnX, leftTurnY);
-            logicalMove(leftTurnX, leftTurnY);
-            return;
-        }
-
-        // If no road found by turning left, try turning back
-        int backX = -headingX;
-        int backY = -headingY;
-        nextX = X + backX * CELL_SIZE;
-        if (isRoadAtPosition(nextX, nextY, elements))
-            nextY = Y + backY * CELL_SIZE;{
-            updateHeading(backX, backY);
-            logicalMove(backX, backY);
-            return;
-        }
-
-        // If no road found in any direction, stay in the same place
-    }
-
-    private boolean isRoadAtPosition(int x, int y, List<GameElement> elements) {
-        for (GameElement element : elements) {
-            if (element instanceof Road && element.X == x && element.Y == y) {
-                return true;
-            }
-        }
-        return false;
+    protected boolean isRoadAtPosition(int x, int y, List<GameElement> elements) {
+        return super.isRoadAtPosition(x, y, elements);
     }
 
 
-    private void updateHeading(int dx, int dy) {
+    protected void updateHeading(int dx, int dy) {
         // Update the heading direction based on the road
-        headingX = dx;
-        headingY = dy;
+        super.updateHeading(dx, dy);
     }
 
     @Override
     public void draw(Graphics2D g2d) {
-        g2d.setColor(BUS_COLOR);
-        g2d.fillOval(renderX, renderY, CELL_SIZE, CELL_SIZE); // Draw the bus
+        super.draw(g2d);
     }
 }

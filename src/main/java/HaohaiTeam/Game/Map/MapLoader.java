@@ -45,7 +45,7 @@ public class MapLoader {
             String line = mapData[y];
             for (int x = 0; x < line.length(); x++) {
                 char tile = line.charAt(x);
-                int posX = x * GameWindow.CELL_SIZE;
+                int posX = x * GameWindow.CELL_SIZE;// expand fake map 'level_1' use cell size = 30px
                 int posY = y * GameWindow.CELL_SIZE;
 
                 switch (tile) {
