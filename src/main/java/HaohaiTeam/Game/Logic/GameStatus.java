@@ -89,6 +89,8 @@ public class GameStatus implements CommandListener {
     @Override
     public void onPickedGem(GameElement element) {
         // Implementation for handling picked gems if needed
+        addGems(1);
+        System.out.println("Gem received signal");
     }
 
     @Override

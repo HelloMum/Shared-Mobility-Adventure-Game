@@ -57,11 +57,13 @@ public class MapLoader {
                     case 'G':
                         placeReport("Gem", posX, posY);
                         Gem gem = new Gem(posX, posY);
+                        gem.setCommandListener(gameWindow.gameStatus); // add game status to gem
                         gameWindow.addElement(gem);
                         break;
                     case 'C':
                         placeReport("Coin", posX, posY);
                         Coin coin = new Coin(posX, posY);
+                        coin.setCommandListener(gameWindow.gameStatus);
                         gameWindow.addElement(coin);
                         break;
                     case 'P':

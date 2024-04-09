@@ -31,15 +31,15 @@ public class GameWindow {
     private final GamePanel gamePanel;
     private static List<GameElement> elements = null;
     private OverlayHUD overlayHUD; // Reference to the HUD overlay
-    private CommandListener commandListener = new GameStatus();
-
+//    private CommandListener commandListener = new GameStatus();
+    public GameStatus gameStatus = new GameStatus(); // we should only have a GameStatus object
     private double scaleX = 1.0; // Scale factor for X-axis
     private double scaleY = 1.0; // Scale factor for Y-axis
 
     public GameWindow() {
         elements = new ArrayList<>();
         this.gamePanel = new GamePanel();
-        this.overlayHUD = new OverlayHUD(new GameStatus()); // Initialize OverlayHUD with a new GameStatus object
+        this.overlayHUD = new OverlayHUD(gameStatus); // use the same GameStatus object
         elements.sort(Comparator.comparingInt(GameElement::getLayer));
     }
 
@@ -50,7 +50,7 @@ public class GameWindow {
     }
 
     public void addElement(GameElement element) {
-        element.setCommandListener(commandListener);
+        element.setCommandListener(gameStatus);
         elements.add(element);
     }
 
@@ -105,7 +105,7 @@ public class GameWindow {
 //            renderMap(g2d); // Render the loaded map
             renderElements(g2d); // Render game elements
             // Update OverlayHUD with the current GameStatus before rendering
-            overlayHUD.update(new GameStatus());
+//            overlayHUD.update(new GameStatus());
             renderHUD(g2d); // Render the HUD overlay
             g2d.dispose();
         }
