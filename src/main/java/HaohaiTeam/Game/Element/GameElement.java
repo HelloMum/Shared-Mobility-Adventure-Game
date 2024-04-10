@@ -357,7 +357,7 @@ public abstract class GameElement {
     /// Fancy stupid hack for moving things smooth, I will see you all in git blame
 public void helperDrawer(Graphics2D g2d) {
     // Define a constant step to get closer to objetive
-    int stepSize = 2;
+    int stepSize = 4;
 
     // Calculate the direction of movement
     int dx = prevX - renderX;

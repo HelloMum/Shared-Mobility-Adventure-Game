@@ -84,7 +84,7 @@ public class GameWindow {
             }
         });
 
-        Timer timer = new Timer(5, e -> gamePanel.repaint());
+        Timer timer = new Timer(10, e -> gamePanel.repaint());
         timer.start();
     }
 
