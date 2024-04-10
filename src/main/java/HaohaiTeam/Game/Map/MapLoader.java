@@ -7,6 +7,8 @@ import HaohaiTeam.Game.Element.*;
 import HaohaiTeam.Game.Element.Transport.*;
 import HaohaiTeam.Game.Element.Transport.OnRoute.*;
 
+import java.util.Set;
+
 //import HaohaiTeam.Game.Logic.ElementBehavior;
 
 public class MapLoader {
@@ -23,17 +25,17 @@ public class MapLoader {
             "W  r P  W Cr     C    LLL   B  W",
             "W  r    W  c WWWWWW  rrrrrrr   W",
             "W  r    W  r WGGGGW  r     r   W",
-            "W  r    W  r WGGGG   rrrrrrr   W",
+            "W  r    W  r WGGGG   rrrnrrr   W",
             "W  r    W  r WWWWWW            W",
             "W  r G  W  r      C     C      W",
             "W  r    W  rC  F   C     rrrr  W",
             "W  rC   W  rrrrrrrrrrrrrrrT r  W",
             "W  r    W             C     r  W",
             "W  r    W    WWW    C       r  W",
-            "W  r    W    W   W          r  W",
+            "W  l    W    W   W          r  W",
             "W  c  C W    WG  W          c  W",
             "W  r         W   W     C   Ur  W",
-            "W  rrrrrrrrrrrrrrrrrrrrrrrrrr  W",
+            "W  rrrrrrrrrrrrrrmrrrrrrrrrrr  W",
             "W                              W",
             "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
     };
@@ -103,6 +105,21 @@ public class MapLoader {
                         placeReport("CameraEntity", posX, posY);
                         CameraEntity cameraEntity = new CameraEntity(posX, posY);
                         gameWindow.addElement(cameraEntity);
+                        break;
+                    case 'l':
+                        placeReport("BusStation", posX, posY);
+                        BusStation busStation = new BusStation(posX, posY, Set.of("Bus"), 1);
+                        gameWindow.addElement(busStation);
+                        break;
+                    case 'm':
+                        placeReport("TaxiStation", posX, posY);
+                        TaxiStation taxiStation = new TaxiStation(posX, posY, Set.of("Taxi"), 1);
+                        gameWindow.addElement(taxiStation);
+                        break;
+                    case 'n':
+                        placeReport("LuasStation", posX, posY);
+                        LuasStation luasStation = new LuasStation(posX, posY, Set.of("Luas"), 1);
+                        gameWindow.addElement(luasStation);
                         break;
                 }
             }

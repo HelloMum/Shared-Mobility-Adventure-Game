@@ -22,16 +22,12 @@ public abstract class AutoMoveTransport extends TransportMode {
     // indicating the current direction of parking.
     protected int headingX = 0;
     protected int headingY = 1;
-    /**
-     * Constructs an instance of AutoMoveTransport with specified position, color,
-     * speed, and carbon footprint.
-     *
-     * @param x       The initial x-coordinate of the transport.
-     * @param y       The initial y-coordinate of the transport.
-     * @param color   The color used to draw the transport.
-     * @param speed   The speed at which the transport moves.
-     * @param carbonFootprint The carbon footprint associated with the transport.
-     */
+    private boolean isMoving = true; // Indicates whether the transport is moving or not
+
+    private Timer timer; // Define timer as a class field
+    private boolean timerActive = false; // Flag to track if the timer is active
+    private boolean isStationary = false;
+    protected boolean atStation = false;
     public AutoMoveTransport(int x, int y, Color color, int speed, double carbonFootprint) {
         super(x, y);
         this.color = color;
@@ -40,35 +36,104 @@ public abstract class AutoMoveTransport extends TransportMode {
         startMoving();
     }
 
-    /**
-     * Initiates the automatic movement of the transport by scheduling a timer task.
-     * The task calls the {@link #moveOnRoad()} method periodically.
-     */
+
     protected void startMoving() {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        if (!timerActive) {
+            if (timer != null) {
+                timer.cancel();
+            }
+            timer = new Timer();
+            timerActive = true;
+            isMoving = true;
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    if (isMoving) {
+                        moveOnRoad();
+                    }
+                }
+            }, 0, MOVE_INTERVAL_MS);
+        }
+    }
+
+    protected void pauseMoving(int waitTime) {
+        isStationary = true;
+        isMoving = false;
+        if(timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        timerActive = false;
+
+
+        Timer waitTimer = new Timer();
+        waitTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                moveOnRoad();
+                isStationary = false;
+                startMoving();
             }
-        }, 0, MOVE_INTERVAL_MS);
+        }, waitTime);
     }
+
 
     protected void moveOnRoad() {
         List<GameElement> elements = new ArrayList<>(GameWindow.getElements());
 
-        // Try to move in the current direction first
-        if (tryMoveInCurrentDirection(elements)) return;
+        if (!atStation && currentPositionIsStation(elements)) {
+            Station station = (Station) elements.stream()
+                    .filter(e -> e instanceof Station && e.X == this.X && e.Y == this.Y)
+                    .findFirst().orElse(null);
+            if (station != null && station.supportsTransport(this.getClass().getSimpleName())) {
+                atStation = true;
+                pauseMoving(station.getWaitTimeInSeconds());
+            }
+        } else {
+            startMoving();
+            // Try to move in the current direction first
+            if (tryMoveInCurrentDirection(elements)) return;
 
-        // If moving in the current direction is not possible, try to turn right
-        if (tryTurn(elements, headingY, -headingX)) return;
+            // If moving in the current direction is not possible, try to turn right
+            if (tryTurn(elements, headingY, -headingX)) return;
 
-        // If turning right is not successful, try to turn left
-        if (tryTurn(elements, -headingY, headingX)) return;
+            // If turning right is not successful, try to turn left
+            if (tryTurn(elements, -headingY, headingX)) return;
 
-        // If turning left is also not successful, try to turn around (180 degrees)
-        tryTurn(elements, -headingX, -headingY);
+            // If turning left is also not successful, try to turn around (180 degrees)
+            tryTurn(elements, -headingX, -headingY);
+        }
     }
+
+    private boolean currentPositionIsStation(List<GameElement> elements) {
+        return elements.stream().anyMatch(e -> e instanceof Station && e.X == this.X && e.Y == this.Y);
+    }
+    private boolean stationSupportsThisTransport(Station station) {
+        return true;
+    }
+
+    public void stayAtStation(int duration) {
+        System.out.println(this.getClass().getSimpleName() + " is starting to stay at the station for " + duration / 1000 + " seconds.");
+
+        isMoving = false;
+        isStationary = true;
+        if (timer != null) {
+            timer.cancel();
+        }
+        timerActive = false;
+
+
+        Timer stayTimer = new Timer();
+        stayTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                isStationary = false;
+                isMoving = true;
+                System.out.println(this.getClass().getSimpleName() + " has finished staying at the station and is resuming movement.");
+                startMoving();
+            }
+        }, duration);
+    }
+
 
     private boolean tryMoveInCurrentDirection(List<GameElement> elements) {
         int nextX = X + headingX * CELL_SIZE;
@@ -92,14 +157,7 @@ public abstract class AutoMoveTransport extends TransportMode {
     }
 
 
-    /**
-     * Checks whether there is a road at the specified position within the given list of game elements.
-     *
-     * @param x         The x-coordinate to check for a road.
-     * @param y         The y-coordinate to check for a road.
-     * @param elements  The list of game elements containing potential roads.
-     * @return          True if there is a road at the specified position, false otherwise.
-     */
+
     protected boolean isRoadAtPosition(int x, int y, List<GameElement> elements) {
 
         // Check if there is a road at the specified position
@@ -114,13 +172,7 @@ public abstract class AutoMoveTransport extends TransportMode {
     }
 
 
-    /**
-     * Updates the heading (direction) of the transport.
-     * Subclasses may override this method to customize the heading update logic.
-     *
-     * @param dx  The change in x-direction.
-     * @param dy  The change in y-direction.
-     */
+
     protected void updateHeading(int dx, int dy) {
         headingX = dx;
         headingY = dy;
