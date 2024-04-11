@@ -25,17 +25,17 @@ public class MapLoader {
             "W  r P  W Cr     C    LLL   B  W",
             "W  r    W  c WWWWWW  rrrrrrr   W",
             "W  r    W  r WGGGGW  r     r   W",
-            "W  r    W  r WGGGG   rrrnrrr   W",
+            "W  r    W  r WGGGG   rrrlrrr   W",
             "W  r    W  r WWWWWW            W",
             "W  r G  W  r      C     C      W",
-            "W  r    W  rC  F   C     rrrr  W",
+            "W  r    W  rE  F   C     rrrr  W",
             "W  rC   W  rrrrrrrrrrrrrrrT r  W",
             "W  r    W             C     r  W",
             "W  r    W    WWW    C       r  W",
-            "W  l    W    W   W          r  W",
-            "W  c  C W    WG  W          c  W",
+            "W  b    W    W   W          r  W",
+            "W  t  C W    WG  W          b  W",
             "W  r         W   W     C   Ur  W",
-            "W  rrrrrrrrrrrrrrmrrrrrrrrrrr  W",
+            "W  rrrrbrrrrrrrrrrrrrrrrrrrrr  W",
             "W                              W",
             "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
     };
@@ -101,22 +101,22 @@ public class MapLoader {
                         Crosswalk crosswalk = new Crosswalk(posX, posY);
                         gameWindow.addElement(crosswalk);
                         break;
-                    case 'F':
+                    case 'E':
                         placeReport("CameraEntity", posX, posY);
                         CameraEntity cameraEntity = new CameraEntity(posX, posY);
                         gameWindow.addElement(cameraEntity);
                         break;
-                    case 'l':
+                    case 'b':
                         placeReport("BusStation", posX, posY);
                         BusStation busStation = new BusStation(posX, posY);
                         gameWindow.addElement(busStation);
                         break;
-                    case 'm':
+                    case 't':
                         placeReport("TaxiStation", posX, posY);
                         TaxiStation taxiStation = new TaxiStation(posX, posY);
                         gameWindow.addElement(taxiStation);
                         break;
-                    case 'n':
+                    case 'l':
                         placeReport("LuasStation", posX, posY);
                         LuasStation luasStation = new LuasStation(posX, posY);
                         gameWindow.addElement(luasStation);
