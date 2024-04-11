@@ -13,28 +13,23 @@ public class PopUp extends GameElement {
     private int renderCount;
 
 
-    public PopUp(int x, int y) {
-        super(x, y + CELL_SIZE*-1);
+    public PopUp(int x, int y, String message) {
+        // Call the first constructor with adjusted coordinates
+        super(x, y);
+
+        // Initialize other properties
         layer = 120;
-        this.isVisible = true;
-        this.message = "";
-        this.walkable = true; // Make the PopUp walkable
-        this.renderCount = 0;
+        isVisible = true;
+        walkable = true;
+        renderCount = 0;
+
+        // Add the PopUp to the GameWindow elements
         GameWindow.addElement(this);
 
-    }
-    public PopUp(int x, int y,String message) {
-        super(x, y + CELL_SIZE*-1);
-        layer = 120;
-        this.isVisible = true;
-        this.message = "";
-        this.walkable = true; // Make the PopUp walkable
-        this.renderCount = 0;
-        GameWindow.addElement(this);
+        // Set the message
         this.message = message;
         setMessage(message);
         System.out.println("Showing message: " + message);
-
     }
 
 
