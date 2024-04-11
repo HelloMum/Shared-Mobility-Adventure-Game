@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
-public abstract class GameElement {
+public abstract class GameElement implements CommandListener  {
 
     /// The basics of the Game element
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -390,5 +390,29 @@ public abstract class GameElement {
 
     public int getRenderY(){
         return renderY;
+    }
+    @Override
+    public void onPickedCoin(GameElement element) {
+
+    }
+
+    @Override
+    public void onPickedGem(GameElement element) {
+
+    }
+
+    @Override
+    public void onTransportEntered(GameElement element) {
+
+    }
+
+    @Override
+    public void onTransportExited(GameElement element) {
+
+    }
+
+    @Override
+    public void onTick() {
+
     }
 }
