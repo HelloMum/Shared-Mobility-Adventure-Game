@@ -6,6 +6,7 @@ import HaohaiTeam.Game.Element.Player;
 import HaohaiTeam.Game.Input.CommandListener;
 import HaohaiTeam.Game.Logic.GameStatus;
 import HaohaiTeam.Game.Logic.OverlayHUD;
+import HaohaiTeam.Game.Logic.TickGenerator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,9 +31,10 @@ public class GameWindow {
     private double cameraOffsetY = 0;
     private final GamePanel gamePanel;
     private static List<GameElement> elements = null;
-    private OverlayHUD overlayHUD; // Reference to the HUD overlay
+    private final OverlayHUD overlayHUD; // Reference to the HUD overlay
 //    private CommandListener commandListener = new GameStatus();
     public GameStatus gameStatus = new GameStatus(); // we should only have a GameStatus object
+
     private double scaleX = 1.0; // Scale factor for X-axis
     private double scaleY = 1.0; // Scale factor for Y-axis
 
@@ -41,6 +43,11 @@ public class GameWindow {
         this.gamePanel = new GamePanel();
         this.overlayHUD = new OverlayHUD(gameStatus); // use the same GameStatus object
         elements.sort(Comparator.comparingInt(GameElement::getLayer));
+        // Initialize TickGenerator with gameStatus
+        TickGenerator tickGenerator = new TickGenerator(gameStatus);
+        tickGenerator.setCommandListener(gameStatus);
+        tickGenerator.start();
+
     }
 
 
@@ -86,6 +93,7 @@ public class GameWindow {
 
         Timer timer = new Timer(10, e -> gamePanel.repaint());
         timer.start();
+
     }
 
     private class GamePanel extends JPanel {
