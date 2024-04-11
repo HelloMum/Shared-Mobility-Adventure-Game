@@ -23,10 +23,13 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
     // indicating the current direction of parking.
     protected int headingX = 0;
     protected int headingY = 1;
+    protected boolean autoMove;
+
 
     public AutoMoveTransport(int x, int y) {
         super(x, y);
         startMoving();
+        autoMove = true;
     }
 
     protected void startMoving() {
@@ -38,10 +41,16 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
             }
         }, 0, MOVE_INTERVAL_MS);
     }
+    public void toggleAutoStation() {
+        autoMove = !autoMove;
+    }
 
     protected void moveOnRoad() {
-        List<GameElement> elements = new ArrayList<>(GameWindow.getElements());
+        if (!autoMove) {
+            return; // Ignore movement if auto mode is disabled
+        }
 
+        List<GameElement> elements = new ArrayList<>(GameWindow.getElements());
         // Try to move in the current direction first
         if (tryMoveInCurrentDirection(elements)) return;
 
@@ -51,11 +60,14 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
         // If turning right is not successful, try to turn left
         if (tryTurn(elements, -headingY, headingX)) return;
 
-        // If turning left is also not successful, try to turn around (180 degrees)
-        tryTurn(elements, -headingX, -headingY);
+        // If turning left is also not successful keep heading as start
+        if (tryMoveInCurrentDirection(elements)) return;
     }
 
     private boolean tryMoveInCurrentDirection(List<GameElement> elements) {
+        if (!autoMove) {
+            return false; // Ignore movement if auto mode is disabled
+        }
         int nextX = X + headingX * CELL_SIZE;
         int nextY = Y + headingY * CELL_SIZE;
         if (isRoadAtPosition(nextX, nextY, elements)) {
@@ -68,6 +80,9 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
     private boolean tryTurn(List<GameElement> elements, int dx, int dy) {
         int nextX = X + dx * CELL_SIZE;
         int nextY = Y + dy * CELL_SIZE;
+        if (!autoMove) {
+            return false;
+        }
         if (isRoadAtPosition(nextX, nextY, elements)) {
             updateHeading(dx, dy);
             logicalMove(dx, dy);
@@ -78,13 +93,13 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
 
 
     protected boolean isRoadAtPosition(int x, int y, List<GameElement> elements) {
-
-        // Check if there is a road at the specified position
-        // This method typically does not need to be overridden by subclasses
-
+        if (!autoMove) {
+            return false;
+        }
         for (GameElement element : elements) {
             if (element instanceof Road && element.X == x && element.Y == y) {
-                return true;
+                element.goingToBeWalkedOverBy(this);
+               return true;
             }
         }
         return false;

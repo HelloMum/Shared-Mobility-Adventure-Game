@@ -56,6 +56,12 @@ public abstract class GameElement implements CommandListener  {
         return this.getClass().getSimpleName();
     }
 
+    public void toggleAutoMove() {
+    }
+
+    public void toggleAutoStation() {
+    }
+
 
     // direction that the element is facing
     public enum Direction {
@@ -306,8 +312,7 @@ public abstract class GameElement implements CommandListener  {
         //     @Override on your class, someone / something on top
     }
     public void goingToBeWalkOn(GameElement gameElement) {
-        // Triggered when something walks over this element, probably a player
-        //     @Override on your class, someone / something on top
+        goingToBeWalkedOverBy(gameElement);
     }
 
     // Trigger by being walked over by something
