@@ -2,7 +2,7 @@ package HaohaiTeam.Game.Element.Transport;
 import HaohaiTeam.Game.Element.GameElement;
 
 public abstract class TransportMode extends GameElement {
-    protected double carbonFootprint;
+    protected int carbonFootprint;
 
     public TransportMode(int x, int y) {
         super(x, y);
