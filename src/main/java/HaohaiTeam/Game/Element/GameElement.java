@@ -2,7 +2,7 @@ package HaohaiTeam.Game.Element;
 
 import HaohaiTeam.Game.GUI.GameWindow;
 import HaohaiTeam.Game.Input.CommandListener;
-import HaohaiTeam.Game.Logic.TickListener;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -89,6 +89,11 @@ public abstract class GameElement {
         Y += convertToLogicalPos(posY);
     }
 
+    public void setToLogicalPos(int posX, int posY) {
+        setToLogicalPosX(posX);
+        setToLogicalPosY(posY);
+    }
+
     // Legacy move, this is to move the elements using pixels
     public void logicalMove(int dx, int dy) {
         // Update the actual position of the object to the calculated next position.
@@ -140,7 +145,7 @@ public abstract class GameElement {
                         if (element instanceof Player && element.X == this.X && element.Y == this.Y) {
                             element.playerOnTop = true;
                         }
-                            System.out.println("Element " + element + " is being stepped by" + this);
+                        System.out.println("Element " + element + " is being stepped by" + this);
                         element.goingToBeWalkedOverBy(this);
                         return true; // No collision detected, return false
                     } else {
@@ -267,7 +272,8 @@ public abstract class GameElement {
     ////  Drawing methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public abstract void draw(Graphics2D g2d);
+    public void draw(Graphics2D g2d) {
+    }
 
     public int getLayer() {
         return layer;
@@ -347,42 +353,36 @@ public abstract class GameElement {
         //// What a stupid guy I won't move as only my children will implement this behaviour  by using @Override
     }
 
-    public static class DefaultListener implements TickListener {
 
-        @Override
-        public void onTick() {
-
-        }
-    }
     /// Fancy stupid hack for moving things smooth, I will see you all in git blame
-public void helperDrawer(Graphics2D g2d) {
-    // Define a constant step to get closer to objetive
-    int stepSize = 4;
+    public void helperDrawer(Graphics2D g2d) {
+        // Define a constant step to get closer to objetive
+        int stepSize = 4;
 
-    // Calculate the direction of movement
-    int dx = prevX - renderX;
-    int dy = prevY - renderY;
+        // Calculate the direction of movement
+        int dx = prevX - renderX;
+        int dy = prevY - renderY;
 
-    // Move renderX and renderY towards prevX and prevY by the step size
-    if (Math.abs(dx) > stepSize) {
-        renderX += (int) (Math.signum(dx) * stepSize);
-    } else {
-        renderX = prevX;
+        // Move renderX and renderY towards prevX and prevY by the step size
+        if (Math.abs(dx) > stepSize) {
+            renderX += (int) (Math.signum(dx) * stepSize);
+        } else {
+            renderX = prevX;
+        }
+
+        if (Math.abs(dy) > stepSize) {
+            renderY += (int) (Math.signum(dy) * stepSize);
+        } else {
+            renderY = prevY;
+        }
+
+        // Draw using the updated positions
+        draw(g2d);
+
+        // Save the current position for next pass
+        this.prevX = X;
+        this.prevY = Y;
     }
-
-    if (Math.abs(dy) > stepSize) {
-        renderY += (int) (Math.signum(dy) * stepSize);
-    } else {
-        renderY = prevY;
-    }
-
-    // Draw using the updated positions
-    draw(g2d);
-
-    // Save the current position for next pass
-    this.prevX = X;
-    this.prevY = Y;
-}
 
     public int getRenderX() {
         return renderX;
