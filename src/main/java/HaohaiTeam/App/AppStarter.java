@@ -10,12 +10,7 @@ public class AppStarter {
         System.out.println("App is starting...");
         GameStarter gameStarter = new GameStarter();
         gameStarter.startGame();
-
-        // add main code to start ticks
-        TickGenerator tickGenerator = new TickGenerator(100);
-        GameElement.DefaultListener exampleListener = new GameElement.DefaultListener();
-        tickGenerator.addTickListener(exampleListener);
-        tickGenerator.start();
+        
     }
 
     public void startApp() {
