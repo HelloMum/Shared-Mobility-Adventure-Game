@@ -1,6 +1,7 @@
 package HaohaiTeam.Game.Element.Transport.OnRoute;
 
 import HaohaiTeam.Game.Element.GameElement;
+import HaohaiTeam.Game.Element.Player;
 import HaohaiTeam.Game.Element.Transport.TransportMode;
 import HaohaiTeam.Game.GUI.GameWindow;
 import HaohaiTeam.Game.Input.CommandListener;
@@ -106,6 +107,9 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
         for (GameElement element : elements) {
             // Check if the element is a TransportMode and matches the position
             if (element instanceof TransportMode && element.X == x && element.Y == y) {
+                transportModeFound = true;
+            }
+            if (element instanceof Player && element.X == x && element.Y == y) {
                 transportModeFound = true;
             }
 
