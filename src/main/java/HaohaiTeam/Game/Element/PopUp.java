@@ -57,8 +57,8 @@ public class PopUp extends GameElement {
     @Override
     public void draw(Graphics2D g2d) {
         if (isVisible) {
-            int boxWidth = 200; // Set the width of the box
-            int boxHeight = 30; // Set the height of the box
+            int boxWidth = 300; // Set the width of the box
+            int boxHeight = 30; // this should adapt to message length
 
             // Calculate the current opacity based on the render count
             float opacity = Math.max(1.0f - ((float) renderCount / 100.0f), 0.0f);
