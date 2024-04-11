@@ -6,14 +6,14 @@ import java.util.Set;
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
 public class LuasStation extends Station{
-    private static final Color YelliG_COLOR = Color.YELLOW;
-    public LuasStation(int x, int y, Set<String> supportedTransportTypes, int waitTimeInSeconds) {
-        super(x, y, supportedTransportTypes, waitTimeInSeconds);
+    public LuasStation(int x, int y) {
+        super(x, y);
     }
+
     @Override
     public void draw(Graphics2D g2d) {
         // Draw black background square
-        g2d.setColor(YelliG_COLOR);
+        g2d.setColor(Color.GRAY);
         g2d.fillRect(renderX, renderY, CELL_SIZE, CELL_SIZE);
     }
 }

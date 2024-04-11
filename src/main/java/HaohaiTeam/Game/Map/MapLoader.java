@@ -108,17 +108,17 @@ public class MapLoader {
                         break;
                     case 'l':
                         placeReport("BusStation", posX, posY);
-                        BusStation busStation = new BusStation(posX, posY, Set.of("Bus"), 1);
+                        BusStation busStation = new BusStation(posX, posY);
                         gameWindow.addElement(busStation);
                         break;
                     case 'm':
                         placeReport("TaxiStation", posX, posY);
-                        TaxiStation taxiStation = new TaxiStation(posX, posY, Set.of("Taxi"), 1);
+                        TaxiStation taxiStation = new TaxiStation(posX, posY);
                         gameWindow.addElement(taxiStation);
                         break;
                     case 'n':
                         placeReport("LuasStation", posX, posY);
-                        LuasStation luasStation = new LuasStation(posX, posY, Set.of("Luas"), 1);
+                        LuasStation luasStation = new LuasStation(posX, posY);
                         gameWindow.addElement(luasStation);
                         break;
                 }
