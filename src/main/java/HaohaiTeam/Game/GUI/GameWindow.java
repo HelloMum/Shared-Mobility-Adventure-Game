@@ -140,6 +140,7 @@ public class GameWindow {
         // Find the player and camera in the list of elements
         for (GameElement element : elements) {
             if (element.isVisible()) {
+                // Draw the element itself
                 element.helperDrawer(g);
             }
             if (element instanceof Player) {
@@ -158,9 +159,11 @@ public class GameWindow {
         if (camera != null && camera.getLinkedElement() != null) {
             camera.moveToLinked();
             updateCameraPosition(camera);
-
         }
     }
+
+
+
     private void renderHUD(Graphics g) {
         if (overlayHUD != null) {
             Graphics2D g2d = (Graphics2D) g.create();

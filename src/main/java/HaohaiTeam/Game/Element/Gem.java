@@ -15,6 +15,10 @@ public class Gem extends GameElement {
 
     @Override
     public void draw(Graphics2D g2d) {
+        // Draw the fake shadow
+        g2d.setColor(new Color(0, 0, 0, 100));
+        g2d.fillOval(renderX+12 , renderY+10 , CELL_SIZE/ 2, CELL_SIZE/ 2);
+
         int centerX = renderX + CELL_SIZE / 4; // Calculate the x-coordinate of the center of the cell
         int centerY = renderY + CELL_SIZE / 4; // Calculate the y-coordinate of the center of the cell
         g2d.setColor(GEM_COLOR);

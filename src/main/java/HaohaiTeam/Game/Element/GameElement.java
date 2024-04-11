@@ -63,6 +63,8 @@ public abstract class GameElement implements CommandListener  {
     }
 
 
+
+
     // direction that the element is facing
     public enum Direction {
         UP,

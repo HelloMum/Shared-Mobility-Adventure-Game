@@ -14,6 +14,12 @@ public class Luas extends AutoMoveTransport {
     }
 
     public void draw(Graphics2D g2d) {
+        // Draw the fake shadow
+        g2d.setColor(new Color(0, 0, 0, 100));
+        g2d.fillOval(renderX + 5, renderY + 5, CELL_SIZE, CELL_SIZE);
+
+
+
         // Draw a gray circle
         g2d.setColor(Color.GRAY);
         int circleSize = CELL_SIZE; // Adjust the size of the circle as needed

@@ -13,8 +13,14 @@ public class Player extends GameElement {
 
     @Override
     public void draw(Graphics2D g2d) {
+        // Draw the fake shadow
+        g2d.setColor(new Color(0, 0, 0, 100));
+        g2d.fillOval(renderX + 5, renderY + 5, CELL_SIZE, CELL_SIZE);
+
+
         g2d.setColor(Color.CYAN);
         g2d.fillOval(renderX, renderY, CELL_SIZE, CELL_SIZE);
+
 
         // Draw eyes based on movement direction
         g2d.setColor(Color.BLACK);
