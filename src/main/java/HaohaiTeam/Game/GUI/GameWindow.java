@@ -58,6 +58,8 @@ public class GameWindow {
         element.setCommandListener(gameStatus);
         elements.add(element);
         TickGenerator.setCommandListener(element);
+        TickGenerator.start();
+
     }
 
     public void openWindow() {
