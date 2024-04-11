@@ -58,10 +58,11 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
         if (tryTurn(elements, headingY, -headingX)) return;
 
         // If turning right is not successful, try to turn left
-        if (tryTurn(elements, -headingY, headingX)) return;
+        if (!tryTurn(elements, -headingY, headingX)) {
+            return;
+        }
+        ;
 
-        // If turning left is also not successful keep heading as start
-        if (tryMoveInCurrentDirection(elements)) return;
     }
 
     private boolean tryMoveInCurrentDirection(List<GameElement> elements) {
@@ -93,16 +94,31 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
 
 
     protected boolean isRoadAtPosition(int x, int y, List<GameElement> elements) {
+        // Check if autoMove is false, return false
         if (!autoMove) {
             return false;
         }
+
+        boolean transportModeFound = false;
+        boolean roadFound = false;
+
+        // Iterate through the list of elements
         for (GameElement element : elements) {
+            // Check if the element is a TransportMode and matches the position
+            if (element instanceof TransportMode && element.X == x && element.Y == y) {
+                transportModeFound = true;
+            }
+
+            // Check if the element is a Road and matches the position
             if (element instanceof Road && element.X == x && element.Y == y) {
+                roadFound = true;
+                // Notify the road that it's going to be walked over by this object
                 element.goingToBeWalkedOverBy(this);
-               return true;
             }
         }
-        return false;
+
+        // Return true if road is found and no transport mode is found
+        return roadFound && !transportModeFound;
     }
 
     protected void updateHeading(int dx, int dy) {
