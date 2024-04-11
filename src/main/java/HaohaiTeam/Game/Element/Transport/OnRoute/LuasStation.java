@@ -17,7 +17,7 @@ public class LuasStation extends Station{
     @Override
     public void draw(Graphics2D g2d) {
         // Draw black background square
-        g2d.setColor(Color.GRAY);
+        g2d.setColor(Color.DARK_GRAY);
         g2d.fillRect(renderX, renderY, CELL_SIZE, CELL_SIZE);
     }
     public void goingToBeWalkedOverBy(GameElement gameElement) {

@@ -19,7 +19,7 @@ public class BusStation extends Station{
     @Override
     public void draw(Graphics2D g2d) {
         // Draw black background square
-        g2d.setColor(Color.green);
+        g2d.setColor(new Color(0, 200, 0, 100));
         g2d.fillRect(renderX, renderY, CELL_SIZE, CELL_SIZE);
     }
     @Override
