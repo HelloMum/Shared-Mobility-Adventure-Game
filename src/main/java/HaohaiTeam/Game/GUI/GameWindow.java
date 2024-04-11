@@ -24,15 +24,14 @@ public class GameWindow {
     private static final int GRID_HEIGHT = 18; // Number of grid cells vertically
     public static final int FRAME_WIDTH = CELL_SIZE * GRID_WIDTH; // This is equal to 720p resolution
     public static final int FRAME_HEIGHT = CELL_SIZE * GRID_HEIGHT;
-    // keep player position
     private GameElement player;
-    // Calculate camera offset
+    private final TickGenerator tickGenerator; // Declare tickGenerator variable
+
     private double cameraOffsetX = 0;
     private double cameraOffsetY = 0;
     private final GamePanel gamePanel;
     private static List<GameElement> elements = null;
     private final OverlayHUD overlayHUD; // Reference to the HUD overlay
-//    private CommandListener commandListener = new GameStatus();
     public GameStatus gameStatus = new GameStatus(); // we should only have a GameStatus object
 
     private double scaleX = 1.0; // Scale factor for X-axis
@@ -42,14 +41,13 @@ public class GameWindow {
         elements = new ArrayList<>();
         this.gamePanel = new GamePanel();
         this.overlayHUD = new OverlayHUD(gameStatus); // use the same GameStatus object
+
+        // Initialize TickGenerator
+        tickGenerator = new TickGenerator();
+        tickGenerator.start(); // Start the TickGenerator
+
         elements.sort(Comparator.comparingInt(GameElement::getLayer));
-        // Initialize TickGenerator with gameStatus
-        TickGenerator tickGenerator = new TickGenerator(gameStatus);
-        tickGenerator.setCommandListener(gameStatus);
-        tickGenerator.start();
-
     }
-
 
     // For logic checking, game elements can access this
     public static List<GameElement> getElements() {
@@ -59,6 +57,7 @@ public class GameWindow {
     public void addElement(GameElement element) {
         element.setCommandListener(gameStatus);
         elements.add(element);
+        TickGenerator.setCommandListener(element);
     }
 
     public void openWindow() {
@@ -104,16 +103,14 @@ public class GameWindow {
 
         @Override
         protected void paintComponent(Graphics g) {
+
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g.create();
             // Apply scaling transformation
             g2d.scale(scaleX, scaleY);
-            // Apply translation to center the camera on the player
             g2d.translate(cameraOffsetX, cameraOffsetY);
-//            renderMap(g2d); // Render the loaded map
+
             renderElements(g2d); // Render game elements
-            // Update OverlayHUD with the current GameStatus before rendering
-//            overlayHUD.update(new GameStatus());
             renderHUD(g2d); // Render the HUD overlay
             g2d.dispose();
         }
