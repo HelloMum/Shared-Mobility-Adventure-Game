@@ -131,25 +131,6 @@ public class GameWindow {
 
     }
 
-    private void renderHUD(Graphics g) {
-        if (overlayHUD != null) {
-            Graphics2D g2d = (Graphics2D) g.create();
-            overlayHUD.render(g2d);
-            g2d.dispose();
-        }
-    }
-//
-//    private void renderMap(Graphics2D g) {
-////        // Rendering map grid lines (for debugging)
-////        //g.setColor(Color.GRAY);
-////        for (int x = 0; x <= FRAME_WIDTH; x += CELL_SIZE) {
-////            g.drawLine(x, 0, x, FRAME_HEIGHT);
-////        }
-////        for (int y = 0; y <= FRAME_HEIGHT; y += CELL_SIZE) {
-////            g.drawLine(0, y, FRAME_WIDTH, y);
-////        }
-//    }
-
     private void renderElements(Graphics2D g) {
         // Sort elements based on their layer
         elements.sort(Comparator.comparingInt(GameElement::getLayer));
@@ -178,9 +159,20 @@ public class GameWindow {
         if (camera != null && camera.getLinkedElement() != null) {
             camera.moveToLinked();
             updateCameraPosition(camera);
+
         }
     }
+    private void renderHUD(Graphics g) {
+        if (overlayHUD != null) {
+            Graphics2D g2d = (Graphics2D) g.create();
 
+            // Translate by the negative of the camera offset
+            g2d.translate(-cameraOffsetX, -cameraOffsetY);
+            overlayHUD.render(g2d);
+
+            g2d.dispose();
+        }
+    }
 
     private void handleKeyEvent(KeyEvent e) {
         for (GameElement element : elements) {
