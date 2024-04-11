@@ -30,6 +30,8 @@ public abstract class GameElement implements CommandListener  {
     public boolean playerOnTop;
     public Direction direction; // Direction the element is facing
     CommandListener commandListener;
+    public int tickCount = 0;
+
 
 
     public GameElement(int x, int y) {
@@ -44,6 +46,7 @@ public abstract class GameElement implements CommandListener  {
         this.commandListener = null; // we need to start this later
         this.X = x; // Real pixel position
         this.Y = y; // Real pixel position
+
     }
     public void setCommandListener(CommandListener commandListener) { // set up a command listen
         this.commandListener = commandListener;
@@ -413,6 +416,10 @@ public abstract class GameElement implements CommandListener  {
 
     @Override
     public void onTick() {
-
+        tickCount++;
+//        // Example of use override on your on class
+//        if (tickCount % 5 == 0) {
+//            move();
+//        }
     }
 }
