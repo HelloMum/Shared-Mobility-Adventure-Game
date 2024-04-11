@@ -29,12 +29,12 @@ public class MapLoader {
             "W  r    W  r WWWWWW                  r    W  r WWWWWW                       W",
             "W  r G  W  r      C     C            r G  W  r      C     C                 W",
             "W  r    W  rE  F   C     rrrrrrrrrrrrr    W  r   F   C     rrrr             W",
-            "W  rC   W  rrrrrrrrrrrrrrrT           C   W  rrrrrrrrrrrrrrrT r             W",
+            "W  rC   W  rrrrrrrrrrrrrrrT               W  rrrrrrrrrrrrrrrT r             W",
             "W  r    W             C                   W             C     r             W",
             "W  r    W    WWW    C                     W    WWW    C       r             W",
             "W  b    W    W   W                        W    W   W          r             W",
             "W  t  C W    WG  W                      C W    WG  W          b             W",
-            "W  r         W   W     C   U                   W   W     C   Ur             W",
+            "W  r         W   W     C   U    a     a        W   W     C   Ur             W",
             "W  rrrrbrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrbrrrrrrrrrrrrrrrrrrrrr             W",
             "W                                                                           W",
             "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
@@ -120,6 +120,11 @@ public class MapLoader {
                         placeReport("LuasStation", posX, posY);
                         LuasStation luasStation = new LuasStation(posX, posY);
                         gameWindow.addElement(luasStation);
+                        break;
+                    case 'a':
+                        placeReport("Car", posX, posY);
+                        Car car = new Car(posX, posY);
+                        gameWindow.addElement(car);
                         break;
                 }
             }

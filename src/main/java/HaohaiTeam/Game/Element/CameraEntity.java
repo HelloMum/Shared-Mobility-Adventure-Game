@@ -19,7 +19,7 @@ public class CameraEntity extends GameElement {
     @Override
     public void helperDrawer(Graphics2D g2d) {
         // Define a constant step to get closer to objetive
-        int stepSize = 1;
+        int stepSize = 2;
 
         // Calculate the direction of movement
         int dx = prevX - renderX;
