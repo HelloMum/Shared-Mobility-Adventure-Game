@@ -16,16 +16,6 @@ public class CommandHandler implements CommandListener {
     }
 
     @Override
-    public void onTransportEntered(GameElement element) {
-        // Handle transport entered event
-    }
-
-    @Override
-    public void onTransportExited(GameElement element) {
-        // Handle transport exited event
-    }
-
-    @Override
     public void onTick() {
 
     }
