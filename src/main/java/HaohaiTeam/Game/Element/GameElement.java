@@ -403,23 +403,12 @@ public abstract class GameElement implements CommandListener  {
     public void onPickedGem(GameElement element) {
 
     }
-
-    @Override
-    public void onTransportEntered(GameElement element) {
-
-    }
-
-    @Override
-    public void onTransportExited(GameElement element) {
-
-    }
-
     @Override
     public void onTick() {
         tickCount++;
-//        // Example of use override on your on class
-//        if (tickCount % 5 == 0) {
-//            move();
-//        }
+       if (tickCount % 12000 == 0) {
+           System.out.println("Tic is working but only for the game element ");
+       }
     }
+
 }
