@@ -20,24 +20,24 @@ public class MapLoader {
         // this.elementBehavior = elementBehavior;
     }
     public static String[] level_1 = {
-            "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
-            "W  rrrrrrrrr                   W",
-            "W  r P  W Cr     C    L     B  W",
-            "W  r    W  c WWWWWW  rrrrrrr   W",
-            "W  r    W  r WGGGGW  r     r   W",
-            "W  r    W  r WGGGG   rrrlrrr   W",
-            "W  r    W  r WWWWWW            W",
-            "W  r G  W  r      C     C      W",
-            "W  r    W  rE  F   C     rrrr  W",
-            "W  rC   W  rrrrrrrrrrrrrrrT r  W",
-            "W  r    W             C     r  W",
-            "W  r    W    WWW    C       r  W",
-            "W  b    W    W   W          r  W",
-            "W  t  C W    WG  W          b  W",
-            "W  r         W   W     C   Ur  W",
-            "W  rrrrbrrrrrrrrrrrrrrrrrrrrr  W",
-            "W                              W",
-            "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
+            "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+            "W  rrrrrrrrr                         rrrrrrrrr                              W",
+            "W  r P  W Cr     C    L     B        r    W Cr     C    L     B             W",
+            "W  r    W  c WWWWWW  rrrrrrr         c       c WWWWWW  rrrrrrr              W",
+            "W  r    W  r WGGGGW  r     r         t    W  r WGGGGW  r     r              W",
+            "W  r    W  r WGGGG   rrrlrrr         r    W  r WGGGG   rrrlrrr              W",
+            "W  r    W  r WWWWWW                  r    W  r WWWWWW                       W",
+            "W  r G  W  r      C     C            r G  W  r      C     C                 W",
+            "W  r    W  rE  F   C     rrrrrrrrrrrrr    W  r   F   C     rrrr             W",
+            "W  rC   W  rrrrrrrrrrrrrrrT           C   W  rrrrrrrrrrrrrrrT r             W",
+            "W  r    W             C                   W             C     r             W",
+            "W  r    W    WWW    C                     W    WWW    C       r             W",
+            "W  b    W    W   W                        W    W   W          r             W",
+            "W  t  C W    WG  W                      C W    WG  W          b             W",
+            "W  r         W   W     C   U                   W   W     C   Ur             W",
+            "W  rrrrbrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrbrrrrrrrrrrrrrrrrrrrrr             W",
+            "W                                                                           W",
+            "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
     };
     // This should be implemented in an external file but for now it suits the purpose of testing
 

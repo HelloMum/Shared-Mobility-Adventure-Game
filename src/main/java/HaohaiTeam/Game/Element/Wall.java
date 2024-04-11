@@ -17,7 +17,6 @@ public class Wall extends GameElement {
         // Draw the fake shadow
         g2d.setColor(new Color(0, 0, 0, 20));
         g2d.fillRect(renderX + 10, renderY + 10, CELL_SIZE, CELL_SIZE);
-
         g2d.setColor(WALL_COLOR);
         g2d.fillRect(renderX, renderY, CELL_SIZE, CELL_SIZE);
     }
