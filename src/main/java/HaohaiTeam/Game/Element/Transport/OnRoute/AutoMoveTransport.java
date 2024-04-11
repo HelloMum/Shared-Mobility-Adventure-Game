@@ -8,6 +8,18 @@ import java.util.List;
 public abstract class AutoMoveTransport extends GameElement {
     public boolean moving; // This refers if moving
 
+    @Override
+    public void onTick() {
+        tickCount++;
+        System.out.println("Tic");
+        // Move every 5 ticks
+        if (tickCount % 5 == 0) {
+            moveOnRoad(this.getLogicalPosX(), this.getLogicalPosY()); // Start moving on road
+            System.out.println("Tic");
+
+
+        }
+    }
     public AutoMoveTransport(int x, int y) {
         super(x,y);
         moving = true;
