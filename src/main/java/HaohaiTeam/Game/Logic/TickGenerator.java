@@ -1,52 +1,48 @@
 package HaohaiTeam.Game.Logic;
 
-import java.util.ArrayList;
-import java.util.List;
+import HaohaiTeam.Game.Input.CommandListener;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class TickGenerator {
-    private boolean running;
-    private int tickRate;
-    private List<TickListener> listeners = new ArrayList<>();
-    //Creates empty list of objects implementing TickListener
+    private static ScheduledExecutorService executor;
+    private static int tickRate;
+    private static CommandListener commandListener;
 
-    public TickGenerator(int tickRate) {
-        this.tickRate = tickRate;
+    public TickGenerator(GameStatus gameStatus) {
+        tickRate = 100;
+        commandListener = gameStatus; // we need to start this later
+        executor = Executors.newSingleThreadScheduledExecutor(); // Create a thread for tick time tracking
     }
 
-    //Method to start the ticks
-    public void start() {
-        running = true;
-        while (running) {
-
-            try {
-                Thread.sleep(tickRate); //Wait for the tick rate
-            } catch (InterruptedException e) {
-                // Do nothing or log the exception
+    public static void start() {
+        executor.scheduleAtFixedRate(() -> {
+            if (commandListener != null) {
+                commandListener.onTick();
+                System.out.println("Tac!");
             }
-
-            //Call 'onTick' method for listeners on each tick
-            for (int i = 0; i < listeners.size(); i++) {
-                TickListener listener = listeners.get(i);
-                listener.onTick();
-
-        }
-
-
-            }
-        }
-
-    //Method to stop the ticks
-    public void stop() {
-        running = false;
+        }, 0, tickRate, TimeUnit.MILLISECONDS);
     }
 
-    //Method to add a listener
-    public void addTickListener(TickListener listener) {
-        listeners.add(listener);
+    public static void setCommandListener(CommandListener commandListener) {
+        TickGenerator.commandListener = commandListener;
     }
 
-    //Method to remove a listener
-    public void removeTickListener(TickListener listener) {
-        listeners.remove(listener);
+    public static void stop() {
+        executor.shutdown();
+    }
+
+    public static void addTickListener(Runnable listener) {
+        // Implement if needed
+    }
+
+    public static void changeTickRate(int tickRate) {
+        TickGenerator.tickRate = tickRate;
+    }
+
+    public static void removeTickListener(Runnable listener) {
+        // Implement if needed
     }
 }
