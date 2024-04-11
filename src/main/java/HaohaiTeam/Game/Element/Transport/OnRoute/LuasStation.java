@@ -8,7 +8,7 @@ import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 public class LuasStation extends Station{
     private static final Color YelliG_COLOR = Color.YELLOW;
     public LuasStation(int x, int y, Set<String> supportedTransportTypes, int waitTimeInSeconds) {
-        super(x, y, supportedTransportTypes, waitTimeInSeconds);
+        super(x, y);
     }
     @Override
     public void draw(Graphics2D g2d) {
