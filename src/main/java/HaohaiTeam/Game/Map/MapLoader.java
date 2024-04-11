@@ -22,7 +22,7 @@ public class MapLoader {
     public static String[] level_1 = {
             "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
             "W  rrrrrrrrr                   W",
-            "W  r P  W Cr     C    LLL   B  W",
+            "W  r P  W Cr     C    L     B  W",
             "W  r    W  c WWWWWW  rrrrrrr   W",
             "W  r    W  r WGGGGW  r     r   W",
             "W  r    W  r WGGGG   rrrlrrr   W",
