@@ -3,6 +3,7 @@ package HaohaiTeam.Game.Element.Transport.OnRoute;
 import HaohaiTeam.Game.Element.GameElement;
 import HaohaiTeam.Game.Element.Transport.TransportMode;
 import HaohaiTeam.Game.GUI.GameWindow;
+import HaohaiTeam.Game.Input.CommandListener;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 /**
  * An abstract base class for transport modes that automatically move along roads.
  */
-public abstract class AutoMoveTransport extends TransportMode {
+public abstract class AutoMoveTransport extends TransportMode implements CommandListener {
     protected Color color;
     protected static final int MOVE_INTERVAL_MS = 100; // Move every 1 second
 
@@ -94,4 +95,4 @@ public abstract class AutoMoveTransport extends TransportMode {
         headingY = dy;
     }
 
-}
+    }
