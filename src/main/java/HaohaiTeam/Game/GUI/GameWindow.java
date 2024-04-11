@@ -3,7 +3,6 @@ package HaohaiTeam.Game.GUI;
 import HaohaiTeam.Game.Element.CameraEntity;
 import HaohaiTeam.Game.Element.GameElement;
 import HaohaiTeam.Game.Element.Player;
-import HaohaiTeam.Game.Input.CommandListener;
 import HaohaiTeam.Game.Logic.GameStatus;
 import HaohaiTeam.Game.Logic.OverlayHUD;
 import HaohaiTeam.Game.Logic.TickGenerator;
@@ -32,7 +31,7 @@ public class GameWindow {
     private final GamePanel gamePanel;
     private static List<GameElement> elements = null;
     private final OverlayHUD overlayHUD; // Reference to the HUD overlay
-    public GameStatus gameStatus = new GameStatus(); // we should only have a GameStatus object
+    public static GameStatus gameStatus = new GameStatus(); // we should only have a GameStatus object
 
     private double scaleX = 1.0; // Scale factor for X-axis
     private double scaleY = 1.0; // Scale factor for Y-axis
@@ -47,6 +46,7 @@ public class GameWindow {
         tickGenerator.start(); // Start the TickGenerator
 
         elements.sort(Comparator.comparingInt(GameElement::getLayer));
+
     }
 
     // For logic checking, game elements can access this
@@ -54,7 +54,7 @@ public class GameWindow {
         return elements;
     }
 
-    public void addElement(GameElement element) {
+    public static void addElement(GameElement element) {
         element.setCommandListener(gameStatus);
         elements.add(element);
         TickGenerator.setCommandListener(element);
@@ -174,7 +174,8 @@ public class GameWindow {
     }
 
     private void handleKeyEvent(KeyEvent e) {
-        for (GameElement element : elements) {
+        List<GameElement> copy = new ArrayList<>(elements); // Create a copy of the elements list
+        for (GameElement element : copy) {
             element.handleKeyEvent(e);
         }
     }

@@ -17,5 +17,14 @@ public class Wall extends GameElement {
         g2d.setColor(WALL_COLOR);
         g2d.fillRect(renderX, renderY, CELL_SIZE, CELL_SIZE);
     }
-
+    @Override
+    public void onBeingCollidedOnYou(GameElement gameElement) {
+        System.out.println(this + " collision on the element " + gameElement);
+        if (gameElement instanceof Player) {
+            // If the collision is with a Wall, show a pop-up indicating inability to walk through walls
+            new PopUp(this.X, this.Y,"You cannot walk through walls");
+        }
+        // Notify the other element about the collision if needed
+        gameElement.onBeingCollidedOnYou(this);
+    }
 }
