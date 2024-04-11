@@ -6,5 +6,6 @@ public abstract class Station extends Road {
 
     public Station(int x, int y) {
         super(x, y);
+        this.walkable = true;
     }
 }
