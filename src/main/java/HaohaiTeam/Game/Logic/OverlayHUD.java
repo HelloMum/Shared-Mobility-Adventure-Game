@@ -18,8 +18,4 @@ public class OverlayHUD {
         g.drawString("Gems: " + gameStatus.getGemsAcquired(), 20, 90);
         // Add more HUD elements as needed
     }
-
-    public void update(GameStatus gameStatus) {
-        this.gameStatus = gameStatus;
-    }
 }
