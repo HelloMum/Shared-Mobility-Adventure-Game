@@ -62,7 +62,6 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
         if (!tryTurn(elements, -headingY, headingX)) {
             return;
         }
-        ;
 
     }
 
