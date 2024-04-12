@@ -31,7 +31,7 @@ public abstract class GameElement implements CommandListener  {
     public Direction direction; // Direction the element is facing
     CommandListener commandListener;
     public int tickCount = 0;
-
+    private boolean canMove = true;
 
 
     public GameElement(int x, int y) {
@@ -220,32 +220,56 @@ public abstract class GameElement implements CommandListener  {
         if (key == KeyEvent.VK_ESCAPE) {
             System.exit(0); // Exit the program gracefully
         }
-        if (beingControlled) {
+        if (beingControlled && canMove) {
             System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
+            boolean validKey = false;
             switch (key) {
                 case KeyEvent.VK_A:
                 case KeyEvent.VK_LEFT:
                     direction = Direction.LEFT;
+                    validKey = true;
                     break;
                 case KeyEvent.VK_D:
                 case KeyEvent.VK_RIGHT:
                     direction = Direction.RIGHT;
+                    validKey = true;
                     break;
                 case KeyEvent.VK_W:
                 case KeyEvent.VK_UP:
                     direction = Direction.UP;
+                    validKey = true;
                     break;
                 case KeyEvent.VK_S:
                 case KeyEvent.VK_DOWN:
                     direction = Direction.DOWN;
+                    validKey = true;
                     break;
                 case KeyEvent.VK_SPACE:
-                    interactKeyPressedByYou(); // Send interact to the item that has control
+                    interactKeyPressedByYou(); // Trigger interaction
+                    validKey = true;
                     break;
             }
-            moveFacing(); // Move the player in the direction it is facing
+            if (validKey) {
+                moveFacing();
+                canMove = false;  // Disable further movement until reset
+                resetMovementControl();  // Reset movement control after a delay
+            }
         }
     }
+
+    private void resetMovementControl() {
+        // This could be a simple delay timer or tied to a key release event
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        canMove = true;
+                    }
+                },
+                200 // Set delay as needed
+        );
+    }
+
 
     public void moveFacing() {
         int[] direction = getDirectionBasedMovement();
