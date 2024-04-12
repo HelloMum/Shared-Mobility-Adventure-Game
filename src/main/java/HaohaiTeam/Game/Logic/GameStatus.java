@@ -93,6 +93,7 @@ public class GameStatus implements CommandListener {
         // Implementation for handling picked gems if needed
         addGems(1);
         System.out.println("Gem received signal");
+        checkGameConditions();
     }
     public boolean losingCondition() {
         return false;
@@ -101,15 +102,14 @@ public class GameStatus implements CommandListener {
         return false;
     }
     public void checkGameConditions() {
-    }
+        loseALive();
+        losingCondition();
+        System.out.println("GameConditionsHaveBeenChecked");    }
     @Override
     public void onTick() {
         tickCount++;
         if (tickCount % 12000 == 0) {
             checkGameConditions();
-            loseALive();
-            losingCondition();
-            System.out.println("GameConditionsHaveBeenChecked");
         }
     }
 }
