@@ -12,6 +12,8 @@ public class GameStatus implements CommandListener {
     private int co2Collected = 0;
     private long elapsedTimeInSeconds = 0; // Variable to track elapsed time
     private boolean gameOver = false;
+    private boolean resetTriggered = false;
+    private int tickCount;
 
     public void addScore(int points) {
         this.score += points;
@@ -92,9 +94,19 @@ public class GameStatus implements CommandListener {
         addGems(1);
         System.out.println("Gem received signal");
     }
-
+    public boolean losingCondition(GameElement element) {
+        return false;
+    }
+    public boolean loseALive(GameElement element) {
+        return false;
+    }
+    public void checkGameConditions(GameElement element) {
+    }
     @Override
     public void onTick() {
-
+        tickCount++;
+        if (tickCount % 12000 == 0) {
+            System.out.println("Tic is working on game status");
+        }
     }
 }
