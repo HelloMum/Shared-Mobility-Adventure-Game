@@ -220,7 +220,7 @@ public abstract class GameElement implements CommandListener  {
         if (key == KeyEvent.VK_ESCAPE) {
             System.exit(0); // Exit the program gracefully
         }
-        if (beingControlled && canMove) {
+        if (beingControlled) {
             System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
             boolean validKey = false;
             switch (key) {
@@ -249,8 +249,7 @@ public abstract class GameElement implements CommandListener  {
                     validKey = true;
                     break;
             }
-            if (validKey) {
-                moveFacing();
+            if (canMove && validKey) {
                 canMove = false;  // Disable further movement until reset
                 resetMovementControl();  // Reset movement control after a delay
             }
@@ -258,18 +257,22 @@ public abstract class GameElement implements CommandListener  {
     }
 
     private void resetMovementControl() {
+        moveFacing();
+        final Direction lastDirection = direction; // Use final to access inside anonymous class
         // This could be a simple delay timer or tied to a key release event
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {
                     @Override
                     public void run() {
                         canMove = true;
+                        if (lastDirection != direction) { // Corrected syntax for if condition
+                            moveFacing();
+                        }
                     }
                 },
                 200 // Set delay as needed
         );
     }
-
 
     public void moveFacing() {
         int[] direction = getDirectionBasedMovement();
