@@ -63,6 +63,11 @@ public class GameWindow {
 
     }
 
+    public static void removeElement(GameElement element) {
+        // empty for now
+
+    }
+
     public void openWindow() {
         JFrame frame = new JFrame("Game Window");
         frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
