@@ -64,8 +64,7 @@ public class GameWindow {
     }
 
     public static void removeElement(GameElement element) {
-        // empty for now
-
+        elements.remove(element);
     }
 
     public void openWindow() {
