@@ -145,7 +145,7 @@ public class Player2 extends Player {
         int newRenderX = renderX + (CELL_SIZE - newCellSize) / 2;
         int newRenderY = renderY + (CELL_SIZE - newCellSize) / 2;
 
-        g2d.setColor(Color.RED);
+        g2d.setColor(new Color(255, 0, 0, 100));
         g2d.fillOval(newRenderX, newRenderY, newCellSize, newCellSize);
 
         g2d.setColor(Color.BLACK);
@@ -170,13 +170,13 @@ public class Player2 extends Player {
             default:
                 break;
         }
-        g2d.setColor(Color.RED);
+        g2d.setColor(new Color(200, 55, 55, 150));
         g2d.fillOval(newRenderX + newCellSize / 2 - 2, newRenderY + newCellSize - 2, newCellSize * 4 / 20, newCellSize * 4 / 20);
     }
 
     @Override
     public void helperDrawer(Graphics2D g2d) {
-        int stepSizeScaled = 5; // 1.5 * 2 = 3
+        double stepSizeScaled = 1.9;
 
         // Calculate the direction of movement
         int dx = (prevX - renderX) * 2;
@@ -184,13 +184,13 @@ public class Player2 extends Player {
 
         // Move renderX and renderY towards prevX and prevY by the scaled step size
         if (Math.abs(dx) > stepSizeScaled) {
-            renderX += (int) (Math.signum(dx) * (stepSizeScaled / 2));
+            renderX += (int) (Math.signum(dx) * (stepSizeScaled * 2 / 3)); // Adjusted calculation for x
         } else {
             renderX = prevX;
         }
 
         if (Math.abs(dy) > stepSizeScaled) {
-            renderY += (int) (Math.signum(dy) * (stepSizeScaled / 2));
+            renderY += (int) (Math.signum(dy) * (stepSizeScaled * 2 / 3)); // Adjusted calculation for y
         } else {
             renderY = prevY;
         }
@@ -202,5 +202,7 @@ public class Player2 extends Player {
         this.prevX = X;
         this.prevY = Y;
     }
+
+
 
 }
