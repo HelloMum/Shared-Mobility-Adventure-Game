@@ -27,7 +27,7 @@ public class MapLoader {
             "Wr        r  2 W Cr     C    L     B        r    W Cr     C    L     B     rW",
             "Wr        r  P W  c WWWWWW  rrrrrrr         c       c WWWWWW  rrrrrrr      rW",
             "Wr        r    W  r WGGGGW  r     r         t    W  r WGGGGW  r     r      rW",
-            "Wr        r    W  r WGGGG   rrrlrrr         r    W  r WGGGG   rrrlrrr      rW",
+            "Wr        r    W  r WGGGGW  rrrlrrr         r    W  r WGGGG   rrrlrrr      rW",
             "Wr        r    W  r WWWWWW                  r    W  r WWWWWW               rW",
             "Wr        r G  W  r      C     C            r G  W  r      C     C         rW",
             "Wr        r    W  rE  F   C     rrrrrrrrrrrrr    W  r   F   C     rrrr     rW",
