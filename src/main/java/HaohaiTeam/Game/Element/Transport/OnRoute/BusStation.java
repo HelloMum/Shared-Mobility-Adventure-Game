@@ -50,7 +50,13 @@ public class BusStation extends Station{
         if (gameElement instanceof Player) {
 
             PopUp busPopup = new PopUp(this.X, this.Y,"This is a bus stop.\n It costs " + busPrice + " to ride the bus.", 2000);
-
+            Timer busPopupTimer = new Timer();
+            busPopupTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    busPopup.remove();
+                }
+            }, 3000);
         }
     }
 }

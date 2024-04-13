@@ -50,7 +50,7 @@ public class PopUp extends GameElement {
         this.isVisible = false;
     }
 
-    private void remove() {GameWindow.removeElement(this);}
+    public void remove() {GameWindow.removeElement(this);}
 
     @Override
     public void draw(Graphics2D g2d) {
