@@ -18,6 +18,22 @@ public abstract class Station extends Road {
     @Override
     public void interactKeyPressedOnYou(GameElement gameElement) {
         // If player wants to interact and bus linked to station give move player onto the bus and link to it
+
+        if (gameElement instanceof Player) {
+            FakeVehicle vehicle;
+            if (this instanceof BusStation) {
+                vehicle = new FakeBus(this.X, this.Y);
+            } else if (this instanceof LuasStation) {
+                vehicle = new FakeLuas(this.X, this.Y);
+            } else if (this instanceof TaxiStation) {
+                vehicle = new FakeTaxi(this.X, this.Y);
+            } else {
+                return;
+            }
+            vehicle.initiateMovement(this);
+            System.out.println("key-------successfully");
+
+        }
     }
     @Override
     public void onBeingCollidedOnYou(GameElement gameElement) {
@@ -46,6 +62,30 @@ public abstract class Station extends Road {
 
     // Override on children
 
+
+
+    // Method to find the closest station of the same type
+    public Station findClosestStation() {
+        List<GameElement> elements = GameWindow.getElements(); // Get all elements from the game window
+        Station closest = null;
+        double minDistance = Double.MAX_VALUE;
+
+        for (GameElement element : elements) {
+            if (element instanceof Station && element != this && ((Station)element).stationType == this.stationType) {
+                double distance = calculateDistance(this.X, this.Y, element.X, element.Y);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closest = (Station)element;
+                }
+            }
+        }
+        return closest; // Return the closest station found
+    }
+
+    // Helper method to calculate distance between two points
+    private double calculateDistance(int x1, int y1, int x2, int y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
 
     // will implement in child classes
     protected void setStationType(char type) {

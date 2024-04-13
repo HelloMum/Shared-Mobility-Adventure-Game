@@ -39,7 +39,7 @@ public class MapLoader {
             "Wr        b    W    W   W                        W    W   W          r     rW",
             "Wr        t  C W    WG  W                      C W    WG  W          b     rW",
             "Wl        r         W   W     C   U    a     a        W   W     C   Ur     rW",
-            "Wr        rrrrbrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrbrrrrrrrrrrrrrrrrrrrrr     rW",
+            "Wr        rrrbrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrbrrrrrrrrrrrrrrrrrrrrr     rW",
             "Wr                                                                         rW",
             "Wr                                                                         rW",
             "Wr                                                                         rW",
@@ -147,6 +147,21 @@ public class MapLoader {
                     case ' ':
                         validGemCoordinates.add(posX);
                         validGemCoordinates.add(posY);
+                        break;
+                    case 'x':
+                        placeReport("FakeBus", posX, posY);
+                        FakeBus fakeBus = new FakeBus(posX, posY);
+                        gameWindow.addElement(fakeBus);
+                        break;
+                    case 'y':
+                        placeReport("FakeLuas", posX, posY);
+                        FakeLuas fakeLuas = new FakeLuas(posX, posY);
+                        gameWindow.addElement(fakeLuas);
+                        break;
+                    case 'z':
+                        placeReport("FakeTaxi", posX, posY);
+                        FakeTaxi fakeTaxi = new FakeTaxi(posX, posY);
+                        gameWindow.addElement(fakeTaxi);
                         break;
                 }
 
