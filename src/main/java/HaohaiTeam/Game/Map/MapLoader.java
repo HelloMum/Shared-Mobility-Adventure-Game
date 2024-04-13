@@ -6,7 +6,9 @@ import HaohaiTeam.Game.GUI.GameWindow;
 import HaohaiTeam.Game.Element.*;
 import HaohaiTeam.Game.Element.Transport.*;
 import HaohaiTeam.Game.Element.Transport.OnRoute.*;
+import java.util.Random;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 //import HaohaiTeam.Game.Logic.ElementBehavior;
@@ -52,6 +54,7 @@ public class MapLoader {
     // This should be implemented in an external file but for now it suits the purpose of testing
 
     public void loadMap(String[] mapData) {
+        ArrayList<Object> validGemCoordinates = new ArrayList<>();
         System.out.println("No Saved Games, starting first level!");
         for (int y = 0; y < mapData.length; y++) {
             String line = mapData[y];
@@ -141,8 +144,28 @@ public class MapLoader {
                         Car car = new Car(posX, posY);
                         gameWindow.addElement(car);
                         break;
+                    case ' ':
+                        validGemCoordinates.add(posX);
+                        validGemCoordinates.add(posY);
+                        break;
                 }
+
             }
+        }
+        int maxRandomGems = 10;
+        // This loop goes through the list of cells that are empty and places gems until it reaches the maximum
+        Random random = new Random();
+        for (int i = 0; i < maxRandomGems; i++) {
+            int randomIndex = random.nextInt(validGemCoordinates.size() / 2);
+            int gemPosX = (int)validGemCoordinates.get(randomIndex * 2);
+            int gemPosY = (int)validGemCoordinates.get(randomIndex * 2 + 1);
+
+            placeReport("Random Gem", gemPosX, gemPosY);
+            Gem gem = new Gem(gemPosX, gemPosY);
+            gameWindow.addElement(gem);
+
+            validGemCoordinates.remove(randomIndex * 2 + 1);
+            validGemCoordinates.remove(randomIndex * 2);
         }
     }
     private void placeReport(String placeName, int posX , int posY) {
