@@ -24,8 +24,8 @@ public class MapLoader {
             "WrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrlrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrW",
             "WrL                                                                        rW",
             "Wr        rrrrrrrrr                         rrrrrrrrr                      rW",
-            "Wr        r P  W Cr     C    L     B        r    W Cr     C    L     B     rW",
-            "Wr        r    W  c WWWWWW  rrrrrrr         c       c WWWWWW  rrrrrrr      rW",
+            "Wr        r  2 W Cr     C    L     B        r    W Cr     C    L     B     rW",
+            "Wr        r  P W  c WWWWWW  rrrrrrr         c       c WWWWWW  rrrrrrr      rW",
             "Wr        r    W  r WGGGGW  r     r         t    W  r WGGGGW  r     r      rW",
             "Wr        r    W  r WGGGG   rrrlrrr         r    W  r WGGGG   rrrlrrr      rW",
             "Wr        r    W  r WWWWWW                  r    W  r WWWWWW               rW",
@@ -80,6 +80,11 @@ public class MapLoader {
                         placeReport("Player", posX, posY);
                         Player player = new Player(posX, posY);
                         gameWindow.addElement(player);
+                        break;
+                    case '2':
+                        placeReport("2", posX, posY);
+                        Player player2 = new Player2(posX, posY);
+                        gameWindow.addElement(player2);
                         break;
                     case 'B':
                         placeReport("Bike", posX, posY);

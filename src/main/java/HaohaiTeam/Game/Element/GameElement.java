@@ -224,22 +224,18 @@ public abstract class GameElement implements CommandListener  {
             System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
             boolean validKey = false;
             switch (key) {
-                case KeyEvent.VK_A:
                 case KeyEvent.VK_LEFT:
                     direction = Direction.LEFT;
                     validKey = true;
                     break;
-                case KeyEvent.VK_D:
                 case KeyEvent.VK_RIGHT:
                     direction = Direction.RIGHT;
                     validKey = true;
                     break;
-                case KeyEvent.VK_W:
                 case KeyEvent.VK_UP:
                     direction = Direction.UP;
                     validKey = true;
                     break;
-                case KeyEvent.VK_S:
                 case KeyEvent.VK_DOWN:
                     direction = Direction.DOWN;
                     validKey = true;
@@ -258,7 +254,7 @@ public abstract class GameElement implements CommandListener  {
 
     private long keyPressTimestamp = 0;
 
-    private void resetMovementControl() {
+    public void resetMovementControl() {
         if (canMove) {
             final Direction lastDirection = direction;
             moveFacing();
