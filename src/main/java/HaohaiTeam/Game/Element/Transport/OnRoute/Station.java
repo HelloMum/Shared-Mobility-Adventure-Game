@@ -47,8 +47,13 @@ public abstract class Station extends Road {
         gameElement.onBeingCollidedOnYou(this);
 
         double co2Emission = calculateCO2Emission();
+        String popupStationName = null;
 
-        new PopUp(this.X, this.Y, getCollisionPopupMessage(co2Emission), 2000);
+        if (stationType == 'l') {popupStationName = "Luas stop";}
+        else if (stationType == 'b') {popupStationName = "Bus stop";}
+        else if (stationType == 't') {popupStationName = "Taxi rank";}
+
+        new PopUp(this.X, this.Y, "This is a " + popupStationName + ". " + getCollisionPopupMessage(co2Emission), 2000);
     }
 
     // sorry here I just use popup to check my co2 info so if you want to delete it is ok
