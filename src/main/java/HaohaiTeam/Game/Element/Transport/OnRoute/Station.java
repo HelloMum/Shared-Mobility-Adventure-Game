@@ -32,7 +32,7 @@ public abstract class Station extends Road {
 
         double co2Emission = calculateCO2Emission();
 
-        new PopUp(this.X, this.Y, getCollisionPopupMessage(co2Emission));
+        new PopUp(this.X, this.Y, getCollisionPopupMessage(co2Emission), 2000);
     }
 
     // sorry here I just use popup to check my co2 info so if you want to delete it is ok

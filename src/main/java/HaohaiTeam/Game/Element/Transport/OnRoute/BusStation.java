@@ -49,15 +49,7 @@ public class BusStation extends Station{
         System.out.println(this + " collision on the element " + gameElement);
         if (gameElement instanceof Player) {
 
-            PopUp busPopup = new PopUp(this.X, this.Y,"This is a bus stop.\n It costs " + busPrice + " to ride the bus.");
-
-            Timer busPopupTimer = new Timer();
-            busPopupTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    GameWindow.removeElement(busPopup);
-                }
-            }, 3000);
+            PopUp busPopup = new PopUp(this.X, this.Y,"This is a bus stop.\n It costs " + busPrice + " to ride the bus.", 2000);
 
         }
     }
