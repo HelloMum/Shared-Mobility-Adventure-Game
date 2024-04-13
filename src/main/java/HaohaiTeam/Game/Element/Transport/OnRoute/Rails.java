@@ -14,6 +14,7 @@ public class Rails extends Road{
         System.out.println(this + " collision on the element " + gameElement);
         if (gameElement instanceof Player) {
             new PopUp(this.X, this.Y,"These are for trains. You are not a train.");
+
         }
     }
 

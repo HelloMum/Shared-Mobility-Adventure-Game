@@ -3,6 +3,7 @@ package HaohaiTeam.Game.Element.Transport.OnRoute;
 import HaohaiTeam.Game.Element.GameElement;
 import HaohaiTeam.Game.Element.Player;
 import HaohaiTeam.Game.Element.PopUp;
+import HaohaiTeam.Game.GUI.GameWindow;
 
 import java.awt.*;
 import java.util.Timer;
@@ -48,7 +49,16 @@ public class BusStation extends Station{
         System.out.println(this + " collision on the element " + gameElement);
         if (gameElement instanceof Player) {
 
-            new PopUp(this.X, this.Y,"This is a bus stop.\n It costs " + busPrice + " to ride the bus.");
+            PopUp busPopup = new PopUp(this.X, this.Y,"This is a bus stop.\n It costs " + busPrice + " to ride the bus.");
+
+            Timer busPopupTimer = new Timer();
+            busPopupTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    GameWindow.removeElement(busPopup);
+                }
+            }, 3000);
+
         }
     }
 }
