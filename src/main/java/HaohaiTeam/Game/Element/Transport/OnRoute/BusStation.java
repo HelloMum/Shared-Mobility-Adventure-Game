@@ -1,6 +1,8 @@
 package HaohaiTeam.Game.Element.Transport.OnRoute;
 
 import HaohaiTeam.Game.Element.GameElement;
+import HaohaiTeam.Game.Element.Player;
+import HaohaiTeam.Game.Element.PopUp;
 
 import java.awt.*;
 import java.util.Timer;
@@ -9,6 +11,7 @@ import java.util.TimerTask;
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
 public class BusStation extends Station{
+    private static double busPrice;
     private static final double CO2_PER_CELL = 0.5;
     public BusStation(int x, int y) {
         super(x, y);
@@ -38,6 +41,14 @@ public class BusStation extends Station{
                     bus.toggleAutoStation();
                 }
             }, 3000);
+        }
+    }
+
+    public void onBeingCollidedOnYou(GameElement gameElement) {
+        System.out.println(this + " collision on the element " + gameElement);
+        if (gameElement instanceof Player) {
+
+            new PopUp(this.X, this.Y,"This is a bus stop.\n It costs " + busPrice + " to ride the bus.");
         }
     }
 }
