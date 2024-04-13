@@ -220,26 +220,22 @@ public abstract class GameElement implements CommandListener  {
         if (key == KeyEvent.VK_ESCAPE) {
             System.exit(0); // Exit the program gracefully
         }
-        if (beingControlled && canMove) {
+        if (beingControlled) {
             System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
             boolean validKey = false;
             switch (key) {
-                case KeyEvent.VK_A:
                 case KeyEvent.VK_LEFT:
                     direction = Direction.LEFT;
                     validKey = true;
                     break;
-                case KeyEvent.VK_D:
                 case KeyEvent.VK_RIGHT:
                     direction = Direction.RIGHT;
                     validKey = true;
                     break;
-                case KeyEvent.VK_W:
                 case KeyEvent.VK_UP:
                     direction = Direction.UP;
                     validKey = true;
                     break;
-                case KeyEvent.VK_S:
                 case KeyEvent.VK_DOWN:
                     direction = Direction.DOWN;
                     validKey = true;
@@ -250,27 +246,39 @@ public abstract class GameElement implements CommandListener  {
                     break;
             }
             if (validKey) {
-                moveFacing();
-                canMove = false;  // Disable further movement until reset
                 resetMovementControl();  // Reset movement control after a delay
+                canMove = false;  // Disable further movement until reset
             }
         }
     }
 
-    private void resetMovementControl() {
-        // This could be a simple delay timer or tied to a key release event
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        canMove = true;
-                    }
-                },
-                200 // Set delay as needed
-        );
+    private long keyPressTimestamp = 0;
+
+    public void resetMovementControl() {
+        if (canMove) {
+            final Direction lastDirection = direction;
+            moveFacing();
+            keyPressTimestamp = System.currentTimeMillis(); // Capture the timestamp when keypress occurs
+            long currentTime = System.currentTimeMillis();
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            long elapsedTime = currentTime - keyPressTimestamp;
+                            if (lastDirection != direction) {
+                                moveFacing();
+                            }
+                            if (elapsedTime < 150) {
+                                resetMovementControl();
+                                System.out.println("Less than 200ms passed since keypress, missing input inserted");
+                            }
+                            canMove = true;
+                        }
+                    },
+                    150 // Set delay as needed
+            );
+        }
     }
-
-
     public void moveFacing() {
         int[] direction = getDirectionBasedMovement();
         logicalMove(direction[0], direction[1]);

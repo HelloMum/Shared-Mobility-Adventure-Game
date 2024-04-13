@@ -3,19 +3,23 @@ package HaohaiTeam.Game.Element.Transport.OnRoute;
 import HaohaiTeam.Game.Element.GameElement;
 
 import java.awt.*;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
 public class TaxiStation extends Station{
-
+    private static final double CO2_PER_CELL = 1.0;
 
     public TaxiStation(int x, int y) {
         super(x, y);
+        setStationType('t');
     }
 
+    @Override
+    protected double getCO2PerCell() {
+        return CO2_PER_CELL;
+    }
     @Override
     public void draw(Graphics2D g2d) {
         // Draw black background square
