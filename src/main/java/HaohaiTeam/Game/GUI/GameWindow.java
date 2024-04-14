@@ -50,6 +50,9 @@ public class GameWindow {
 
     }
 
+    public static void clearElements() {
+        elements.clear();
+    }
     // For logic checking, game elements can access this
     public static List<GameElement> getElements() {
         return elements;
