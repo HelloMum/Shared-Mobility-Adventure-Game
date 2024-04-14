@@ -89,7 +89,7 @@ public abstract class Station extends Road {
 
     // Helper method to calculate distance between two points
     private double calculateDistance(int x1, int y1, int x2, int y2) {
-        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        return Math.abs(x2 - x1) + Math.abs(y2 - y1);
     }
 
     // will implement in child classes
