@@ -33,7 +33,9 @@ public abstract class GameElement implements CommandListener  {
     public int tickCount = 0;
     private boolean canMove = true;
 
-
+    private long lastMoveTime;
+    private int moveInterval;  // Time in milliseconds required to pass before the next move can happen
+    
     public GameElement(int x, int y) {
         this.renderX = x; // just for rendering
         this.renderY = y;
@@ -46,6 +48,7 @@ public abstract class GameElement implements CommandListener  {
         this.commandListener = null; // we need to start this later
         this.X = x; // Real pixel position
         this.Y = y; // Real pixel position
+        this.moveInterval = 200;  // default interval set as 200 ms
 
     }
     public void setCommandListener(CommandListener commandListener) { // set up a command listen
@@ -62,6 +65,15 @@ public abstract class GameElement implements CommandListener  {
     public void toggleAutoStation() {
     }
 
+    // Method to set move interval
+    public void setMoveInterval(int ms) {
+        moveInterval = ms;
+    }
+
+    // Getter for moveInterval
+    public int getMoveInterval() {
+        return moveInterval;
+    }
 
 
 
@@ -216,6 +228,13 @@ public abstract class GameElement implements CommandListener  {
     }
 
     public void handleKeyEvent(KeyEvent e) {
+
+        long currentTime = System.currentTimeMillis();
+
+        if (currentTime - lastMoveTime < moveInterval) {
+            return;  // Skip this move because the interval has not passed
+        }
+
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_ESCAPE) {
             System.exit(0); // Exit the program gracefully
@@ -249,7 +268,9 @@ public abstract class GameElement implements CommandListener  {
                 resetMovementControl();  // Reset movement control after a delay
                 canMove = false;  // Disable further movement until reset
             }
+
         }
+        lastMoveTime = currentTime;
     }
 
     private long keyPressTimestamp = 0;

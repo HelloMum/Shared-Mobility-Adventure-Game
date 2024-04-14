@@ -24,9 +24,11 @@ public class Bike extends TransportMode {
         if (gameElement.getLinkedElement() == this) {
             // If gameElement is already linked to this, unlink them
             gameElement.unlinkElement();
+            gameElement.setMoveInterval(200);
         } else {
             // If gameElement is not linked to this, link them
             gameElement.linkElement(this);
+            gameElement.setMoveInterval(100);
         }
     }
     // We need to implement something for the real stepping on
