@@ -53,6 +53,7 @@ public class MapLoader {
 
     public void loadMap(String[] mapData) {
         System.out.println("No Saved Games, starting first level!");
+
         for (int y = 0; y < mapData.length; y++) {
             String line = mapData[y];
             for (int x = 0; x < line.length(); x++) {
@@ -142,8 +143,8 @@ public class MapLoader {
     }
     private void placeReport(String placeName, int posX , int posY) {
         // This reports the map import is working correctly
-        System.out.println( placeName );
-        System.out.println("has been placed in the position X: " + posX + ", Y: " + posY );
+        // System.out.println( placeName );
+        // System.out.println("has been placed in the position X: " + posX + ", Y: " + posY );
 
 
     }

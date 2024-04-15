@@ -3,7 +3,9 @@ package HaohaiTeam.Game.Logic;
 import java.awt.*;
 import HaohaiTeam.Game.Element.GameElement;
 import HaohaiTeam.Game.Input.CommandListener;
-import HaohaiTeam.Game.Logic.LevelScreen;
+import HaohaiTeam.Game.Logic.*;
+import java.awt.Graphics2D;
+
 
 public class GameStatus implements CommandListener {
     private int score = 0;
@@ -15,18 +17,6 @@ public class GameStatus implements CommandListener {
     private boolean gameOver = false;
     private boolean resetTriggered = false;
     private int tickCount;
-    private LevelScreen levelScreen;
-
-    public void EndLevel() {
-        this.levelScreen = new LevelScreen(this);
-    }
-
-    public void render(Graphics2D g2d) {
-        // Render level screen if game over
-        if (gameOver) {
-            levelScreen.draw(g2d);
-        }
-    }
 
     public void addScore(int points) {
         this.score += points;
@@ -63,6 +53,10 @@ public class GameStatus implements CommandListener {
 
     public void addGems(int numGems) {
         this.gemsAcquired += numGems;
+        if (gemsAcquired == 1) {
+            gameOver = true;
+        }
+
         int points = numGems * 50;
         addScore(points);
     }
