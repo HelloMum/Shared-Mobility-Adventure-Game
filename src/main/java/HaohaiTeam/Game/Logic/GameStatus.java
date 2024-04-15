@@ -3,9 +3,6 @@ package HaohaiTeam.Game.Logic;
 import java.awt.*;
 import HaohaiTeam.Game.Element.GameElement;
 import HaohaiTeam.Game.Input.CommandListener;
-import HaohaiTeam.Game.Logic.*;
-import java.awt.Graphics2D;
-
 
 public class GameStatus implements CommandListener {
     private int score = 0;
@@ -101,14 +98,14 @@ public class GameStatus implements CommandListener {
     public boolean losingCondition() {
         return false;
     }
-<<<<<<< HEAD
     public boolean winningCondition() {
         if (resetTriggered == true ) {
             return true;
         }
         return false;
     }
-    public boolean loseALive(GameElement element) {
+
+    public boolean loseALive() {
         return false;
     }
     public void checkGameConditions() {
@@ -118,17 +115,9 @@ public class GameStatus implements CommandListener {
         else if (this.getGemsAcquired() == 20) {
             resetTriggered = true;
         }
-    }
-
-=======
-    public boolean loseALive() {
-        return false;
-    }
-    public void checkGameConditions() {
         loseALive();
         losingCondition();
         System.out.println("GameConditionsHaveBeenChecked");    }
->>>>>>> dev
     @Override
     public void onTick() {
         tickCount++;
