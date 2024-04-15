@@ -1,8 +1,9 @@
 package HaohaiTeam.Game.Logic;
 
-
+import java.awt.*;
 import HaohaiTeam.Game.Element.GameElement;
 import HaohaiTeam.Game.Input.CommandListener;
+import HaohaiTeam.Game.Logic.LevelScreen;
 
 public class GameStatus implements CommandListener {
     private int score = 0;
@@ -14,12 +15,24 @@ public class GameStatus implements CommandListener {
     private boolean gameOver = false;
     private boolean resetTriggered = false;
     private int tickCount;
+    private LevelScreen levelScreen;
+
+    public void EndLevel() {
+        this.levelScreen = new LevelScreen(this);
+    }
+
+    public void render(Graphics2D g2d) {
+        // Render level screen if game over
+        if (gameOver) {
+            levelScreen.draw(g2d);
+        }
+    }
 
     public void addScore(int points) {
         this.score += points;
     }
     public enum currentTransport {
-/// implement current transport
+    /// implement current transport
     }
     public void loseLife() {
         this.lives--;

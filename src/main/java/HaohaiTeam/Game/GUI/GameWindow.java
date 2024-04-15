@@ -6,6 +6,7 @@ import HaohaiTeam.Game.Element.Player;
 import HaohaiTeam.Game.Logic.GameStatus;
 import HaohaiTeam.Game.Logic.OverlayHUD;
 import HaohaiTeam.Game.Logic.TickGenerator;
+import HaohaiTeam.Game.Logic.LevelScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +32,7 @@ public class GameWindow {
     private final GamePanel gamePanel;
     private static List<GameElement> elements = null;
     private final OverlayHUD overlayHUD; // Reference to the HUD overlay
+    private final OverlayHUD LevelScreen; // Reference Level Screen
     public static GameStatus gameStatus = new GameStatus(); // we should only have a GameStatus object
 
     private double scaleX = 1.0; // Scale factor for X-axis
@@ -40,6 +42,7 @@ public class GameWindow {
         elements = new ArrayList<>();
         this.gamePanel = new GamePanel();
         this.overlayHUD = new OverlayHUD(gameStatus); // use the same GameStatus object
+
 
         // Initialize TickGenerator
         tickGenerator = new TickGenerator();
@@ -114,6 +117,7 @@ public class GameWindow {
 
             renderElements(g2d); // Render game elements
             renderHUD(g2d); // Render the HUD overlay
+
             g2d.dispose();
         }
     }
