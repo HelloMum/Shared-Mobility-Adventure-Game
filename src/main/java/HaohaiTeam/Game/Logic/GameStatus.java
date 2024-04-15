@@ -1,6 +1,6 @@
 package HaohaiTeam.Game.Logic;
 
-
+import java.awt.*;
 import HaohaiTeam.Game.Element.GameElement;
 import HaohaiTeam.Game.Input.CommandListener;
 
@@ -19,13 +19,11 @@ public class GameStatus implements CommandListener {
         this.score += points;
     }
     public enum currentTransport {
-/// implement current transport
+    /// implement current transport
     }
     public void loseLife() {
         this.lives--;
-        if (this.lives <= 0) {
-            this.gameOver = true;
-        }
+        checkGameConditions();
     }
 
     public int getScore() {
@@ -50,12 +48,14 @@ public class GameStatus implements CommandListener {
 
     public void addGems(int numGems) {
         this.gemsAcquired += numGems;
+        checkGameConditions();
         int points = numGems * 50;
         addScore(points);
     }
 
     public void addCO2(int amount) {
         this.co2Collected += amount;
+        checkGameConditions();
         // Adjust score or perform any other relevant actions
         System.out.println(amount + " CO2 added to the game status.");
     }
@@ -98,10 +98,23 @@ public class GameStatus implements CommandListener {
     public boolean losingCondition() {
         return false;
     }
+    public boolean winningCondition() {
+        if (resetTriggered == true ) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean loseALive() {
         return false;
     }
     public void checkGameConditions() {
+        if (this.getLives() == 0) {
+            gameOver = true;
+        }
+        else if (this.getGemsAcquired() == 20) {
+            resetTriggered = true;
+        }
         loseALive();
         losingCondition();
         System.out.println("GameConditionsHaveBeenChecked");    }

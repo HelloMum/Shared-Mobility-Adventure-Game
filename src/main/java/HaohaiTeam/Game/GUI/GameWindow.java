@@ -7,6 +7,7 @@ import HaohaiTeam.Game.Element.Player2;
 import HaohaiTeam.Game.Logic.GameStatus;
 import HaohaiTeam.Game.Logic.OverlayHUD;
 import HaohaiTeam.Game.Logic.TickGenerator;
+import HaohaiTeam.Game.Logic.LevelScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +18,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
 
 public class GameWindow {
     public static final int CELL_SIZE = 30; // Size of each cell in pixels
@@ -32,6 +34,7 @@ public class GameWindow {
     private final GamePanel gamePanel;
     private static List<GameElement> elements = null;
     private final OverlayHUD overlayHUD; // Reference to the HUD overlay
+    private final LevelScreen LevelScreen; // Reference Level Screen
     public static GameStatus gameStatus = new GameStatus(); // we should only have a GameStatus object
 
     private double scaleX = 1.0; // Scale factor for X-axis
@@ -39,8 +42,10 @@ public class GameWindow {
 
     public GameWindow() {
         elements = new ArrayList<>();
+        this.LevelScreen = new LevelScreen(gameStatus);
         this.gamePanel = new GamePanel();
         this.overlayHUD = new OverlayHUD(gameStatus); // use the same GameStatus object
+
 
         // Initialize TickGenerator
         tickGenerator = new TickGenerator();
@@ -122,6 +127,7 @@ public class GameWindow {
 
             renderElements(g2d); // Render game elements
             renderHUD(g2d); // Render the HUD overlay
+            renderLevelScreen(g2d);
             g2d.dispose();
         }
     }
@@ -180,6 +186,16 @@ public class GameWindow {
             g2d.translate(-cameraOffsetX, -cameraOffsetY);
             overlayHUD.render(g2d);
 
+            g2d.dispose();
+        }
+    }
+
+    private void renderLevelScreen(Graphics g) {
+        if (LevelScreen != null) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.translate(-cameraOffsetX, -cameraOffsetY);
+
+            LevelScreen.render(g2d);
             g2d.dispose();
         }
     }

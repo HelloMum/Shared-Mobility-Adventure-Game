@@ -51,6 +51,7 @@ public class MapLoader {
         gameWindow.clearElements();  // Clear existing elements from the game window
         ArrayList<Object> validGemCoordinates = new ArrayList<>();
         System.out.println("No Saved Games, starting first level!");
+
         for (int y = 0; y < mapData.length; y++) {
             String line = mapData[y];
             for (int x = 0; x < line.length(); x++) {
