@@ -3,6 +3,7 @@ package HaohaiTeam.Game.GUI;
 import HaohaiTeam.Game.Element.CameraEntity;
 import HaohaiTeam.Game.Element.GameElement;
 import HaohaiTeam.Game.Element.Player;
+import HaohaiTeam.Game.Element.Player2;
 import HaohaiTeam.Game.Logic.GameStatus;
 import HaohaiTeam.Game.Logic.OverlayHUD;
 import HaohaiTeam.Game.Logic.TickGenerator;
@@ -54,6 +55,9 @@ public class GameWindow {
 
     }
 
+    public static void clearElements() {
+        elements.clear();
+    }
     // For logic checking, game elements can access this
     public static List<GameElement> getElements() {
         return elements;
@@ -65,6 +69,10 @@ public class GameWindow {
         TickGenerator.setCommandListener(element);
         TickGenerator.start();
 
+    }
+
+    public static void removeElement(GameElement element) {
+        elements.remove(element);
     }
 
     public void openWindow() {
@@ -149,7 +157,7 @@ public class GameWindow {
                 // Draw the element itself
                 element.helperDrawer(g);
             }
-            if (element instanceof Player) {
+            if (element instanceof Player && !(element instanceof Player2)) {
                 player = element;
             } else if (element instanceof CameraEntity) {
                 camera = element;

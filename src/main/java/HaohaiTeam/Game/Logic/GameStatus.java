@@ -96,10 +96,12 @@ public class GameStatus implements CommandListener {
         // Implementation for handling picked gems if needed
         addGems(1);
         System.out.println("Gem received signal");
+        checkGameConditions();
     }
-    public boolean losingCondition(GameElement element) {
+    public boolean losingCondition() {
         return false;
     }
+<<<<<<< HEAD
     public boolean winningCondition() {
         if (resetTriggered == true ) {
             return true;
@@ -118,11 +120,20 @@ public class GameStatus implements CommandListener {
         }
     }
 
+=======
+    public boolean loseALive() {
+        return false;
+    }
+    public void checkGameConditions() {
+        loseALive();
+        losingCondition();
+        System.out.println("GameConditionsHaveBeenChecked");    }
+>>>>>>> dev
     @Override
     public void onTick() {
         tickCount++;
         if (tickCount % 12000 == 0) {
-            System.out.println("Tic is working on game status");
+            checkGameConditions();
         }
     }
 }

@@ -10,8 +10,14 @@ import java.util.TimerTask;
 import static HaohaiTeam.Game.GUI.GameWindow.CELL_SIZE;
 
 public class LuasStation extends Station{
+    private static final double CO2_PER_CELL = 0.7;
     public LuasStation(int x, int y) {
         super(x, y);
+        setStationType('l');
+    }
+    @Override
+    protected double getCO2PerCell() {
+        return CO2_PER_CELL;
     }
 
     @Override

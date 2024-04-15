@@ -13,7 +13,7 @@ public class PopUp extends GameElement {
     private int renderCount;
 
 
-    public PopUp(int x, int y, String message) {
+    public PopUp(int x, int y, String message, int Duration) {
         // Call the first constructor with adjusted coordinates
         super(x, y);
 
@@ -22,6 +22,7 @@ public class PopUp extends GameElement {
         isVisible = true;
         walkable = true;
         renderCount = 0;
+        int popUpDuration = Duration;
 
         // Add the PopUp to the GameWindow elements
         GameWindow.addElement(this);
@@ -48,6 +49,8 @@ public class PopUp extends GameElement {
     public void hide() {
         this.isVisible = false;
     }
+
+    public void remove() {GameWindow.removeElement(this);}
 
     @Override
     public void draw(Graphics2D g2d) {
