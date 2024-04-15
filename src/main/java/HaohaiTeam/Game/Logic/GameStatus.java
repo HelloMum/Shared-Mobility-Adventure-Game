@@ -26,9 +26,7 @@ public class GameStatus implements CommandListener {
     }
     public void loseLife() {
         this.lives--;
-        if (this.lives <= 0) {
-            this.gameOver = true;
-        }
+        checkGameConditions();
     }
 
     public int getScore() {
@@ -53,16 +51,14 @@ public class GameStatus implements CommandListener {
 
     public void addGems(int numGems) {
         this.gemsAcquired += numGems;
-        if (gemsAcquired == 1) {
-            gameOver = true;
-        }
-
+        checkGameConditions();
         int points = numGems * 50;
         addScore(points);
     }
 
     public void addCO2(int amount) {
         this.co2Collected += amount;
+        checkGameConditions();
         // Adjust score or perform any other relevant actions
         System.out.println(amount + " CO2 added to the game status.");
     }
@@ -104,11 +100,24 @@ public class GameStatus implements CommandListener {
     public boolean losingCondition(GameElement element) {
         return false;
     }
+    public boolean winningCondition() {
+        if (resetTriggered == true ) {
+            return true;
+        }
+        return false;
+    }
     public boolean loseALive(GameElement element) {
         return false;
     }
-    public void checkGameConditions(GameElement element) {
+    public void checkGameConditions() {
+        if (this.getLives() == 0) {
+            gameOver = true;
+        }
+        else if (this.getGemsAcquired() == 20) {
+            resetTriggered = true;
+        }
     }
+
     @Override
     public void onTick() {
         tickCount++;

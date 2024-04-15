@@ -118,8 +118,8 @@ public class GameWindow {
             g2d.translate(cameraOffsetX, cameraOffsetY);
 
             renderElements(g2d); // Render game elements
-            renderLevelScreen(g2d);
             renderHUD(g2d); // Render the HUD overlay
+            renderLevelScreen(g2d);
             g2d.dispose();
         }
     }
