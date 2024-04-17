@@ -4,6 +4,7 @@ import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.element.Player;
 import haohaiTeam.game.element.transport.TransportMode;
 import haohaiTeam.game.element.transport.onRoute.stationRoad.Road;
+import haohaiTeam.game.element.transport.onRoute.stationRoad.Station;
 import haohaiTeam.game.gui.GameWindow;
 import haohaiTeam.game.input.CommandListener;
 
@@ -26,14 +27,24 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
     protected int headingX = 0;
     protected int headingY = 1;
     protected boolean autoMove;
-
+    protected boolean isAtStation;
 
     public AutoMoveTransport(int x, int y) {
         super(x, y);
         startMoving();
         autoMove = true;
+        isAtStation = false;
     }
 
+    public boolean isAtStation() {
+        return isAtStation;
+    }
+
+    private boolean checkIfAtStation() {
+        // Example condition: define what it means to be 'at a station'
+        return GameWindow.getElements().stream()
+                .anyMatch(e -> e instanceof Station && e.X == this.X && e.Y == this.Y);
+    }
     protected void startMoving() {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -49,15 +60,19 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
 
     protected void moveOnRoad() {
         if (!autoMove) {
+            isAtStation = checkIfAtStation();  // Update station status when not moving
             return; // Ignore movement if auto mode is disabled
         }
 
         List<GameElement> elements = new ArrayList<>(GameWindow.getElements());
         // Try to move in the current direction first
-        if (tryMoveInCurrentDirection(elements)) return;
-
+        if (tryMoveInCurrentDirection(elements)) {
+            return;
+        }
         // If moving in the current direction is not possible, try to turn right
-        if (tryTurn(elements, headingY, -headingX)) return;
+        if (tryTurn(elements, headingY, -headingX)) {
+            return;
+        }
 
         // If turning right is not successful, try to turn left
         if (!tryTurn(elements, -headingY, headingX)) {

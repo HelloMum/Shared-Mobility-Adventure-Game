@@ -3,6 +3,7 @@ package haohaiTeam.game.element.transport.onRoute.stationRoad;
 import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.element.Player;
 import haohaiTeam.game.element.PopUp;
+import haohaiTeam.game.element.transport.onRoute.auto.AutoMoveTransport;
 import haohaiTeam.game.element.transport.onRoute.faketrans.FakeBus;
 import haohaiTeam.game.element.transport.onRoute.faketrans.FakeLuas;
 import haohaiTeam.game.element.transport.onRoute.faketrans.FakeTaxi;
@@ -58,6 +59,27 @@ public abstract class Station extends Road {
         else if (stationType == 't') {popupStationName = "Taxi rank";}
 
         new PopUp(this.X, this.Y, "This is a " + popupStationName + ". " + getCollisionPopupMessage(co2Emission), 2000);
+
+        AutoMoveTransport real_vehicle = findVehicleAtStation();
+        if (real_vehicle != null && real_vehicle.isAtStation()) {
+            System.out.println("Linking player to " + real_vehicle.getName());
+            gameElement.linkElement(real_vehicle);  // Link player to the vehicle
+            real_vehicle.setBeingControlled(false);  // The vehicle should auto-move
+            gameElement.setBeingControlled(false);
+            System.out.println("Player is now on board the " + real_vehicle.getClass().getSimpleName());
+        } else {
+            System.out.println("No vehicle available at station to link.");
+        }
+    }
+
+    private AutoMoveTransport findVehicleAtStation() {
+        // Try to find an AutoMoveTransport at the same coordinates
+        for (GameElement element : GameWindow.getElements()) {
+            if (element instanceof AutoMoveTransport && element.getLogicalPosX() == this.getLogicalPosX() && element.getLogicalPosY() == this.getLogicalPosY()) {
+                return (AutoMoveTransport) element;
+            }
+        }
+        return null;
     }
 
     // sorry here I just use popup to check my co2 info so if you want to delete it is ok
