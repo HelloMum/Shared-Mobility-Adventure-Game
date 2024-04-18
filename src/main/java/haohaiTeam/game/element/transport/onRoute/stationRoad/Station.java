@@ -64,6 +64,7 @@ public abstract class Station extends Road {
         if (real_vehicle != null && real_vehicle.isAtStation()) {
             System.out.println("Linking player to " + real_vehicle.getName());
             real_vehicle.linkElement(gameElement);  // Link player to the vehicle
+            real_vehicle.moveToLinked();
             real_vehicle.setBeingControlled(false);  // The vehicle should auto-move
             gameElement.setBeingControlled(false);
             System.out.println("Player is now on board the " + real_vehicle.getClass().getSimpleName());
