@@ -11,10 +11,17 @@ import haohaiTeam.game.element.transport.onRoute.faketrans.FakeVehicle;
 import haohaiTeam.game.gui.GameWindow;
 
 import java.util.List;
-
+import java.util.HashMap;
 
 public abstract class Station extends Road {
     protected char stationType;// this is an identifier for station
+    private static HashMap<Character, Boolean> playerOnStationMap = new HashMap<>(); // use hashMap to save the stations the player passes through
+
+    static {
+        playerOnStationMap.put('b', false); // Bus
+        playerOnStationMap.put('l', false); // Luas
+        playerOnStationMap.put('t', false); // Taxi
+    }
     public Station(int x, int y) {
         super(x, y);
         this.walkable = false;
@@ -60,19 +67,37 @@ public abstract class Station extends Road {
 
         new PopUp(this.X, this.Y, "This is a " + popupStationName + ". " + getCollisionPopupMessage(co2Emission), 2000);
 
-        AutoMoveTransport real_vehicle = findVehicleAtStation();
-        if (real_vehicle != null && real_vehicle.isAtStation()) {
-            System.out.println("Linking player to " + real_vehicle.getName());
-            real_vehicle.linkElement(gameElement);  // Link player to the vehicle
-            real_vehicle.moveToLinked();
-            real_vehicle.setBeingControlled(false);  // The vehicle should auto-move
-            gameElement.setBeingControlled(false);
-            System.out.println("Player is now on board the " + real_vehicle.getClass().getSimpleName());
-        } else {
-            System.out.println("No vehicle available at station to link.");
+
+        // Check if the player is on any vehicle and handle accordingly
+        handleAutoDisembark(gameElement);
+        handleBoarding(gameElement);
+    }
+
+
+
+    private void handleAutoDisembark(GameElement gameElement) {
+        if (playerOnStationMap.get(stationType)) {
+            AutoMoveTransport vehicle = findVehicleAtStation();
+            if (vehicle != null && vehicle.isAtStation()) {
+                vehicle.unlinkElement();
+                playerOnStationMap.put(stationType, false);
+                System.out.println("Player automatically disembarks from " + vehicle.getName() + " at " + this.getClass().getSimpleName());
+            }
         }
     }
 
+    // Optional: Separate boarding logic into its own method
+    public void handleBoarding(GameElement gameElement) {
+        AutoMoveTransport real_vehicle = findVehicleAtStation();
+        if (real_vehicle != null && real_vehicle.isAtStation() && !playerOnStationMap.get(stationType)) {
+            real_vehicle.linkElement(gameElement);
+            real_vehicle.moveToLinked();
+            real_vehicle.setBeingControlled(false);
+            gameElement.setBeingControlled(false);
+            playerOnStationMap.put(stationType, true);
+            System.out.println("Player is now on board the " + real_vehicle.getClass().getSimpleName());
+        }
+    }
     private AutoMoveTransport findVehicleAtStation() {
         // Try to find an AutoMoveTransport at the same coordinates
         for (GameElement element : GameWindow.getElements()) {

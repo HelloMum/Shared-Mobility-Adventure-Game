@@ -45,6 +45,9 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
         return GameWindow.getElements().stream()
                 .anyMatch(e -> e instanceof Station && e.X == this.X && e.Y == this.Y);
     }
+
+
+    // startMoving(): moveOnRoad() is called every MOVE_INTERVAL_MS milliseconds
     protected void startMoving() {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
