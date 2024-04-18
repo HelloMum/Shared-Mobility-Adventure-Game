@@ -89,33 +89,5 @@ public class Player extends GameElement {
         }
 
     }
-    @Override
-    public void helperDrawer(Graphics2D g2d) {
-        int stepSizeScaled = 5; // 1.5 * 2 = 3
-
-        // Calculate the direction of movement
-        int dx = (prevX - renderX) * 2;
-        int dy = (prevY - renderY) * 2;
-
-        // Move renderX and renderY towards prevX and prevY by the scaled step size
-        if (Math.abs(dx) > stepSizeScaled) {
-            renderX += (int) (Math.signum(dx) * (stepSizeScaled / 2));
-        } else {
-            renderX = prevX;
-        }
-
-        if (Math.abs(dy) > stepSizeScaled) {
-            renderY += (int) (Math.signum(dy) * (stepSizeScaled / 2));
-        } else {
-            renderY = prevY;
-        }
-
-        // Draw using the updated positions
-        draw(g2d);
-
-        // Save the current position for the next pass
-        this.prevX = X;
-        this.prevY = Y;
-    }
 
 }
