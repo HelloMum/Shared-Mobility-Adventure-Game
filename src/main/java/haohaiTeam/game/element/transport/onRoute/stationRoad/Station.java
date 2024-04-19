@@ -15,13 +15,7 @@ import java.util.HashMap;
 
 public abstract class Station extends Road {
     protected char stationType;// this is an identifier for station
-    private static HashMap<Character, Boolean> playerOnStationMap = new HashMap<>(); // use hashMap to save the stations the player passes through
 
-    static {
-        playerOnStationMap.put('b', false); // Bus
-        playerOnStationMap.put('l', false); // Luas
-        playerOnStationMap.put('t', false); // Taxi
-    }
     public Station(int x, int y) {
         super(x, y);
         this.walkable = false;
@@ -69,23 +63,18 @@ public abstract class Station extends Road {
 
 
         // Check if the player is on any vehicle and handle accordingly
-        handleBoarding(gameElement);
-    }
-
-
-    // Optional: Separate boarding logic into its own method
-    public void handleBoarding(GameElement gameElement) {
         AutoMoveTransport real_vehicle = findVehicleAtStation();
-        if (real_vehicle != null && real_vehicle.isAtStation() && !playerOnStationMap.get(stationType)) {
+        if (real_vehicle != null && real_vehicle.isAtStation()) {
             real_vehicle.linkElement(gameElement);
             gameElement.linkElement(real_vehicle);
             gameElement.moveToLinked();
             real_vehicle.setBeingControlled(false);
             gameElement.setBeingControlled(false);
-            playerOnStationMap.put(stationType, true);
             System.out.println("Player is now on board the " + real_vehicle.getClass().getSimpleName());
         }
     }
+
+
     private AutoMoveTransport findVehicleAtStation() {
         // Try to find an AutoMoveTransport at the same coordinates
         for (GameElement element : GameWindow.getElements()) {
