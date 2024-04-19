@@ -5,9 +5,6 @@ import haohaiTeam.game.element.transport.onRoute.*;
 import haohaiTeam.game.element.transport.onRoute.auto.Bus;
 import haohaiTeam.game.element.transport.onRoute.auto.Luas;
 import haohaiTeam.game.element.transport.onRoute.auto.Taxi;
-import haohaiTeam.game.element.transport.onRoute.faketrans.FakeBus;
-import haohaiTeam.game.element.transport.onRoute.faketrans.FakeLuas;
-import haohaiTeam.game.element.transport.onRoute.faketrans.FakeTaxi;
 import haohaiTeam.game.element.transport.onRoute.stationRoad.*;
 import haohaiTeam.game.gui.GameWindow;
 import haohaiTeam.game.element.*;
@@ -69,6 +66,7 @@ public class MapLoader {
             }
         }
         placeRandomGems(validGemCoordinates);
+        gameWindow.processStations();  // Calculate distances after all elements are loaded
     }
 
     private void processTile(char tile, int posX, int posY, ArrayList<Object> validGemCoordinates) {
@@ -90,21 +88,7 @@ public class MapLoader {
             case 'l': gameWindow.addElement(new LuasStation(posX, posY)); break;
             case 'a': gameWindow.addElement(new Car(posX, posY)); break;
             case ' ': validGemCoordinates.add(posX); validGemCoordinates.add(posY); break;
-            case 'x':
-                        placeReport("FakeBus", posX, posY);
-                        FakeBus fakeBus = new FakeBus(posX, posY);
-                        gameWindow.addElement(fakeBus);
-                        break;
-                    case 'y':
-                        placeReport("FakeLuas", posX, posY);
-                        FakeLuas fakeLuas = new FakeLuas(posX, posY);
-                        gameWindow.addElement(fakeLuas);
-                        break;
-                    case 'z':
-                        placeReport("FakeTaxi", posX, posY);
-                        FakeTaxi fakeTaxi = new FakeTaxi(posX, posY);
-                        gameWindow.addElement(fakeTaxi);
-                        break;
+
             // Additional cases can be added here
         }
     }
