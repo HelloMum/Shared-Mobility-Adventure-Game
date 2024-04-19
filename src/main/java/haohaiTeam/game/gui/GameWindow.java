@@ -4,20 +4,22 @@ import haohaiTeam.game.element.CameraEntity;
 import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.element.Player;
 import haohaiTeam.game.element.Player2;
+import haohaiTeam.game.element.transport.onRoute.stationRoad.Station;
 import haohaiTeam.game.logic.GameStatus;
 import haohaiTeam.game.logic.OverlayHUD;
 import haohaiTeam.game.logic.TickGenerator;
 import haohaiTeam.game.logic.LevelScreen;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameWindow {
     public static final int CELL_SIZE = 30; // Size of each cell in pixels
@@ -39,6 +41,8 @@ public class GameWindow {
     private double scaleX = 1.0; // Scale factor for X-axis
     private double scaleY = 1.0; // Scale factor for Y-axis
 
+    // use a hashmap to save distances between stations
+    public static Map<String, Integer> stationDistances = new HashMap<>();
     public GameWindow() {
         elements = new ArrayList<>();
         this.LevelScreen = new LevelScreen(gameStatus);
@@ -204,5 +208,38 @@ public class GameWindow {
         for (GameElement element : copy) {
             element.handleKeyEvent(e);
         }
+    }
+
+
+    /**
+     * Process all stations, calculating the distances between each pair and storing them in a map.
+     */
+    public void processStations() {
+        List<GameElement> stations = elements.stream()
+                .filter(e -> e instanceof Station) // Assuming there is a common superclass or interface 'Station'
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < stations.size(); i++) {
+            for (int j = i + 1; j < stations.size(); j++) {
+                GameElement station1 = stations.get(i);
+                GameElement station2 = stations.get(j);
+                int distance = calculateDistance(station1, station2);
+                String key = createKeyForStations(station1, station2);
+                stationDistances.put(key, distance);
+            }
+        }
+    }
+
+    /*
+     * Generate a unique key for a pair of stations based on their class names and logical positions.
+     */
+     private String createKeyForStations(GameElement s1, GameElement s2) {
+            return s1.getClass().getSimpleName() + s1.getLogicalPosX() + "," + s1.getLogicalPosY() + "-" +
+                    s2.getClass().getSimpleName() + s2.getLogicalPosX() + "," + s2.getLogicalPosY();
+     }
+
+//    Calculate the Manhattan distance between two game elements
+    private int calculateDistance(GameElement e1, GameElement e2) {
+        return Math.abs(e1.getLogicalPosX() - e2.getLogicalPosX()) + Math.abs(e1.getLogicalPosY() - e2.getLogicalPosY());  // Manhattan Distance
     }
 }
