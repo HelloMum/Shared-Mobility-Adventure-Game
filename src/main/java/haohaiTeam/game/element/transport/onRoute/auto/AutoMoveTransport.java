@@ -41,7 +41,7 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
         return isAtStation;
     }
 
-    private boolean checkIfAtStation() {
+    protected boolean checkIfAtStation() {
         // Example condition: define what it means to be 'at a station'
         return GameWindow.getElements().stream()
                 .anyMatch(e -> e instanceof Station && e.X == this.X && e.Y == this.Y);
