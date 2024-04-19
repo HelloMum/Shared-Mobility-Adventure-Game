@@ -37,6 +37,7 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
     }
 
     public boolean isAtStation() {
+        // If gameElement is already linked to this, unlink them
         return isAtStation;
     }
 
@@ -59,6 +60,11 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
     }
     public void toggleAutoStation() {
         autoMove = !autoMove;
+        if (!autoMove && this.getLinkedElement() != null) {
+            linkedElement.unlinkElement();
+            linkedElement.setBeingControlled(true);
+            this.unlinkElement();
+        }
     }
 
     protected void moveOnRoad() {
