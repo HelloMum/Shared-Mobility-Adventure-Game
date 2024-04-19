@@ -69,29 +69,17 @@ public abstract class Station extends Road {
 
 
         // Check if the player is on any vehicle and handle accordingly
-        handleAutoDisembark(gameElement);
         handleBoarding(gameElement);
     }
 
-
-
-    private void handleAutoDisembark(GameElement gameElement) {
-        if (playerOnStationMap.get(stationType)) {
-            AutoMoveTransport vehicle = findVehicleAtStation();
-            if (vehicle != null && vehicle.isAtStation()) {
-                vehicle.unlinkElement();
-                playerOnStationMap.put(stationType, false);
-                System.out.println("Player automatically disembarks from " + vehicle.getName() + " at " + this.getClass().getSimpleName());
-            }
-        }
-    }
 
     // Optional: Separate boarding logic into its own method
     public void handleBoarding(GameElement gameElement) {
         AutoMoveTransport real_vehicle = findVehicleAtStation();
         if (real_vehicle != null && real_vehicle.isAtStation() && !playerOnStationMap.get(stationType)) {
             real_vehicle.linkElement(gameElement);
-            real_vehicle.moveToLinked();
+            gameElement.linkElement(real_vehicle);
+            gameElement.moveToLinked();
             real_vehicle.setBeingControlled(false);
             gameElement.setBeingControlled(false);
             playerOnStationMap.put(stationType, true);
@@ -121,7 +109,7 @@ public abstract class Station extends Road {
 
 
 
-    // Method to find the closest station of the same type
+    // This is wrong as stated in the git issues
     public Station findClosestStation() {
         List<GameElement> elements = GameWindow.getElements(); // Get all elements from the game window
         Station closest = null;
