@@ -198,7 +198,6 @@ public abstract class GameElement implements CommandListener  {
     // Unlink elements to release the link, so it can be used again
     public void unlinkElement() {
         if (this.linkedElement != null) {
-            this.linkedElement.linkedElement = null; // Unlink the other element
             this.linkedElement = null;
         }
     }
