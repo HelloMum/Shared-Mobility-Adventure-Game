@@ -2,19 +2,14 @@ package haohaiTeam.game.element.transport.onRoute.stationRoad;
 
 import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.element.Player;
-import haohaiTeam.game.element.PopUp;
 import haohaiTeam.game.element.transport.onRoute.auto.AutoMoveTransport;
-import haohaiTeam.game.element.transport.onRoute.faketrans.FakeBus;
-import haohaiTeam.game.element.transport.onRoute.faketrans.FakeLuas;
-import haohaiTeam.game.element.transport.onRoute.faketrans.FakeTaxi;
-import haohaiTeam.game.element.transport.onRoute.faketrans.FakeVehicle;
 import haohaiTeam.game.gui.GameWindow;
 
 import java.util.List;
+import java.util.Map;
 
 public abstract class Station extends Road {
     protected char stationType;// this is an identifier for station
-
     public Station(int x, int y) {
         super(x, y);
         this.walkable = false;
@@ -35,18 +30,6 @@ public abstract class Station extends Road {
         // Notify the other element about the collision if needed
         gameElement.onBeingCollidedOnYou(this);
 
-
-        FakeVehicle vehicle;
-        if (this instanceof BusStation) {
-            vehicle = new FakeBus(this.X, this.Y);
-        } else if (this instanceof LuasStation) {
-            vehicle = new FakeLuas(this.X, this.Y);
-        } else if (this instanceof TaxiStation) {
-            vehicle = new FakeTaxi(this.X, this.Y);
-        } else {
-            return;
-        }
-        System.out.println("cell here:" + vehicle.getCellsTraveled());
 
         // Check if the player is on any vehicle and handle accordingly
         // Find an available vehicle at the station
@@ -71,9 +54,18 @@ public abstract class Station extends Road {
 
             // Print a message indicating that the player is now on board the vehicle
             System.out.println("Player is now on board the " + real_vehicle.getClass().getSimpleName());
+
+
+            printStationDistances(GameWindow.stationDistances);
         }
     }
-
+    // just a test method and I will delete later
+    public void printStationDistances(Map<String, Integer> stationDistances) {
+        System.out.println("print all station distance：");
+        for (Map.Entry<String, Integer> entry : stationDistances.entrySet()) {
+            System.out.println("station group：" + entry.getKey() + " - distance（cells）：" + entry.getValue());
+        }
+    }
 
     private AutoMoveTransport findVehicleAtStation() {
         // Try to find an AutoMoveTransport at the same coordinates
@@ -92,5 +84,6 @@ public abstract class Station extends Road {
         this.stationType = type;
     }
     protected abstract double getCO2PerCell(); //I dont want to add new variable so just use method to get inside each subclass
+
 
 }
