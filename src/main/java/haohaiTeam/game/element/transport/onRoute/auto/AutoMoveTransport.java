@@ -37,6 +37,7 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
     }
 
     public boolean isAtStation() {
+        // If gameElement is already linked to this, unlink them
         return isAtStation;
     }
 
@@ -45,6 +46,9 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
         return GameWindow.getElements().stream()
                 .anyMatch(e -> e instanceof Station && e.X == this.X && e.Y == this.Y);
     }
+
+
+    // startMoving(): moveOnRoad() is called every MOVE_INTERVAL_MS milliseconds
     protected void startMoving() {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -56,6 +60,11 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
     }
     public void toggleAutoStation() {
         autoMove = !autoMove;
+        if (!autoMove && this.getLinkedElement() != null) {
+            linkedElement.unlinkElement();
+            linkedElement.setBeingControlled(true);
+            this.unlinkElement();
+        }
     }
 
     protected void moveOnRoad() {
