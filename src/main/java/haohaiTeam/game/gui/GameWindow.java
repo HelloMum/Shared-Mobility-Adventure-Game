@@ -42,7 +42,7 @@ public class GameWindow {
     private double scaleY = 1.0; // Scale factor for Y-axis
 
     // use a hashmap to save distances between stations
-    public static Map<String, Integer> stationDistances = new HashMap<>();
+    public static Map<Station, Integer> stationDistances = new HashMap<>();
     public GameWindow() {
         elements = new ArrayList<>();
         this.LevelScreen = new LevelScreen(gameStatus);
@@ -211,41 +211,23 @@ public class GameWindow {
     }
 
 
-    /**
-     * Process all stations, calculating the distances between each pair of the same type and storing them in a map.
-     */
     public void processStations() {
-        List<GameElement> stations = elements.stream()
-                .filter(e -> e instanceof Station) // Assuming there is a common superclass or interface 'Station'
+        List<Station> stations = elements.stream()
+                .filter(e -> e instanceof Station)
+                .map(e -> (Station) e)
                 .collect(Collectors.toList());
 
-        // Loop through all stations, compare only stations of the same type
         for (int i = 0; i < stations.size(); i++) {
-            for (int j = i + 1; j < stations.size(); j++) {
-                GameElement station1 = stations.get(i);
-                GameElement station2 = stations.get(j);
-                // Check if both stations are of the same class (type)
-                if (station1.getClass().equals(station2.getClass())) {
-                    int distance = calculateDistance(station1, station2);
-                    String key = createKeyForStations(station1, station2);
-                    stationDistances.put(key, distance);
-                }
-            }
+            Station current = stations.get(i);
+            Station next = stations.get((i + 1) % stations.size());  // Circular list
+            int distance = calculateDistance(current, next);
+            stationDistances.put(current, distance);
         }
     }
 
-    /*
-     * Generate a unique key for a pair of stations based on their class names and logical positions.
-     */
-    private String createKeyForStations(GameElement s1, GameElement s2) {
-        return s1.getClass().getSimpleName() + s1.X / 30 + "," + s1.Y / 30 + "-" +
-                s2.getClass().getSimpleName() + s2.X / 30 + "," + s2.Y / 30;
-    }
-
-    // Calculate the Manhattan distance between two game elements
-    private int calculateDistance(GameElement e1, GameElement e2) {
-        int dx = Math.abs(e1.X / 30 - e2.X / 30);
-        int dy = Math.abs(e1.Y / 30 - e2.Y / 30);
+    private int calculateDistance(Station s1, Station s2) {
+        int dx = Math.abs(s1.X / CELL_SIZE - s2.X / CELL_SIZE);
+        int dy = Math.abs(s1.Y / CELL_SIZE - s2.Y / CELL_SIZE);
         return dx + dy;
     }
 }
