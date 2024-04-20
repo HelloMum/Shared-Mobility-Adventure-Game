@@ -212,20 +212,24 @@ public class GameWindow {
 
 
     /**
-     * Process all stations, calculating the distances between each pair and storing them in a map.
+     * Process all stations, calculating the distances between each pair of the same type and storing them in a map.
      */
     public void processStations() {
         List<GameElement> stations = elements.stream()
                 .filter(e -> e instanceof Station) // Assuming there is a common superclass or interface 'Station'
                 .collect(Collectors.toList());
 
+        // Loop through all stations, compare only stations of the same type
         for (int i = 0; i < stations.size(); i++) {
             for (int j = i + 1; j < stations.size(); j++) {
                 GameElement station1 = stations.get(i);
                 GameElement station2 = stations.get(j);
-                int distance = calculateDistance(station1, station2);
-                String key = createKeyForStations(station1, station2);
-                stationDistances.put(key, distance);
+                // Check if both stations are of the same class (type)
+                if (station1.getClass().equals(station2.getClass())) {
+                    int distance = calculateDistance(station1, station2);
+                    String key = createKeyForStations(station1, station2);
+                    stationDistances.put(key, distance);
+                }
             }
         }
     }
@@ -233,13 +237,15 @@ public class GameWindow {
     /*
      * Generate a unique key for a pair of stations based on their class names and logical positions.
      */
-     private String createKeyForStations(GameElement s1, GameElement s2) {
-            return s1.getClass().getSimpleName() + s1.getLogicalPosX() + "," + s1.getLogicalPosY() + "-" +
-                    s2.getClass().getSimpleName() + s2.getLogicalPosX() + "," + s2.getLogicalPosY();
-     }
+    private String createKeyForStations(GameElement s1, GameElement s2) {
+        return s1.getClass().getSimpleName() + s1.X / 30 + "," + s1.Y / 30 + "-" +
+                s2.getClass().getSimpleName() + s2.X / 30 + "," + s2.Y / 30;
+    }
 
-//    Calculate the Manhattan distance between two game elements
+    // Calculate the Manhattan distance between two game elements
     private int calculateDistance(GameElement e1, GameElement e2) {
-        return Math.abs(e1.getLogicalPosX() - e2.getLogicalPosX()) + Math.abs(e1.getLogicalPosY() - e2.getLogicalPosY());  // Manhattan Distance
+        int dx = Math.abs(e1.X / 30 - e2.X / 30);
+        int dy = Math.abs(e1.Y / 30 - e2.Y / 30);
+        return dx + dy;
     }
 }
