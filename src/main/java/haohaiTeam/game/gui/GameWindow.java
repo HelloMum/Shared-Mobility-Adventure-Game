@@ -212,18 +212,26 @@ public class GameWindow {
 
 
     public void processStations() {
-        List<Station> stations = elements.stream()
+        // Group by station type and process each group separately
+        Map<Character, List<Station>> groupedStations = elements.stream()
                 .filter(e -> e instanceof Station)
-                .map(e -> (Station) e)
-                .collect(Collectors.toList());
+                .map(e -> (Station)e)
+                .collect(Collectors.groupingBy(s -> s.stationType));
 
-        for (int i = 0; i < stations.size(); i++) {
-            Station current = stations.get(i);
-            Station next = stations.get((i + 1) % stations.size());  // Circular list
-            int distance = calculateDistance(current, next);
-            stationDistances.put(current, distance);
+        for (List<Station> stationList : groupedStations.values()) {
+            // Optionally sort stations within the same type if needed
+            Collections.sort(stationList, Comparator.comparingInt(s -> s.X + s.Y));  // Sort logic can be adjusted
+
+            // Create circular linked list for each type
+            for (int i = 0; i < stationList.size(); i++) {
+                Station current = stationList.get(i);
+                Station next = stationList.get((i + 1) % stationList.size());  // Circular list within the same type
+                current.next = next;
+                current.distanceToNext = calculateDistance(current, next);
+            }
         }
     }
+
 
     private int calculateDistance(Station s1, Station s2) {
         int dx = Math.abs(s1.X / CELL_SIZE - s2.X / CELL_SIZE);
