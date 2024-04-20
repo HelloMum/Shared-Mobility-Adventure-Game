@@ -5,28 +5,43 @@ import haohaiTeam.game.element.Player;
 import haohaiTeam.game.element.transport.onRoute.auto.AutoMoveTransport;
 import haohaiTeam.game.gui.GameWindow;
 
-import java.util.Map;
 import java.util.Objects;
 
+import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
+
 public abstract class Station extends Road {
-    protected char stationType;// this is an identifier for station
+    public char stationType;// this is an identifier for station
+
+    public Station next;  // Next station in the route
+    public int distanceToNext;  // Distance to the next station
     public Station(int x, int y) {
         super(x, y);
         this.walkable = false;
+        this.next = null;  // Initialized with no next station
+        this.distanceToNext = 0;  // Initialized with no distance
     }
 
     @Override
     public boolean equals(Object o) {
+        // Check if we are comparing the same object to itself
         if (this == o) return true;
+        // Check if the object is null or if it is not an instance of Station
         if (o == null || getClass() != o.getClass()) return false;
+
+        // Cast the Object to Station type
         Station station = (Station) o;
+
+        // Compare the X and Y coordinates
         return X == station.X && Y == station.Y;
     }
 
     @Override
     public int hashCode() {
+        // Generate a hash code based on the X and Y coordinates
+        // This is used in hash-based collections like HashMap, HashSet, etc.
         return Objects.hash(X, Y);
     }
+
     @Override
     public void interactKeyPressedOnYou(GameElement gameElement) {
         // If player wants to interact and bus linked to station give move player onto the bus and link to it
@@ -42,6 +57,7 @@ public abstract class Station extends Road {
         // Notify the other element about the collision if needed
         gameElement.onBeingCollidedOnYou(this);
 
+        displayNextStationInfo(this);
 
         // Check if the player is on any vehicle and handle accordingly
         // Find an available vehicle at the station
@@ -66,25 +82,18 @@ public abstract class Station extends Road {
 
             // Print a message indicating that the player is now on board the vehicle
             System.out.println("Player is now on board the " + real_vehicle.getClass().getSimpleName());
-
-
-            printStationDistances(GameWindow.stationDistances);
         }
     }
     // just a test method and I will delete later
-    public void printStationDistances(Map<Station, Integer> stationDistances) {
-        System.out.println("Print all station distances:");
-        for (Map.Entry<Station, Integer> entry : stationDistances.entrySet()) {
-            Station station = entry.getKey();
-            Integer distance = entry.getValue();
-            // Use the getIdentifier method to print a user-friendly identifier for each station
-            System.out.println("Station group: " + station.getIdentifier() + " - Distance (cells): " + distance);
+    public void displayNextStationInfo(Station currentStation) {
+        if (currentStation != null && currentStation.next != null) {
+            System.out.println("Next " + currentStation.getClass().getSimpleName() + " is at (" +
+                    currentStation.next.X / CELL_SIZE + ", " + currentStation.next.Y / CELL_SIZE +
+                    ") with a distance of " + currentStation.distanceToNext + " units.");
         }
     }
 
-    public String getIdentifier() {
-        return getClass().getSimpleName() + " at (" + X + ", " + Y + ")";
-    }
+
     private AutoMoveTransport findVehicleAtStation() {
         // Try to find an AutoMoveTransport at the same coordinates
         for (GameElement element : GameWindow.getElements()) {
