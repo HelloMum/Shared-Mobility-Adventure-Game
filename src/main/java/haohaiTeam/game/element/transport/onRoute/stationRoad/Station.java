@@ -5,8 +5,8 @@ import haohaiTeam.game.element.Player;
 import haohaiTeam.game.element.transport.onRoute.auto.AutoMoveTransport;
 import haohaiTeam.game.gui.GameWindow;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class Station extends Road {
     protected char stationType;// this is an identifier for station
@@ -15,6 +15,18 @@ public abstract class Station extends Road {
         this.walkable = false;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Station station = (Station) o;
+        return X == station.X && Y == station.Y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(X, Y);
+    }
     @Override
     public void interactKeyPressedOnYou(GameElement gameElement) {
         // If player wants to interact and bus linked to station give move player onto the bus and link to it
@@ -60,13 +72,19 @@ public abstract class Station extends Road {
         }
     }
     // just a test method and I will delete later
-    public void printStationDistances(Map<String, Integer> stationDistances) {
-        System.out.println("print all station distance：");
-        for (Map.Entry<String, Integer> entry : stationDistances.entrySet()) {
-            System.out.println("station group：" + entry.getKey() + " - distance（cells）：" + entry.getValue());
+    public void printStationDistances(Map<Station, Integer> stationDistances) {
+        System.out.println("Print all station distances:");
+        for (Map.Entry<Station, Integer> entry : stationDistances.entrySet()) {
+            Station station = entry.getKey();
+            Integer distance = entry.getValue();
+            // Use the getIdentifier method to print a user-friendly identifier for each station
+            System.out.println("Station group: " + station.getIdentifier() + " - Distance (cells): " + distance);
         }
     }
 
+    public String getIdentifier() {
+        return getClass().getSimpleName() + " at (" + X + ", " + Y + ")";
+    }
     private AutoMoveTransport findVehicleAtStation() {
         // Try to find an AutoMoveTransport at the same coordinates
         for (GameElement element : GameWindow.getElements()) {
