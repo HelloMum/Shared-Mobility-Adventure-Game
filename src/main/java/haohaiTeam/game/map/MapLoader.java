@@ -66,7 +66,6 @@ public class MapLoader {
             }
         }
         placeRandomGems(validGemCoordinates);
-        gameWindow.processStations();  // Calculate distances after all elements are loaded
     }
 
     private void processTile(char tile, int posX, int posY, ArrayList<Object> validGemCoordinates) {

@@ -7,8 +7,6 @@ import haohaiTeam.game.gui.GameWindow;
 
 import java.util.Objects;
 
-import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
-
 public abstract class Station extends Road {
     public char stationType;// this is an identifier for station
 
@@ -57,8 +55,6 @@ public abstract class Station extends Road {
         // Notify the other element about the collision if needed
         gameElement.onBeingCollidedOnYou(this);
 
-        displayNextStationInfo(this);
-
         // Check if the player is on any vehicle and handle accordingly
         // Find an available vehicle at the station
         AutoMoveTransport real_vehicle = findVehicleAtStation();
@@ -84,14 +80,7 @@ public abstract class Station extends Road {
             System.out.println("Player is now on board the " + real_vehicle.getClass().getSimpleName());
         }
     }
-    // just a test method and I will delete later
-    public void displayNextStationInfo(Station currentStation) {
-        if (currentStation != null && currentStation.next != null) {
-            System.out.println("Next " + currentStation.getClass().getSimpleName() + " is at (" +
-                    currentStation.next.X / CELL_SIZE + ", " + currentStation.next.Y / CELL_SIZE +
-                    ") with a distance of " + currentStation.distanceToNext + " units.");
-        }
-    }
+
 
 
     private AutoMoveTransport findVehicleAtStation() {

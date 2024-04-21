@@ -4,7 +4,6 @@ import haohaiTeam.game.element.CameraEntity;
 import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.element.Player;
 import haohaiTeam.game.element.Player2;
-import haohaiTeam.game.element.transport.onRoute.stationRoad.Station;
 import haohaiTeam.game.logic.GameStatus;
 import haohaiTeam.game.logic.OverlayHUD;
 import haohaiTeam.game.logic.TickGenerator;
@@ -19,7 +18,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GameWindow {
     public static final int CELL_SIZE = 30; // Size of each cell in pixels
@@ -41,8 +39,6 @@ public class GameWindow {
     private double scaleX = 1.0; // Scale factor for X-axis
     private double scaleY = 1.0; // Scale factor for Y-axis
 
-    // use a hashmap to save distances between stations
-    public static Map<Station, Integer> stationDistances = new HashMap<>();
     public GameWindow() {
         elements = new ArrayList<>();
         this.LevelScreen = new LevelScreen(gameStatus);
@@ -210,32 +206,4 @@ public class GameWindow {
         }
     }
 
-
-    public void processStations() {
-        // Group by station type and process each group separately
-        Map<Character, List<Station>> groupedStations = elements.stream()
-                .filter(e -> e instanceof Station)
-                .map(e -> (Station)e)
-                .collect(Collectors.groupingBy(s -> s.stationType));
-
-        for (List<Station> stationList : groupedStations.values()) {
-            // Optionally sort stations within the same type if needed
-            Collections.sort(stationList, Comparator.comparingInt(s -> s.X + s.Y));  // Sort logic can be adjusted
-
-            // Create circular linked list for each type
-            for (int i = 0; i < stationList.size(); i++) {
-                Station current = stationList.get(i);
-                Station next = stationList.get((i + 1) % stationList.size());  // Circular list within the same type
-                current.next = next;
-                current.distanceToNext = calculateDistance(current, next);
-            }
-        }
-    }
-
-
-    private int calculateDistance(Station s1, Station s2) {
-        int dx = Math.abs(s1.X / CELL_SIZE - s2.X / CELL_SIZE);
-        int dy = Math.abs(s1.Y / CELL_SIZE - s2.Y / CELL_SIZE);
-        return dx + dy;
-    }
 }
