@@ -1,4 +1,6 @@
 package haohaiTeam.game.logic;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.input.CommandListener;
@@ -13,22 +15,37 @@ public class GameStatus implements CommandListener {
     private boolean gameOver = false;
     private boolean resetTriggered = false;
     private int tickCount;
-    private CO2Tracker co2Tracker;
+    private static final int MAX_CO2_LEVEL = 10;
+    private Timer timer;
+    private static final long TIMER_DELAY = 1000;
+
 
     public void addScore(int points) {
         this.score += points;
     }
+    public GameStatus() {
+        // Initialize the CO2 timer
+        gameTimer();
+    }
     public enum currentTransport {
     /// implement current transport
-    }
-    public GameStatus() {
-        co2Tracker = new CO2Tracker(this);
     }
     public void loseLife() {
         this.lives--;
         checkGameConditions();
     }
-
+    public void gameTimer() {
+        // Initialize the timer
+        timer = new Timer();
+        // Schedule the task to update elapsed time every second
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                updateElapsedTime(1);
+                trackCO2Level(); // Increment elapsed time by 1 second
+            }
+        }, TIMER_DELAY, TIMER_DELAY);
+    }
     public int getScore() {
         return score;
     }
@@ -59,17 +76,16 @@ public class GameStatus implements CommandListener {
         addScore(points);
     }
 
-    public void addCO2(int amount) {
-        this.co2Collected += amount;
-        checkGameConditions();
-        co2Tracker.trackCO2Level();
-        // Adjust score or perform any other relevant actions
-        System.out.println(amount + " CO2 added to the game status.");
+    public void trackCO2Level() {
+        if (this.getCO2Collected() > MAX_CO2_LEVEL) {
+            this.setGameOver(true);
+            System.out.println("CO2 level exceeded maximum amount. Game Over!");
+        }
     }
-
     // Method to update elapsed time
     public void updateElapsedTime(long elapsedTimeInSeconds) {
         this.elapsedTimeInSeconds += elapsedTimeInSeconds;
+        this.co2Collected++;
     }
 
     // Method to get elapsed time

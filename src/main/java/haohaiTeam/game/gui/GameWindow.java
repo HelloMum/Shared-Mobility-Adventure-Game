@@ -75,7 +75,7 @@ public class GameWindow {
     }
 
     public void openWindow() {
-        JFrame frame = new JFrame("Game Window");
+        JFrame frame = new JFrame("EnviroVenture");
         frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(true); // Allow frame to be resized
