@@ -13,12 +13,16 @@ public class GameStatus implements CommandListener {
     private boolean gameOver = false;
     private boolean resetTriggered = false;
     private int tickCount;
+    private CO2Tracker co2Tracker;
 
     public void addScore(int points) {
         this.score += points;
     }
     public enum currentTransport {
     /// implement current transport
+    }
+    public GameStatus() {
+        co2Tracker = new CO2Tracker(this);
     }
     public void loseLife() {
         this.lives--;
@@ -33,6 +37,9 @@ public class GameStatus implements CommandListener {
         return lives;
     }
 
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
     public boolean isGameOver() {
         return gameOver;
     }
@@ -55,6 +62,7 @@ public class GameStatus implements CommandListener {
     public void addCO2(int amount) {
         this.co2Collected += amount;
         checkGameConditions();
+        co2Tracker.trackCO2Level();
         // Adjust score or perform any other relevant actions
         System.out.println(amount + " CO2 added to the game status.");
     }
