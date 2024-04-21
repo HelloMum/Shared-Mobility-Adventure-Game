@@ -13,16 +13,16 @@ public class OverlayHUD {
         // Render the HUD overlay
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Score: " + gameStatus.getScore(), 20, 30);
-        g.drawString("Coins: " + gameStatus.getCoinsCollected(), 20, 60);
-        g.drawString("Gems: " + gameStatus.getGemsAcquired(), 20, 90);
-        g.drawString("CO2: " + gameStatus.getCO2Collected(), 20, 120);
+        g.drawString("Score: " + gameStatus.getScore(), 20, 20);
+        g.drawString("Coins: " + gameStatus.getCoinsCollected(), 20, 50);
+        g.drawString("Gems: " + gameStatus.getGemsAcquired(), 20, 80);
+        g.drawString("CO2: ", 20, 110);
 
         // CO2 level indicator as a rectangle
         int currentWidth = (int) ((double) gameStatus.getCO2Collected() / 100 * 100);
         g.setColor(Color.RED); 
-        g.fillRect(20, 150, currentWidth, 20);
+        g.fillRect(80, 92, currentWidth, 20);
         g.setColor(Color.BLACK); 
-        g.drawRect(20, 150, 100, 20);
+        g.drawRect(80, 92, 100, 20);
     }
 }

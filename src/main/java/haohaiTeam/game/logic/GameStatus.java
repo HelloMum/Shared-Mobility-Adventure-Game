@@ -17,7 +17,7 @@ public class GameStatus implements CommandListener {
     private int tickCount;
     private static final int MAX_CO2_LEVEL = 100;
     private Timer timer;
-    private static final long TIMER_DELAY = 500;
+    private static final long TIMER_DELAY = 300;
     public static boolean co2increase = false;
 
     public void addScore(int points) {
@@ -41,15 +41,15 @@ public class GameStatus implements CommandListener {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+                if (gameOver == true) {
+                    cancel();
+                } else {
                 updateElapsedTime(1);
                 if (co2increase == true) {
                 increaseCO2();
-                System.out.println("---------------------------");
-                System.out.println("co2 increased");
-                System.out.println("---------------------------");
-
                 }
                 trackCO2Level();
+            }
             }
         }, TIMER_DELAY, TIMER_DELAY);
     }

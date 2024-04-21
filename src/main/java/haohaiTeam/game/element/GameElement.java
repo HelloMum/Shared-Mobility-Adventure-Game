@@ -2,11 +2,13 @@ package haohaiTeam.game.element;
 
 import haohaiTeam.game.gui.GameWindow;
 import haohaiTeam.game.input.CommandListener;
+import haohaiTeam.game.element.GameElement;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
+import static haohaiTeam.game.gui.GameWindow.gameStatus;
 
 public abstract class GameElement implements CommandListener  {
 
@@ -276,6 +278,7 @@ public abstract class GameElement implements CommandListener  {
 
     public void resetMovementControl() {
         if (canMove) {
+            gameStatus.co2increase = false;
             final Direction lastDirection = direction;
             moveFacing();
             keyPressTimestamp = System.currentTimeMillis(); // Capture the timestamp when keypress occurs
