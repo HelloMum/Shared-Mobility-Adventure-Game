@@ -9,8 +9,12 @@ import haohaiTeam.game.element.transport.onRoute.faketrans.FakeLuas;
 import haohaiTeam.game.element.transport.onRoute.faketrans.FakeTaxi;
 import haohaiTeam.game.element.transport.onRoute.faketrans.FakeVehicle;
 import haohaiTeam.game.gui.GameWindow;
+import haohaiTeam.game.logic.*;
 
 import java.util.List;
+
+import static haohaiTeam.game.gui.GameWindow.gameStatus;
+
 import java.util.HashMap;
 
 public abstract class Station extends Road {
@@ -83,6 +87,7 @@ public abstract class Station extends Road {
             real_vehicle.setBeingControlled(false);
             gameElement.setBeingControlled(false);
             playerOnStationMap.put(stationType, true);
+            gameStatus.co2increase = true;
             System.out.println("Player is now on board the " + real_vehicle.getClass().getSimpleName());
         }
     }
