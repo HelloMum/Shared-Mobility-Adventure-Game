@@ -15,10 +15,10 @@ public class GameStatus implements CommandListener {
     private boolean gameOver = false;
     private boolean resetTriggered = false;
     private int tickCount;
-    private static final int MAX_CO2_LEVEL = 10;
+    private static final int MAX_CO2_LEVEL = 100;
     private Timer timer;
-    private static final long TIMER_DELAY = 1000;
-
+    private static final long TIMER_DELAY = 500;
+    public static boolean co2increase = false;
 
     public void addScore(int points) {
         this.score += points;
@@ -42,7 +42,14 @@ public class GameStatus implements CommandListener {
             @Override
             public void run() {
                 updateElapsedTime(1);
-                trackCO2Level(); // Increment elapsed time by 1 second
+                if (co2increase == true) {
+                increaseCO2();
+                System.out.println("---------------------------");
+                System.out.println("co2 increased");
+                System.out.println("---------------------------");
+
+                }
+                trackCO2Level();
             }
         }, TIMER_DELAY, TIMER_DELAY);
     }
@@ -85,6 +92,9 @@ public class GameStatus implements CommandListener {
     // Method to update elapsed time
     public void updateElapsedTime(long elapsedTimeInSeconds) {
         this.elapsedTimeInSeconds += elapsedTimeInSeconds;
+    }
+
+    public void increaseCO2() {
         this.co2Collected++;
     }
 
