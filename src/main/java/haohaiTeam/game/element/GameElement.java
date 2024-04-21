@@ -2,7 +2,6 @@ package haohaiTeam.game.element;
 
 import haohaiTeam.game.gui.GameWindow;
 import haohaiTeam.game.input.CommandListener;
-import haohaiTeam.game.element.GameElement;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
