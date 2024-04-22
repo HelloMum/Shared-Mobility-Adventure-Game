@@ -1,4 +1,6 @@
 package haohaiTeam.game.logic;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.input.CommandListener;
@@ -13,9 +15,17 @@ public class GameStatus implements CommandListener {
     private boolean gameOver = false;
     private boolean resetTriggered = false;
     private int tickCount;
+    private static final int MAX_CO2_LEVEL = 100;
+    private Timer timer;
+    private static final long TIMER_DELAY = 300;
+    public static boolean co2increase = false;
 
     public void addScore(int points) {
         this.score += points;
+    }
+    public GameStatus() {
+        // Initialize the CO2 timer
+        gameTimer();
     }
     public enum currentTransport {
     /// implement current transport
@@ -24,7 +34,25 @@ public class GameStatus implements CommandListener {
         this.lives--;
         checkGameConditions();
     }
-
+    public void gameTimer() {
+        // Initialize the timer
+        timer = new Timer();
+        // Schedule the task to update elapsed time every second
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (gameOver == true) {
+                    cancel();
+                } else {
+                updateElapsedTime(1);
+                if (co2increase == true) {
+                increaseCO2();
+                }
+                trackCO2Level();
+            }
+            }
+        }, TIMER_DELAY, TIMER_DELAY);
+    }
     public int getScore() {
         return score;
     }
@@ -33,6 +61,9 @@ public class GameStatus implements CommandListener {
         return lives;
     }
 
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
     public boolean isGameOver() {
         return gameOver;
     }
@@ -52,16 +83,19 @@ public class GameStatus implements CommandListener {
         addScore(points);
     }
 
-    public void addCO2(int amount) {
-        this.co2Collected += amount;
-        checkGameConditions();
-        // Adjust score or perform any other relevant actions
-        System.out.println(amount + " CO2 added to the game status.");
+    public void trackCO2Level() {
+        if (this.getCO2Collected() > MAX_CO2_LEVEL) {
+            this.setGameOver(true);
+            System.out.println("CO2 level exceeded maximum amount. Game Over!");
+        }
     }
-
     // Method to update elapsed time
     public void updateElapsedTime(long elapsedTimeInSeconds) {
         this.elapsedTimeInSeconds += elapsedTimeInSeconds;
+    }
+
+    public void increaseCO2() {
+        this.co2Collected++;
     }
 
     // Method to get elapsed time
