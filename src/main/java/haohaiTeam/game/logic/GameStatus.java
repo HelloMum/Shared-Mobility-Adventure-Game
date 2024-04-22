@@ -20,6 +20,9 @@ public class GameStatus implements CommandListener {
     private static final long TIMER_DELAY = 300;
     public static boolean co2increase = false;
 
+    // here I am not sure there is a need to have a timer for co2 but this one is for checking game time
+    private long timeLimitInSeconds = 60; // this is for limiting the player to pass current level in 60 seconds
+
     public void addScore(int points) {
         this.score += points;
     }
@@ -92,6 +95,11 @@ public class GameStatus implements CommandListener {
     // Method to update elapsed time
     public void updateElapsedTime(long elapsedTimeInSeconds) {
         this.elapsedTimeInSeconds += elapsedTimeInSeconds;
+        // check if time limit is exceeded
+        if (this.elapsedTimeInSeconds > timeLimitInSeconds) {
+            System.out.println("Time's up! Game over!");
+            setGameOver(true);
+        }
     }
 
     public void increaseCO2() {
