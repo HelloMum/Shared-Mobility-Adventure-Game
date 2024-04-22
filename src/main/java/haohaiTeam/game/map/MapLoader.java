@@ -113,7 +113,7 @@ public class MapLoader {
 
     }
     public void loadStartingScreen() {
-        loadNextLevel();
-
+        loadMapFromJson(String.format("src/main/resources/MapElement/level_%d.json", currentLevel));
+        // Directly load the first level without condition check
     }
 }
