@@ -10,7 +10,7 @@ public class GameStarter {
         MapLoader mapLoader = new MapLoader(gameWindow); // Create the map loader with a reference to the GameWindow
 
         // Instead of loading static level_1, initiate loading the first level from JSON
-        mapLoader.loadNextLevel(); // This will load level_1.json for the first call, and prepare for the next levels
+        mapLoader.loadStartingScreen(); // This will load level_1.json for the first call, and prepare for the next levels
 
         gameWindow.openWindow(); // Open the window with all elements set up
     }
