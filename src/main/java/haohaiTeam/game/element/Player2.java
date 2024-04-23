@@ -69,7 +69,6 @@ public class Player2 extends Player {
                     break;
             }
 
-            // Ensure Player2 is always next to Player by 2 cells
 
         }
     }
@@ -103,21 +102,12 @@ public class Player2 extends Player {
 
     @Override
     protected boolean checkCollision(int nextX, int nextY) {
-        List<GameElement> elements = GameWindow.getElements();
-        for (GameElement element : elements) {
-            // Calculate the next step
-            int nextPosX = convertToLogicalPos(nextX) + this.X;
-            int nextPosY = convertToLogicalPos(nextY) + this.Y;
-
-            // Check if the next position collides with the current position of the other element
-            if (nextPosX == element.X && nextPosY == element.Y) {
-                element.goingToBeWalkedOverBy(this);
-
-            }
-        }
-        return true; // No collision for Player2
+        return true; // No collision for Player2 :) It is a balloon.
     }
 
+    @Override
+    public void goingToBeWalkedOverBy(GameElement gameElement) {
+    }
     @Override
     public void interactKeyPressedByYou() {
         // No implementation needed for Player2

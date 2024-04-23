@@ -292,12 +292,12 @@ public abstract class GameElement implements CommandListener  {
                             }
                             if (elapsedTime < 150) {
                                 resetMovementControl();
-                                System.out.println("Less than 200ms passed since keypress, missing input inserted");
+                                System.out.println("Less than 150ms passed since keypress, missing input inserted");
                             }
                             canMove = true;
                         }
                     },
-                    150 // Set delay as needed
+                    149 // Set delay this is to be forgiving about missing inputs.
             );
         }
     }
@@ -367,33 +367,12 @@ public abstract class GameElement implements CommandListener  {
         // Triggered when something walks over this element, probably a player
         //     @Override on your class, someone / something on top
     }
-    public void goingToBeWalkOn(GameElement gameElement) {
-        goingToBeWalkedOverBy(gameElement);
-    }
-
-    // Trigger by being walked over by something
-    // Default sends self to the cell that you are upon
     public void interactKeyPressedByYou() {
         System.out.println(this + " wants to interact");
         // this.moveFacing();
         int currentLogicalPosX = this.getLogicalPosX();
         int currentLogicalPosY = this.getLogicalPosY();
         List<GameElement> elements = GameWindow.getElements();
-        // Change to the cell that you are looking into
-//        switch (direction) {
-//            case UP:
-//                currentLogicalPosY -= 1; // Move up
-//                break;
-//            case DOWN:
-//                currentLogicalPosY += 1; // Move down
-//                break;
-//            case LEFT:
-//                currentLogicalPosX -= 1; // Move left
-//                break;
-//            case RIGHT:
-//                currentLogicalPosX += 1; // Move right
-//                break;
-//        }
         for (GameElement element : elements) {
             // Check the element that this is on
             if (element != this && element.getLogicalPosX() == currentLogicalPosX && element.getLogicalPosY() == currentLogicalPosY) {
@@ -409,12 +388,11 @@ public abstract class GameElement implements CommandListener  {
     public void onBeingCollidedByYou(GameElement gameElement) {
         System.out.println(this + " collision on the element " + gameElement);
         //// Hey other class, this silly guy wants to go through you! , and you are not walkable
-        // Tell the other class with the element that is bouncing him
-        gameElement.onBeingCollidedOnYou(this);
+        gameElement.onBeingCollidedOnYou(this); /// tell him!
 
     }
     public void onBeingCollidedOnYou(GameElement gameElement) {
-        //// What a stupid guy I won't move as only my children will implement this behaviour  by using @Override
+        // Create a reaction here if needed
     }
 
 
