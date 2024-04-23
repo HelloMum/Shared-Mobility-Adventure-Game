@@ -7,21 +7,21 @@ import haohaiTeam.game.input.CommandListener;
 
 public class GameStatus implements CommandListener {
     private int score = 0;
-    private int lives = 3; // assume 3 lives at start
+    private final int lives = 3; // assume 3 lives at start
     private int coinsCollected = 0;
     private int gemsAcquired = 0;
     private int co2Collected = 0;
     private long elapsedTimeInSeconds = 0; // Variable to track elapsed time
     private boolean gameOver = false;
-    private boolean resetTriggered = false;
     private int tickCount;
     private static final int MAX_CO2_LEVEL = 100;
     private Timer timer;
     private static final long TIMER_DELAY = 300;
     public static boolean co2increase = false;
-
+    private static final int REQUIRED_GEMS = 20; // Number of gems required to win
+    private boolean gameWon = false;
     // here I am not sure there is a need to have a timer for co2 but this one is for checking game time
-    private long timeLimitInSeconds = 60; // this is for limiting the player to pass current level in 60 seconds
+    private static final long TIME_LIMIT_IN_SECONDS = 60; // this is for limiting the player to pass current level in 60 seconds
 
     public void addScore(int points) {
         this.score += points;
@@ -30,12 +30,13 @@ public class GameStatus implements CommandListener {
         // Initialize the CO2 timer
         gameTimer();
     }
-    public enum currentTransport {
-    /// implement current transport
+
+    public boolean isGameWon() {
+        return gameWon;
     }
-    public void loseLife() {
-        this.lives--;
-        checkGameConditions();
+
+    public void setGameWon(boolean gameWon) {
+        this.gameWon = gameWon;
     }
     public void gameTimer() {
         // Initialize the timer
@@ -44,11 +45,11 @@ public class GameStatus implements CommandListener {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (gameOver == true) {
+                if (gameOver) {
                     cancel();
                 } else {
                 updateElapsedTime(1);
-                if (co2increase == true) {
+                if (co2increase) {
                 increaseCO2();
                 }
                 trackCO2Level();
@@ -60,9 +61,6 @@ public class GameStatus implements CommandListener {
         return score;
     }
 
-    public int getLives() {
-        return lives;
-    }
 
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
@@ -96,7 +94,7 @@ public class GameStatus implements CommandListener {
     public void updateElapsedTime(long elapsedTimeInSeconds) {
         this.elapsedTimeInSeconds += elapsedTimeInSeconds;
         // check if time limit is exceeded
-        if (this.elapsedTimeInSeconds > timeLimitInSeconds) {
+        if (this.elapsedTimeInSeconds > TIME_LIMIT_IN_SECONDS) {
             System.out.println("Time's up! Game over!");
             setGameOver(true);
         }
@@ -104,11 +102,6 @@ public class GameStatus implements CommandListener {
 
     public void increaseCO2() {
         this.co2Collected++;
-    }
-
-    // Method to get elapsed time
-    public long getElapsedTimeInSeconds() {
-        return elapsedTimeInSeconds;
     }
 
     public int getCoinsCollected() {
@@ -136,29 +129,17 @@ public class GameStatus implements CommandListener {
         System.out.println("Gem received signal");
         checkGameConditions();
     }
-    public boolean losingCondition() {
-        return false;
-    }
-    public boolean winningCondition() {
-        if (resetTriggered == true ) {
-            return true;
-        }
-        return false;
-    }
 
-    public boolean loseALive() {
-        return false;
-    }
     public void checkGameConditions() {
-        if (this.getLives() == 0) {
+        if (lives <= 0 || elapsedTimeInSeconds > TIME_LIMIT_IN_SECONDS || co2Collected > MAX_CO2_LEVEL) {
             gameOver = true;
+            System.out.println("Game Over! You have lost.");
+        } else if (gemsAcquired >= REQUIRED_GEMS && co2Collected <= MAX_CO2_LEVEL && elapsedTimeInSeconds <= TIME_LIMIT_IN_SECONDS) {
+            gameOver = true;
+            setGameWon(true);
+            System.out.println("Congratulations! You have won.");
         }
-        else if (this.getGemsAcquired() == 20) {
-            resetTriggered = true;
-        }
-        loseALive();
-        losingCondition();
-        System.out.println("GameConditionsHaveBeenChecked");    }
+    }
     @Override
     public void onTick() {
         tickCount++;
@@ -169,6 +150,5 @@ public class GameStatus implements CommandListener {
 
     @Override
     public void onCO2Generated(int value) {
-
     }
 }
