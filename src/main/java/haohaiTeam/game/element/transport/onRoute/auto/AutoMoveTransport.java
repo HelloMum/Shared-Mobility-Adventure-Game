@@ -36,19 +36,6 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
         isAtStation = false;
     }
 
-    public boolean isAtStation() {
-        // If gameElement is already linked to this, unlink them
-        return isAtStation;
-    }
-
-    private boolean checkIfAtStation() {
-        // Example condition: define what it means to be 'at a station'
-        return GameWindow.getElements().stream()
-                .anyMatch(e -> e instanceof Station && e.X == this.X && e.Y == this.Y);
-    }
-
-
-    // startMoving(): moveOnRoad() is called every MOVE_INTERVAL_MS milliseconds
     protected void startMoving() {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -68,16 +55,17 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
     }
 
     protected void moveOnRoad() {
+        List<GameElement> elements = new ArrayList<>(GameWindow.getElements());
+
         if (!autoMove) {
-            isAtStation = checkIfAtStation();  // Update station status when not moving
             return; // Ignore movement if auto mode is disabled
         }
 
-        List<GameElement> elements = new ArrayList<>(GameWindow.getElements());
         // Try to move in the current direction first
         if (tryMoveInCurrentDirection(elements)) {
             return;
         }
+
         // If moving in the current direction is not possible, try to turn right
         if (tryTurn(elements, headingY, -headingX)) {
             return;
@@ -136,7 +124,6 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
             if (element instanceof Player && element.X == x && element.Y == y) {
                 transportModeFound = true;
             }
-
             // Check if the element is a Road and matches the position
             if (element instanceof Road && element.X == x && element.Y == y) {
                 roadFound = true;
