@@ -29,7 +29,7 @@ public class MapLoader {
         loadCurrentLevel(); // Load the next level
     }
 
-    private static void loadCurrentLevel() {
+    public static void loadCurrentLevel() {
         String levelFile = String.format("src/main/resources/MapElement/level_%d.json", currentLevel);
         loadMapFromJson(levelFile);
     }
@@ -110,9 +110,5 @@ public class MapLoader {
         System.out.println("has been placed in the position X: " + posX + ", Y: " + posY );
 
 
-    }
-    public void loadStartingScreen() {
-        loadMapFromJson(String.format("src/main/resources/MapElement/level_%d.json", currentLevel));
-        // Directly load the first level without condition check
     }
 }
