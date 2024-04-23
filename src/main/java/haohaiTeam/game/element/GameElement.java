@@ -471,5 +471,8 @@ public abstract class GameElement implements CommandListener  {
            System.out.println("Tic is working but only for the game element ");
        }
     }
+    @Override
+    public void onCO2Generated(int value) {
 
+    }
 }
