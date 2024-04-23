@@ -52,10 +52,16 @@ public class LevelScreen {
         if (this.gameStatus.isGameOver() == true) {
             g.drawString(gameOverMessage, x, 50);
             // reload current level
+            MapLoader.reloadCurrentLevel();
         }
         if (this.gameStatus.isGameWon() == true) {
             g.drawString(winMessage, x, 50);
             // sleep some time and continue the game next level
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             // load next level
             MapLoader.loadNextLevel();
         }
