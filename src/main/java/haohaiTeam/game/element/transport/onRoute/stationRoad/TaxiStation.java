@@ -11,7 +11,7 @@ import java.util.TimerTask;
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
 
 public class TaxiStation extends Station {
-    private static final double CO2_PER_CELL = 1.0;
+    public static final double CO2_PER_CELL = 1.0;
 
     public TaxiStation(int x, int y) {
         super(x, y);

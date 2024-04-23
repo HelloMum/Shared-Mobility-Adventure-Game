@@ -24,10 +24,15 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
 
     // HeadingX and HeadingY: initially point to the lower right (due east-south),
     // indicating the current direction of parking.
+    private int totalSteps = 0;
+
     protected int headingX = 0;
     protected int headingY = 1;
     protected boolean autoMove;
     protected boolean isAtStation;
+    public Station onStation = null; // Reference to the transport
+    private Station lastStation = null;
+
 
     public AutoMoveTransport(int x, int y) {
         super(x, y);
@@ -46,20 +51,24 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
         }, 0, MOVE_INTERVAL_MS);
     }
     public void toggleAutoStation() {
+        if (lastStation != null) {
+            lastStation.setDistanceNextStation(this.totalSteps);
+        }
+        lastStation=onStation;
+        onStation=null;
+        totalSteps = 0;
         autoMove = !autoMove;
+        isAtStation = !isAtStation;
         if (!autoMove && this.getLinkedElement() != null) {
             linkedElement.unlinkElement();
             linkedElement.setBeingControlled(true);
             this.unlinkElement();
         }
+
     }
 
     protected void moveOnRoad() {
         List<GameElement> elements = new ArrayList<>(GameWindow.getElements());
-
-        if (!autoMove) {
-            return; // Ignore movement if auto mode is disabled
-        }
 
         // Try to move in the current direction first
         if (tryMoveInCurrentDirection(elements)) {
@@ -72,7 +81,7 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
         }
 
         // If turning right is not successful, try to turn left
-        if (!tryTurn(elements, -headingY, headingX)) {
+        if (tryTurn(elements, -headingY, headingX)) {
             return;
         }
 
@@ -100,8 +109,10 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
         if (isRoadAtPosition(nextX, nextY, elements)) {
             updateHeading(dx, dy);
             logicalMove(dx, dy);
+            totalSteps++;
             return true;
         }
+
         return false;
     }
 
@@ -117,22 +128,22 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
 
         // Iterate through the list of elements
         for (GameElement element : elements) {
-            // Check if the element is a TransportMode and matches the position
-            if (element instanceof TransportMode && element.X == x && element.Y == y) {
-                transportModeFound = true;
-            }
-            if (element instanceof Player && element.X == x && element.Y == y) {
+            // Check if the element is a TransportMode (e.g., Bus, Luas, Taxi) or Player and matches the position
+            if ((element instanceof TransportMode || element instanceof Player) && element.X == x && element.Y == y) {
                 transportModeFound = true;
             }
             // Check if the element is a Road and matches the position
             if (element instanceof Road && element.X == x && element.Y == y) {
-                roadFound = true;
-                // Notify the road that it's going to be walked over by this object
+                roadFound = true;}
+
+            // Check if the element is a Station and matches the position
+            if (element instanceof Station && element.X == x && element.Y == y) {
+                onStation= (Station) element;
                 element.goingToBeWalkedOverBy(this);
             }
         }
 
-        // Return true if road is found and no transport mode is found
+        // Return true if road is found and no transport mode or station is found
         return roadFound && !transportModeFound;
     }
 

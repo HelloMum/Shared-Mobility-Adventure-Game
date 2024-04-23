@@ -14,6 +14,7 @@ public class LuasStation extends Station {
     public LuasStation(int x, int y) {
         super(x, y);
     }
+
     @Override
     public void draw(Graphics2D g2d) {
         // Draw black background square
@@ -41,18 +42,5 @@ public class LuasStation extends Station {
         // Draw the "STOP" text
         g2d.drawString(stopText, textX, textY);
     }
-    public void goingToBeWalkedOverBy(GameElement gameElement) {
-        if (gameElement instanceof Luas luas) {
-            luas.toggleAutoStation();
 
-            // Schedule a task to toggle autoStation again after 3 seconds
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    luas.toggleAutoStation();
-                }
-            }, 3000);
-        }
-    }
 }
