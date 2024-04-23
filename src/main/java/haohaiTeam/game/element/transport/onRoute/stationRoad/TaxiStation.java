@@ -15,13 +15,8 @@ public class TaxiStation extends Station {
 
     public TaxiStation(int x, int y) {
         super(x, y);
-        setStationType('t');
     }
 
-    @Override
-    protected double getCO2PerCell() {
-        return CO2_PER_CELL;
-    }
     @Override
     public void draw(Graphics2D g2d) {
         // Draw black background square
@@ -48,19 +43,5 @@ public class TaxiStation extends Station {
 
         // Draw the "STOP" text
         g2d.drawString(stopText, textX, textY);
-    }
-    public void goingToBeWalkedOverBy(GameElement gameElement) {
-        if (gameElement instanceof Taxi taxi) {
-            taxi.toggleAutoStation();
-
-            // Schedule a task to toggle autoStation again after 3 seconds
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    taxi.toggleAutoStation();
-                }
-            }, 3000);
-        }
     }
 }

@@ -16,13 +16,9 @@ public class BusStation extends Station {
     private static final double CO2_PER_CELL = 0.5;
     public BusStation(int x, int y) {
         super(x, y);
-        setStationType('b');
     }
 
-    @Override
-    protected double getCO2PerCell() {
-        return CO2_PER_CELL;
-    }
+
     @Override
     public void draw(Graphics2D g2d) {
         // Draw black background square

@@ -13,13 +13,7 @@ public class LuasStation extends Station {
     private static final double CO2_PER_CELL = 0.7;
     public LuasStation(int x, int y) {
         super(x, y);
-        setStationType('l');
     }
-    @Override
-    protected double getCO2PerCell() {
-        return CO2_PER_CELL;
-    }
-
     @Override
     public void draw(Graphics2D g2d) {
         // Draw black background square
