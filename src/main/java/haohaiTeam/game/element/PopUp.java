@@ -3,6 +3,8 @@ package haohaiTeam.game.element;
 import haohaiTeam.game.gui.GameWindow;
 
 import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class PopUp extends GameElement {
 
@@ -28,6 +30,14 @@ public class PopUp extends GameElement {
         this.message = message;
         setMessage(message);
         System.out.println("Showing message: " + message);
+
+        Timer PopupSelfRemovetimer = new Timer();
+        PopupSelfRemovetimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                PopUp.this.remove();
+            }
+        }, popUpDuration);
     }
 
 

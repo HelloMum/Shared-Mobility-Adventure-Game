@@ -166,4 +166,9 @@ public class GameStatus implements CommandListener {
             checkGameConditions();
         }
     }
+
+    @Override
+    public void onCO2Generated(int value) {
+
+    }
 }
