@@ -116,8 +116,8 @@ public class MapLoader {
         ArrayList<Integer> indices = new ArrayList<>();
         for (int i = 0; i < validGemCoordinates.size() / 2; i++) {indices.add(i);}
         Collections.shuffle(indices);
-        int maxRandomGems = 200;
-        int minRandomGems = 100;
+        int maxRandomGems = 45;
+        int minRandomGems = 15;
         int randomGemCount = random.nextInt(maxRandomGems - minRandomGems + 1) + minRandomGems;
         System.out.println("Random gems produced: " + randomGemCount);
         for (int i = 0; i < randomGemCount; i++) {

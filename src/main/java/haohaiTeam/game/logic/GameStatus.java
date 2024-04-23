@@ -4,6 +4,7 @@ import java.util.TimerTask;
 
 import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.input.CommandListener;
+import haohaiTeam.game.map.MapLoader;
 
 public class GameStatus implements CommandListener {
     private int score = 0;
@@ -49,6 +50,10 @@ public class GameStatus implements CommandListener {
                 increaseCO2();
                 }
                 trackCO2Level();
+
+                if (isGameOver() == true || winningCondition() == true) {
+                    //MapLoader.loadNextLevel();
+                }
             }
             }
         }, TIMER_DELAY, TIMER_DELAY);
@@ -133,6 +138,7 @@ public class GameStatus implements CommandListener {
     }
     public boolean winningCondition() {
         if (resetTriggered == true ) {
+            // Need to insert something to call a
             return true;
         }
         return false;
