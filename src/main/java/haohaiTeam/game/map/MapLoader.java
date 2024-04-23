@@ -1,7 +1,6 @@
 package haohaiTeam.game.map;
 
 
-import haohaiTeam.game.element.transport.onRoute.*;
 import haohaiTeam.game.element.transport.onRoute.auto.Bus;
 import haohaiTeam.game.element.transport.onRoute.auto.Luas;
 import haohaiTeam.game.element.transport.onRoute.auto.Taxi;
@@ -84,7 +83,6 @@ public class MapLoader {
             case 'b': GameWindow.addElement(new BusStation(posX, posY)); break;
             case 't': GameWindow.addElement(new TaxiStation(posX, posY)); break;
             case 'l': GameWindow.addElement(new LuasStation(posX, posY)); break;
-            case 'a': GameWindow.addElement(new Car(posX, posY)); break;
             case ' ': validGemCoordinates.add(posX); validGemCoordinates.add(posY); break;
 
             // Additional cases can be added here
