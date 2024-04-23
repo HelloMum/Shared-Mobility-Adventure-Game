@@ -19,7 +19,7 @@ public class LevelScreen {
     }
 
     public void render(Graphics g) {
-        if (gameStatus.isGameOver() == true || this.gameStatus.winningCondition() == true) {
+        if (gameStatus.isGameOver() == true || this.gameStatus.isGameWon() == true) {
         // rectangle
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, width, height);
@@ -53,7 +53,7 @@ public class LevelScreen {
             g.drawString(gameOverMessage, x, 50);
             // reload current level
         }
-        if (this.gameStatus.winningCondition() == true) {
+        if (this.gameStatus.isGameWon() == true) {
             g.drawString(winMessage, x, 50);
             // sleep some time and continue the game next level
             // load next level
