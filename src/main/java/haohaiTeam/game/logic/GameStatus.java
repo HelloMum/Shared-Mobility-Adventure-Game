@@ -22,7 +22,7 @@ public class GameStatus implements CommandListener {
     private boolean gameWon = false;
 
     // here I am not sure there is a need to have a timer for co2 but this one is for checking game time
-    private static final long TIME_LIMIT_IN_SECONDS = 60; // this is for limiting the player to pass current level in 60 seconds
+    private static final long TIME_LIMIT_IN_SECONDS = 600; // this is for limiting the player to pass current level in 60 seconds
 
     public GameStatus() {
         // Initialize the CO2 timer
