@@ -25,9 +25,16 @@ public class MapLoader {
     private static int currentLevel = 1; // Track the current level
 
     public static void loadNextLevel() {
+        currentLevel++;  // Increment to next level
+        loadCurrentLevel(); // Load the next level
+    }
+
+    private static void loadCurrentLevel() {
         String levelFile = String.format("src/main/resources/MapElement/level_%d.json", currentLevel);
         loadMapFromJson(levelFile);
-        currentLevel++;  // Prepare for the next level
+    }
+    public static void reloadCurrentLevel() {
+        loadCurrentLevel(); // Reload the current level
     }
 
 
