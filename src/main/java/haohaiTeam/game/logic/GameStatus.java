@@ -1,5 +1,6 @@
 package haohaiTeam.game.logic;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -219,8 +220,9 @@ public class GameStatus implements CommandListener {
     }
 
     public void saveGame() {
-        String fileExtension = ".json";
-        String filePath = "Saved_Game_" + new Date().toString() + fileExtension;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String dateTime = dateFormat.format(new Date());
+        String filePath = "Saved_Game_" + dateTime + ".json";
 
         JSONObject savedGame = new JSONObject();
 
