@@ -5,9 +5,9 @@ import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.element.Player;
 import haohaiTeam.game.element.Player2;
 import haohaiTeam.game.logic.GameStatus;
+import haohaiTeam.game.logic.LevelScreen;
 import haohaiTeam.game.logic.OverlayHUD;
 import haohaiTeam.game.logic.TickGenerator;
-import haohaiTeam.game.logic.LevelScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,6 +57,7 @@ public class GameWindow {
     public static void clearElements() {
         elements.clear();
     }
+
     // For logic checking, game elements can access this
     public static List<GameElement> getElements() {
         return elements;
@@ -176,7 +177,6 @@ public class GameWindow {
     }
 
 
-
     private void renderHUD(Graphics g) {
         if (overlayHUD != null) {
             Graphics2D g2d = (Graphics2D) g.create();
@@ -205,4 +205,5 @@ public class GameWindow {
             element.handleKeyEvent(e);
         }
     }
+
 }

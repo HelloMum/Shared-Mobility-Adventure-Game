@@ -6,10 +6,11 @@ import haohaiTeam.game.input.CommandListener;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
+
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
 import static haohaiTeam.game.gui.GameWindow.gameStatus;
 
-public abstract class GameElement implements CommandListener  {
+public abstract class GameElement implements CommandListener {
 
     /// The basics of the Game element
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -30,13 +31,13 @@ public abstract class GameElement implements CommandListener  {
     public boolean isVisible; // hide the visibility
     public boolean playerOnTop;
     public Direction direction; // Direction the element is facing
-    CommandListener commandListener;
+    protected CommandListener commandListener;
     public int tickCount = 0;
     private boolean canMove = true;
 
     private long lastMoveTime;
     private int moveInterval;  // Time in milliseconds required to pass before the next move can happen
-    
+
     public GameElement(int x, int y) {
         this.renderX = x; // just for rendering
         this.renderY = y;
@@ -44,7 +45,7 @@ public abstract class GameElement implements CommandListener  {
         this.walkable = false;
         this.layer = 99; // Default layer
         this.isVisible = true;
-        this.playerOnTop =false;
+        this.playerOnTop = false;
         this.direction = Direction.DOWN; // Default direction
         this.commandListener = null; // we need to start this later
         this.X = x; // Real pixel position
@@ -52,6 +53,7 @@ public abstract class GameElement implements CommandListener  {
         this.moveInterval = 200;  // default interval set as 200 ms
 
     }
+
     public void setCommandListener(CommandListener commandListener) { // set up a command listen
         this.commandListener = commandListener;
     }
@@ -75,7 +77,6 @@ public abstract class GameElement implements CommandListener  {
     public int getMoveInterval() {
         return moveInterval;
     }
-
 
 
     // direction that the element is facing
@@ -130,6 +131,7 @@ public abstract class GameElement implements CommandListener  {
             }
         }
     }
+
     public void moveLogical(int dx, int dy) {
         // Update the actual position of the object based on logic
         if (checkCollision(dx, dy)) {
@@ -137,6 +139,7 @@ public abstract class GameElement implements CommandListener  {
             setToLogicalPosY(dy);
         }
     }
+
     /// Check for the direction of the element
     // Getter method for direction
     public Direction getDirection() {
@@ -147,6 +150,7 @@ public abstract class GameElement implements CommandListener  {
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
+
     private boolean isWithinBounds(int nextX, int nextY) {
         // Check if the next position is within the game window bounds
         return (nextX >= 0 && nextX < GameWindow.FRAME_WIDTH && nextY >= 0 && nextY < GameWindow.FRAME_HEIGHT);
@@ -182,12 +186,31 @@ public abstract class GameElement implements CommandListener  {
         return true; // No collision detected, return false
     }
 
+    public void nearbyDetectorCall() {
+        List<GameElement> elements = GameWindow.getElements();
+        int x = this.X;
+        int y = this.Y;
+        int detectionRange = CELL_SIZE;
+
+        for (GameElement element : elements) {
+            // Check if the element is within the detection range
+            if (Math.abs(element.X - x) <= detectionRange && Math.abs(element.Y - y) <= detectionRange) {
+                if (element != this) {
+                    element.handleNearbyElement(this);
+                }
+            }
+        }
+    }
+
+    public void handleNearbyElement(GameElement element) {
+        System.out.println("Nearby element detected: " + element);
+    }
 
     ////  Linking elements
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void linkElement(GameElement other) {
         this.linkedElement = other;
-        System.out.println(this + " has added linked to " + other );
+        System.out.println(this + " has added linked to " + other);
         this.linkedElement = other; // Link the other element back
     }
 
@@ -202,11 +225,13 @@ public abstract class GameElement implements CommandListener  {
             this.linkedElement = null;
         }
     }
+
     public void moveToLinked() {
         // Move this element to the same position as the linked element
         this.X = linkedElement.X;
         this.Y = linkedElement.Y;
     }
+
     // Toggle the link state
     public void toggleLink(GameElement other) {
         if (this.linkedElement == other) {
@@ -241,6 +266,7 @@ public abstract class GameElement implements CommandListener  {
         }
         if (beingControlled) {
             System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
+
             boolean validKey = false;
             switch (key) {
                 case KeyEvent.VK_LEFT:
@@ -265,6 +291,7 @@ public abstract class GameElement implements CommandListener  {
                     break;
             }
             if (validKey) {
+                nearbyDetectorCall();
                 resetMovementControl();  // Reset movement control after a delay
                 canMove = false;  // Disable further movement until reset
             }
@@ -292,15 +319,16 @@ public abstract class GameElement implements CommandListener  {
                             }
                             if (elapsedTime < 150) {
                                 resetMovementControl();
-                                System.out.println("Less than 200ms passed since keypress, missing input inserted");
+                                System.out.println("Less than 150ms passed since keypress, missing input inserted");
                             }
                             canMove = true;
                         }
                     },
-                    150 // Set delay as needed
+                    149 // Set delay this is to be forgiving about missing inputs.
             );
         }
     }
+
     public void moveFacing() {
         int[] direction = getDirectionBasedMovement();
         logicalMove(direction[0], direction[1]);
@@ -332,8 +360,6 @@ public abstract class GameElement implements CommandListener  {
     }
 
 
-
-
     ////  Drawing methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -354,6 +380,7 @@ public abstract class GameElement implements CommandListener  {
             System.out.println("Visibility has changed for: " + this);
         }
     }
+
     public void toggleVisibility() {
         // Toggle the visibility of the element
         isVisible = !isVisible;
@@ -367,33 +394,13 @@ public abstract class GameElement implements CommandListener  {
         // Triggered when something walks over this element, probably a player
         //     @Override on your class, someone / something on top
     }
-    public void goingToBeWalkOn(GameElement gameElement) {
-        goingToBeWalkedOverBy(gameElement);
-    }
 
-    // Trigger by being walked over by something
-    // Default sends self to the cell that you are upon
     public void interactKeyPressedByYou() {
         System.out.println(this + " wants to interact");
         // this.moveFacing();
         int currentLogicalPosX = this.getLogicalPosX();
         int currentLogicalPosY = this.getLogicalPosY();
         List<GameElement> elements = GameWindow.getElements();
-        // Change to the cell that you are looking into
-//        switch (direction) {
-//            case UP:
-//                currentLogicalPosY -= 1; // Move up
-//                break;
-//            case DOWN:
-//                currentLogicalPosY += 1; // Move down
-//                break;
-//            case LEFT:
-//                currentLogicalPosX -= 1; // Move left
-//                break;
-//            case RIGHT:
-//                currentLogicalPosX += 1; // Move right
-//                break;
-//        }
         for (GameElement element : elements) {
             // Check the element that this is on
             if (element != this && element.getLogicalPosX() == currentLogicalPosX && element.getLogicalPosY() == currentLogicalPosY) {
@@ -402,19 +409,21 @@ public abstract class GameElement implements CommandListener  {
             }
         }
     }
+
     public void interactKeyPressedOnYou(GameElement gameElement) {
         System.out.println(gameElement + " wants to interact with" + this);
         // Override in your class
     }
+
     public void onBeingCollidedByYou(GameElement gameElement) {
         System.out.println(this + " collision on the element " + gameElement);
         //// Hey other class, this silly guy wants to go through you! , and you are not walkable
-        // Tell the other class with the element that is bouncing him
-        gameElement.onBeingCollidedOnYou(this);
+        gameElement.onBeingCollidedOnYou(this); /// tell him!
 
     }
+
     public void onBeingCollidedOnYou(GameElement gameElement) {
-        //// What a stupid guy I won't move as only my children will implement this behaviour  by using @Override
+        // Create a reaction here if needed
     }
 
 
@@ -452,9 +461,10 @@ public abstract class GameElement implements CommandListener  {
         return renderX;
     }
 
-    public int getRenderY(){
+    public int getRenderY() {
         return renderY;
     }
+
     @Override
     public void onPickedCoin(GameElement element) {
 
@@ -464,13 +474,15 @@ public abstract class GameElement implements CommandListener  {
     public void onPickedGem(GameElement element) {
 
     }
+
     @Override
     public void onTick() {
         tickCount++;
-       if (tickCount % 12000 == 0) {
-           System.out.println("Tic is working but only for the game element ");
-       }
+        if (tickCount % 12000 == 0) {
+            System.out.println("Tic is working but only for the game element ");
+        }
     }
+
     @Override
     public void onCO2Generated(int value) {
 

@@ -36,9 +36,9 @@ public class Player2 extends Player {
     }
 
     public void foundByPlayer2(Player gameElement) {
-        System.out.println("Linking to player" );
+        System.out.println("Linking to player");
         playerLink = gameElement;
-        }
+    }
 
 
     @Override
@@ -69,7 +69,6 @@ public class Player2 extends Player {
                     break;
             }
 
-            // Ensure Player2 is always next to Player by 2 cells
 
         }
     }
@@ -85,37 +84,27 @@ public class Player2 extends Player {
 
 
             // Max distance allowed
-            int maxDistance = 900*3;
+            int maxDistance = 900 * 3;
 
             if (distance > maxDistance) { // Check distance in terms of cells, not just cells width/height
-                System.out.println("Max length reached" );
+                System.out.println("Max length reached");
                 // Calculate the direction towards playerLink
                 int moveX = (int) Math.signum(-dx);
                 int moveY = (int) Math.signum(-dy);
                 // Move this element closer to playerLink
-                this.logicalMove(moveX,moveY);
-                }
+                this.logicalMove(moveX, moveY);
             }
         }
-
-
+    }
 
 
     @Override
     protected boolean checkCollision(int nextX, int nextY) {
-        List<GameElement> elements = GameWindow.getElements();
-        for (GameElement element : elements) {
-            // Calculate the next step
-            int nextPosX = convertToLogicalPos(nextX) + this.X;
-            int nextPosY = convertToLogicalPos(nextY) + this.Y;
+        return true; // No collision for Player2 :) It is a balloon.
+    }
 
-            // Check if the next position collides with the current position of the other element
-            if (nextPosX == element.X && nextPosY == element.Y) {
-                element.goingToBeWalkedOverBy(this);
-
-            }
-        }
-        return true; // No collision for Player2
+    @Override
+    public void goingToBeWalkedOverBy(GameElement gameElement) {
     }
 
     @Override
@@ -202,7 +191,6 @@ public class Player2 extends Player {
         this.prevX = X;
         this.prevY = Y;
     }
-
 
 
 }

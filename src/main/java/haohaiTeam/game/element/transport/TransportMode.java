@@ -1,4 +1,5 @@
 package haohaiTeam.game.element.transport;
+
 import haohaiTeam.game.element.GameElement;
 
 public abstract class TransportMode extends GameElement {

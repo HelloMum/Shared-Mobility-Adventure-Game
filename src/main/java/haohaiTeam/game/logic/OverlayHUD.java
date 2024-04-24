@@ -17,12 +17,13 @@ public class OverlayHUD {
         g.drawString("Coins: " + gameStatus.getCoinsCollected(), 20, 50);
         g.drawString("Gems: " + gameStatus.getGemsAcquired(), 20, 80);
         g.drawString("CO2: ", 20, 110);
+        g.drawString("Time: " + gameStatus.getCutDownTime(), 20, 140);
 
         // CO2 level indicator as a rectangle
         int currentWidth = (int) ((double) gameStatus.getCO2Collected() / 100 * 100);
-        g.setColor(Color.RED); 
+        g.setColor(Color.RED);
         g.fillRect(80, 92, currentWidth, 20);
-        g.setColor(Color.BLACK); 
+        g.setColor(Color.BLACK);
         g.drawRect(80, 92, 100, 20);
     }
 }
