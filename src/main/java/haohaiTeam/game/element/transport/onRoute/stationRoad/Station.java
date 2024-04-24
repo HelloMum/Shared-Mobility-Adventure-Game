@@ -10,7 +10,7 @@ import java.util.TimerTask;
 public abstract class Station extends Road {
     public AutoMoveTransport transportReference; // Reference to the transport
 
-    public static final double CO2_PER_CELL = 99;
+    public static final double CO2_PER_CELL = 0;
     public int distanceNext = 0;
 
     public Station(int x, int y) {
@@ -27,6 +27,7 @@ public abstract class Station extends Road {
         System.out.println("Distance next station set to" + distance);
         this.distanceNext = distance;
     }
+
     public int getDistanceNextStation() {
         return distanceNext;
     }
@@ -46,6 +47,7 @@ public abstract class Station extends Road {
             }, 3000);
         }
     }
+
     @Override
     public void handleNearbyElement(GameElement element) {
         System.out.println("This station takes " + getDistanceNextStation() + "to the next station!");
@@ -60,6 +62,9 @@ public abstract class Station extends Road {
                 element.linkElement(this.transportReference);
                 element.setBeingControlled(false);
                 element.moveToLinked();
+                // if player linked with vehicles, we should add co2 as we know from current station
+                // here use getDistanceNextStation() * CO2_PER_CELL to calculate co2
+                // record the trips and vehicles that the user used as we need to implement pop-up environment impact
             }
         }
     }
