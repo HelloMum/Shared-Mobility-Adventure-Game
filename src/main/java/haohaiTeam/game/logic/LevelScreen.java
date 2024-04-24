@@ -20,7 +20,7 @@ public class LevelScreen {
     }
 
     public void render(Graphics g) {
-        if (gameStatus.isGameOver() == true || this.gameStatus.isGameWon() == true) {
+        if ((gameStatus.isGameOver() || gameStatus.isGameWon()) && gameStatus.shouldShowLevelScreen()) {
             // rectangle
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, width, height);
@@ -52,19 +52,9 @@ public class LevelScreen {
 
             if (this.gameStatus.isGameOver()) {
                 g.drawString(gameOverMessage, x, 50);
-                // reload current level
-                MapLoader.reloadCurrentLevel();
             }
             if (this.gameStatus.isGameWon()) {
                 g.drawString(winMessage, x, 50);
-                // sleep some time and continue the game next level
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                // load next level
-                MapLoader.loadNextLevel();
             }
         }
     }
