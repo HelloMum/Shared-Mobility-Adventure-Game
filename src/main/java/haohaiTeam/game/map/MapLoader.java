@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
-//import HaohaiTeam.Game.Logic.ElementBehavior;
+
 
 public class MapLoader {
     private static int currentLevel = 1; // Track the current level
