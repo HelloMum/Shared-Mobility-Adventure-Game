@@ -22,7 +22,7 @@ public class GameStatus implements CommandListener {
     private static final int REQUIRED_GEMS = 20; // Number of gems required to win
     private boolean gameWon = false;
 
-    // here I am not sure there is a need to have a timer for co2 but this one is for checking game time
+    // a timer for checking game time
     public static final long TIME_LIMIT_IN_MILESECONDS = 10 * 1000; // this is for limiting the player to pass current level in 600 seconds
 
     public GameStatus() {
