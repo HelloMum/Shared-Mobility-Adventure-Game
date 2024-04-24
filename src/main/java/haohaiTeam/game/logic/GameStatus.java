@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import haohaiTeam.game.map.MapLoader;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.nio.file.Files;
@@ -30,11 +31,13 @@ public class GameStatus implements CommandListener {
     private Timer timer;
     private static final long TIMER_DELAY = 300;
     public static boolean co2increase = false;
-    private static final int REQUIRED_GEMS = 20; // Number of gems required to win
+    private static final int REQUIRED_GEMS = 3; // Number of gems required to win
     private boolean gameWon = false;
 
     // a timer for checking game time
-    public static final long TIME_LIMIT_IN_MILESECONDS = 10 * 1000; // this is for limiting the player to pass current level in 600 seconds
+    public static final long TIME_LIMIT_IN_MILESECONDS = 10 * 1000; // this is for limiting the player to pass current level in 600 seconds1
+
+    private boolean showLevelScreen = false;
 
     public static boolean saveGame = false;
     public GameStatus() {
@@ -90,6 +93,20 @@ public class GameStatus implements CommandListener {
     public void setCoinsCollected(int newCoins) {
         coinsCollected = newCoins;
     }
+
+    // when win or lose then call the level screen
+    public void triggerLevelScreen() {
+        showLevelScreen = true;
+    }
+
+    // loading level then call
+    public void hideLevelScreen() {
+        showLevelScreen = false;
+    }
+
+    public boolean shouldShowLevelScreen() {
+        return showLevelScreen;
+    }
     public void gameTimer() {
         // Initialize the timer
         timer = new Timer();
@@ -120,6 +137,7 @@ public class GameStatus implements CommandListener {
         // check if time limit is exceeded
         if (this.elapsedTimeInMileSeconds > TIME_LIMIT_IN_MILESECONDS) {
             System.out.println("Time's up! Game over!");
+            checkGameConditions();
             setGameOver(true);
         }
     }
@@ -127,6 +145,7 @@ public class GameStatus implements CommandListener {
     public void trackCO2Level() {
         if (this.getCO2Collected() > MAX_CO2_LEVEL) {
             this.setGameOver(true);
+            checkGameConditions();
             System.out.println("CO2 level exceeded maximum amount. Game Over!");
         }
     }
@@ -170,10 +189,13 @@ public class GameStatus implements CommandListener {
     public void checkGameConditions() {
         if (lives <= 0 || elapsedTimeInMileSeconds > TIME_LIMIT_IN_MILESECONDS || co2Collected > MAX_CO2_LEVEL) {
             gameOver = true;
+            triggerLevelScreen();
             System.out.println("Game Over! You have lost.");
+            MapLoader.reloadCurrentLevel();
         } else if (gemsAcquired >= REQUIRED_GEMS) {
             gameOver = true;
             setGameWon(true);
+            triggerLevelScreen();
             System.out.println("Congratulations! You have won.");
         }
     }
