@@ -106,8 +106,9 @@ public class GameStatus implements CommandListener {
         this.co2Collected++;
     }
 
-    public void increaseCO2(int co2Cost) {
+    public void addCO2(int co2Cost) {
         this.co2Collected += co2Cost;
+        System.out.println(co2Cost + " CO2(s) added to the game status. Total Co2 costed: " + co2Collected);
     }
 
     public void addCoins(int numCoins) {
@@ -172,5 +173,6 @@ public class GameStatus implements CommandListener {
 
     @Override
     public void onCO2Generated(int value) {
+        addCO2(value);
     }
 }
