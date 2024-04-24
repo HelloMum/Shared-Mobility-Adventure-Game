@@ -2,6 +2,7 @@ package haohaiTeam.game.element;
 
 import haohaiTeam.game.gui.GameWindow;
 import haohaiTeam.game.input.CommandListener;
+import haohaiTeam.game.logic.GameStatus;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -263,6 +264,9 @@ public abstract class GameElement implements CommandListener  {
                     interactKeyPressedByYou(); // Trigger interaction
                     validKey = true;
                     break;
+                case KeyEvent.VK_S:
+                    GameStatus.saveGame = true; // Trigger interaction
+                    break;
             }
             if (validKey) {
                 resetMovementControl();  // Reset movement control after a delay
@@ -475,4 +479,5 @@ public abstract class GameElement implements CommandListener  {
     public void onCO2Generated(int value) {
 
     }
+
 }
