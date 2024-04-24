@@ -25,13 +25,20 @@ public class MapLoader {
 
     public static void loadNextLevel() {
         currentLevel++;  // Increment to next level
-        gameStatus.hideLevelScreen(); // Hide level screen before loading new level
         loadCurrentLevel(); // Load the next level
+        gameStatus.resetGameStatusForNewLevel();
+        gameStatus.hideLevelScreen();
     }
 
     public static void loadCurrentLevel() {
         String levelFile = String.format("src/main/resources/MapElement/level_%d.json", currentLevel);
-        loadMapFromJson(levelFile);
+        try {
+            loadMapFromJson(levelFile);
+        } catch (Exception e) {
+            System.err.println("Failed to load level: " + levelFile);
+            e.printStackTrace();
+            // Consider what to do if the level fails to load - maybe try to load a default level or handle the error gracefully
+        }
     }
 
     public static void reloadCurrentLevel() {

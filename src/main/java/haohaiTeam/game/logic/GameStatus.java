@@ -108,28 +108,26 @@ public class GameStatus implements CommandListener {
         return showLevelScreen;
     }
     public void gameTimer() {
-        // Initialize the timer
         timer = new Timer();
-        // Schedule the task to update elapsed time every second
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (gameOver) {
-                    cancel();
-                } else {
+                if (!gameOver) {  // Only update game time if the game isn't over
                     updateElapsedTime(TIMER_DELAY);
                     if (co2increase) {
                         increaseCO2();
                     }
-                    trackCO2Level();
-                    if (saveGame == true) {
+                    if (saveGame) {
                         saveGame();
                         saveGame = false;
                     }
+                } else {
+                    cancel();  // Stop the timer if the game is over
                 }
             }
         }, TIMER_DELAY, TIMER_DELAY);
     }
+
 
     // Method to update elapsed time
     public void updateElapsedTime(long elapsedTimeInMileSeconds) {
@@ -187,19 +185,35 @@ public class GameStatus implements CommandListener {
     }
 
     public void checkGameConditions() {
+        if (gameOver) {  // If the game is already over, avoid rechecking conditions
+            return;
+        }
+
         if (lives <= 0 || elapsedTimeInMileSeconds > TIME_LIMIT_IN_MILESECONDS || co2Collected > MAX_CO2_LEVEL) {
             gameOver = true;
             triggerLevelScreen();
             System.out.println("Game Over! You have lost.");
-            MapLoader.reloadCurrentLevel();
+            MapLoader.reloadCurrentLevel(); // Keep this to reload the level if needed
+            timer.cancel(); // Stop the timer as the game is over
         } else if (gemsAcquired >= REQUIRED_GEMS) {
             gameOver = true;
-            setGameWon(true);
+            gameWon = true;
             triggerLevelScreen();
             System.out.println("Congratulations! You have won.");
+            MapLoader.loadNextLevel(); // Load next level
+            timer.cancel(); // Stop the timer as the game is over
         }
     }
 
+
+    // Add a method to reset game conditions for a new level if needed
+    public void resetGameStatusForNewLevel() {
+        gameOver = false;
+        gameWon = false;
+        elapsedTimeInMileSeconds = 0; // Reset time if it tracks overall game time, not per level
+        co2Collected = 0;  // Depending on whether you want to reset per level
+        // Optionally reset other conditions as needed
+    }
     @Override
     public void onPickedCoin(GameElement element) {
         addCoins(1);
