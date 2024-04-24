@@ -1,6 +1,5 @@
 package haohaiTeam.game.element.transport.onRoute.stationRoad;
 
-
 import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.element.Player;
 import haohaiTeam.game.element.transport.onRoute.auto.AutoMoveTransport;
@@ -9,42 +8,58 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public abstract class Station extends Road {
-    public AutoMoveTransport clearTransportReference = null; // Reference to the transport
+    public AutoMoveTransport transportReference; // Reference to the transport
 
-    public static final double CO2_PER_CELL = 99; /// This should not be used, if big CO2 check the issue
-    public int distanceNext = 0; /// This should not be used, if big CO2 check the issue
+    public static final double CO2_PER_CELL = 99;
+    public int distanceNext = 0;
 
     public Station(int x, int y) {
         super(x, y);
         this.walkable = false;
+        this.transportReference = null;
     }
 
     protected void clearTransportReference() {
-        this.clearTransportReference = null;
+        this.transportReference = null;
     }
-    public void setDistanceNextStation(int distance) {
-        System.out.println("distance" + distance);
-        this.distanceNext = distance;
 
+    public void setDistanceNextStation(int distance) {
+        System.out.println("Distance next station set to" + distance);
+        this.distanceNext = distance;
     }
+    public int getDistanceNextStation() {
+        return distanceNext;
+    }
+
     @Override
     public void goingToBeWalkedOverBy(GameElement gameElement) {
         if (gameElement instanceof AutoMoveTransport transport) {
-            this.clearTransportReference = transport;
-            clearTransportReference.toggleAutoStation();
+            this.transportReference = (AutoMoveTransport) gameElement;
+            this.transportReference.toggleAutoStation();
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
+                    transport.toggleAutoStation(); // Changed to transport
                     clearTransportReference();
-                    gameElement.toggleAutoStation();
                 }
             }, 3000);
-        } else if (gameElement instanceof Player player) {
-            if (clearTransportReference != null) {
-                clearTransportReference.linkElement(player);
-                player.moveToLinked();
-                player.setBeingControlled(false);
+        }
+    }
+    @Override
+    public void handleNearbyElement(GameElement element) {
+        System.out.println("This station takes " + getDistanceNextStation() + "to the next station!");
+    }
+
+    @Override
+    public void onBeingCollidedOnYou(GameElement element) {
+        System.out.println("This station takes " + getDistanceNextStation() + "to the next station!");
+        if (element instanceof Player player) {
+            if (transportReference != null) {
+                this.transportReference.linkElement(element);
+                element.linkElement(this.transportReference);
+                element.setBeingControlled(false);
+                element.moveToLinked();
             }
         }
     }

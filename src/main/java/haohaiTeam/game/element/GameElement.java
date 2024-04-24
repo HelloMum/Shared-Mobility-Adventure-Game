@@ -181,7 +181,25 @@ public abstract class GameElement implements CommandListener  {
         }
         return true; // No collision detected, return false
     }
+    public void nearbyDetectorCall() {
+        List<GameElement> elements = GameWindow.getElements();
+        int x = this.X;
+        int y = this.Y;
+        int detectionRange = CELL_SIZE;
 
+        for (GameElement element : elements) {
+            // Check if the element is within the detection range
+            if (Math.abs(element.X - x) <= detectionRange && Math.abs(element.Y - y) <= detectionRange) {
+                if (element != this) {
+                    element.handleNearbyElement(this);
+                }
+            }
+        }
+    }
+
+    public void handleNearbyElement(GameElement element) {
+        System.out.println("Nearby element detected: " + element);
+    }
 
     ////  Linking elements
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -241,6 +259,7 @@ public abstract class GameElement implements CommandListener  {
         }
         if (beingControlled) {
             System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
+
             boolean validKey = false;
             switch (key) {
                 case KeyEvent.VK_LEFT:
@@ -265,6 +284,7 @@ public abstract class GameElement implements CommandListener  {
                     break;
             }
             if (validKey) {
+                nearbyDetectorCall();
                 resetMovementControl();  // Reset movement control after a delay
                 canMove = false;  // Disable further movement until reset
             }
