@@ -1,13 +1,12 @@
 package haohaiTeam.game.logic;
 
-import haohaiTeam.game.element.GameElement;
-import haohaiTeam.game.input.CommandListener;
-
+import java.awt.event.KeyEvent;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-
+import haohaiTeam.game.element.GameElement;
+import haohaiTeam.game.input.CommandListener;
 import haohaiTeam.game.map.MapLoader;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.nio.file.Files;
@@ -30,6 +29,7 @@ public class GameStatus implements CommandListener {
     private Timer timer;
     private static final long TIMER_DELAY = 300;
     public static boolean co2increase = false;
+    public static boolean saveGame = false;
     private static final int REQUIRED_GEMS = 20; // Number of gems required to win
     private boolean gameWon = false;
 
@@ -40,6 +40,14 @@ public class GameStatus implements CommandListener {
         // Initialize the CO2 timer
         gameTimer();
     }
+
+    public enum currentTransport {
+        /// implement current transport
+    }
+
+    public void loseLife() {
+        this.lives--;
+        checkGameConditions();
 
     public void addScore(int points) {
         this.score += points;
@@ -74,8 +82,8 @@ public class GameStatus implements CommandListener {
             return (int) (TIME_LIMIT_IN_MILESECONDS - elapsedTimeInMileSeconds) / 1000;
         }
         return 0;
-
     }
+
     public void gameTimer() {
         // Initialize the timer
         timer = new Timer();
@@ -86,16 +94,29 @@ public class GameStatus implements CommandListener {
                 if (gameOver) {
                     cancel();
                 } else {
-                    updateElapsedTime(TIMER_DELAY);
-                    if (co2increase) {
+
+                    updateElapsedTime(1);
+                    if (co2increase == true) {
                         increaseCO2();
                     }
+                    trackCO2Level();
+
+                    if (isGameOver() == true || winningCondition() == true) {
+                        //MapLoader.loadNextLevel();
+                    }
+                    if (saveGame == true) {
+                        saveGame();
+                        saveGame = false;
+                    }
+
                     trackCO2Level();
                 }
             }
         }, TIMER_DELAY, TIMER_DELAY);
     }
 
+    public int getScore() {
+        return score;
     // Method to update elapsed time
     public void updateElapsedTime(long elapsedTimeInMileSeconds) {
         this.elapsedTimeInMileSeconds += elapsedTimeInMileSeconds;
@@ -113,6 +134,21 @@ public class GameStatus implements CommandListener {
         }
     }
 
+    private void setScore(int newScore) {
+        score = newScore;
+    }
+
+    private void setLives(int newLives) {
+        lives = newLives;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+
     public void increaseCO2() {
         this.co2Collected++;
     }
@@ -120,6 +156,7 @@ public class GameStatus implements CommandListener {
     public void addCO2(int co2Cost) {
         this.co2Collected += co2Cost;
         System.out.println(co2Cost + " CO2(s) added to the game status. Total Co2 costed: " + co2Collected);
+
     }
 
     public void addCoins(int numCoins) {
@@ -137,6 +174,27 @@ public class GameStatus implements CommandListener {
         addScore(points);
     }
 
+    public void trackCO2Level() {
+        if (this.getCO2Collected() > MAX_CO2_LEVEL) {
+            this.setGameOver(true);
+            System.out.println("CO2 level exceeded maximum amount. Game Over!");
+        }
+    }
+
+    // Method to update elapsed time
+    public void updateElapsedTime(long elapsedTimeInSeconds) {
+        this.elapsedTimeInSeconds += elapsedTimeInSeconds;
+    }
+
+    public void increaseCO2() {
+        this.co2Collected++;
+    }
+
+    // Method to get elapsed time
+    public long getElapsedTimeInSeconds() {
+        return elapsedTimeInSeconds;
+    }
+
     public int getCoinsCollected() {
         return coinsCollected;
     }
@@ -149,7 +207,18 @@ public class GameStatus implements CommandListener {
         return co2Collected;
     }
 
-    public void checkGameConditions() {
+    public void setCoinsCollected(int newCoins) {
+        coinsCollected = newCoins;
+    }
+
+    public void setGemsAcquired(int newGems) {
+        gemsAcquired = newGems;
+    }
+
+    public void setCO2Collected(int newco2) {
+        co2Collected = newco2;
+
+      public void checkGameConditions() {
         if (lives <= 0 || elapsedTimeInMileSeconds > TIME_LIMIT_IN_MILESECONDS || co2Collected > MAX_CO2_LEVEL) {
             gameOver = true;
             System.out.println("Game Over! You have lost.");
@@ -174,6 +243,34 @@ public class GameStatus implements CommandListener {
         checkGameConditions();
     }
 
+    public boolean losingCondition() {
+        return false;
+    }
+
+    public boolean winningCondition() {
+        if (resetTriggered == true) {
+            // Need to insert something to call a
+            return true;
+        }
+        return false;
+    }
+
+    public boolean loseALive() {
+        return false;
+    }
+
+    public void checkGameConditions() {
+        if (this.getLives() == 0) {
+            gameOver = true;
+        } else if (this.getGemsAcquired() == 20) {
+            resetTriggered = true;
+        }
+        loseALive();
+        losingCondition();
+        System.out.println("GameConditionsHaveBeenChecked");
+    }
+
+
     @Override
     public void onTick() {
         tickCount++;
@@ -187,13 +284,17 @@ public class GameStatus implements CommandListener {
         addCO2(value);
     }
 
-    public void saveGame(String filePath) {
+    public void saveGame() {
+        String fileExtension = ".json";
+        String filePath = "Saved_Game_" + new Date().toString() + fileExtension;
+
         JSONObject savedGame = new JSONObject();
 
         savedGame.put("coinsCollected", coinsCollected);
         savedGame.put("gemsAcquired", gemsAcquired);
         savedGame.put("score", score);
         savedGame.put("co2Collected", co2Collected);
+        savedGame.put("lives", lives);
 
         JSONArray elementsArray = new JSONArray(elements);
         savedGame.put("map", elementsArray);
@@ -207,4 +308,28 @@ public class GameStatus implements CommandListener {
 
         }
     }
+
+    private void loadScoreFromJson(String filePath) {
+        try {
+            String content = new String(Files.readAllBytes(Paths.get(filePath)));
+            JSONObject json = new JSONObject(content);
+
+            int coins = json.getInt("coinsCollected");
+            int gems = json.getInt("gemsAcquired");
+            int score = json.getInt("score");
+            int co2 = json.getInt("co2Collected");
+            int lives = json.getInt("lives");
+
+            this.setCoinsCollected(coins);
+            this.setGemsAcquired(gems);
+            this.setScore(score);
+            this.setCO2Collected(co2);
+
+            System.out.println("Game loaded from: " + filePath);
+        } catch (IOException e) {
+            System.err.println("Error loading game: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }
+
