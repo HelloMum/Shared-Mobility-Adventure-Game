@@ -100,11 +100,19 @@ public class Player2 extends Player {
 
     @Override
     protected boolean checkCollision(int nextX, int nextY) {
-        return true; // No collision for Player2 :) It is a balloon.
-    }
+        List<GameElement> elements = GameWindow.getElements();
+        for (GameElement element : elements) {
+            // Calculate the next step
+            int nextPosX = convertToLogicalPos(nextX) + this.X;
+            int nextPosY = convertToLogicalPos(nextY) + this.Y;
 
-    @Override
-    public void goingToBeWalkedOverBy(GameElement gameElement) {
+            // Check if the next position collides with the current position of the other element
+            if (nextPosX == element.X && nextPosY == element.Y) {
+                element.goingToBeWalkedOverBy(this);
+
+            }
+        }
+        return true; // No collision for Player2
     }
 
     @Override
