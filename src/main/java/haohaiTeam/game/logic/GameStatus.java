@@ -105,6 +105,10 @@ public class GameStatus implements CommandListener {
                         increaseCO2();
                     }
                     trackCO2Level();
+                    if (saveGame == true) {
+                        saveGame();
+                        saveGame = false;
+                    }
                 }
             }
         }, TIMER_DELAY, TIMER_DELAY);
