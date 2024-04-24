@@ -248,10 +248,10 @@ public class GameStatus implements CommandListener {
             String content = new String(Files.readAllBytes(Paths.get(filePath)));
             JSONObject json = new JSONObject(content);
 
-            int coins = json.getInt("coins");
-            int gems = json.getInt("gems");
+            int coins = json.getInt("coinsCollected");
+            int gems = json.getInt("gemsAcquired");
             int score = json.getInt("score");
-            int co2 = json.getInt("CO2");
+            int co2 = json.getInt("co2Collected");
             int lives = json.getInt("lives");
 
             this.setCoinsCollected(coins);
@@ -259,9 +259,9 @@ public class GameStatus implements CommandListener {
             this.setScore(score);
             this.setCO2Collected(co2);
 
-            System.out.println("Game status loaded from: " + filePath);
+            System.out.println("Game loaded from: " + filePath);
         } catch (IOException e) {
-            System.err.println("Error loading game status from JSON: " + e.getMessage());
+            System.err.println("Error loading game: " + e.getMessage());
             e.printStackTrace();
         }
     }
