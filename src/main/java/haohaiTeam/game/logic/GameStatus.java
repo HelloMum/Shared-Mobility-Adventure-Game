@@ -188,7 +188,7 @@ public class GameStatus implements CommandListener {
         savedGame.put("co2Collected", co2Collected);
 
         JSONArray elementsArray = new JSONArray(elements);
-        savedGame.put("Map", elementsArray);
+        savedGame.put("map", elementsArray);
 
         try (FileWriter file = new FileWriter(filePath)) {
             file.write(savedGame.toString());
