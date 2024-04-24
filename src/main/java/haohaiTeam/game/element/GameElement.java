@@ -239,6 +239,10 @@ public abstract class GameElement implements CommandListener  {
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_ESCAPE) {
             System.exit(0); // Exit the program gracefully
+
+        if  (key == KeyEvent.VK_F1) {
+            GameStatus.saveGame = true; // Trigger save
+        }
         }
         if (beingControlled) {
             System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
@@ -263,9 +267,6 @@ public abstract class GameElement implements CommandListener  {
                 case KeyEvent.VK_SPACE:
                     interactKeyPressedByYou(); // Trigger interaction
                     validKey = true;
-                    break;
-                case KeyEvent.VK_S:
-                    GameStatus.saveGame = true; // Trigger interaction
                     break;
             }
             if (validKey) {
