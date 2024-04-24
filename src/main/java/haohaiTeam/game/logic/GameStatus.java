@@ -3,10 +3,10 @@ package haohaiTeam.game.logic;
 import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.input.CommandListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import haohaiTeam.game.map.MapLoader;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,6 +36,7 @@ public class GameStatus implements CommandListener {
     // a timer for checking game time
     public static final long TIME_LIMIT_IN_MILESECONDS = 60 * 1000; // this is for limiting the player to pass current level in 600 seconds
 
+    public static boolean saveGame = false;
     public GameStatus() {
         // Initialize the CO2 timer
         gameTimer();
@@ -75,6 +76,19 @@ public class GameStatus implements CommandListener {
         }
         return 0;
 
+    }
+
+    private void setScore(int newScore) {
+        score = newScore;
+    }
+    public void setGemsAcquired(int newGems) {
+        gemsAcquired = newGems;
+    }
+    public void setCO2Collected(int newco2) {
+        co2Collected = newco2;
+    }
+    public void setCoinsCollected(int newCoins) {
+        coinsCollected = newCoins;
     }
     public void gameTimer() {
         // Initialize the timer
@@ -187,13 +201,18 @@ public class GameStatus implements CommandListener {
         addCO2(value);
     }
 
-    public void saveGame(String filePath) {
+    public void saveGame() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String dateTime = dateFormat.format(new Date());
+        String filePath = "Saved_Game_" + dateTime + ".json";
+
         JSONObject savedGame = new JSONObject();
 
         savedGame.put("coinsCollected", coinsCollected);
         savedGame.put("gemsAcquired", gemsAcquired);
         savedGame.put("score", score);
         savedGame.put("co2Collected", co2Collected);
+        savedGame.put("lives", lives);
 
         JSONArray elementsArray = new JSONArray(elements);
         savedGame.put("map", elementsArray);
@@ -205,6 +224,29 @@ public class GameStatus implements CommandListener {
             System.err.println("Save Game Error: " + e.getMessage());
             e.printStackTrace();
 
+        }
+    }
+
+    private void loadScoreFromJson(String filePath) {
+        try {
+            String content = new String(Files.readAllBytes(Paths.get(filePath)));
+            JSONObject json = new JSONObject(content);
+
+            int coins = json.getInt("coinsCollected");
+            int gems = json.getInt("gemsAcquired");
+            int score = json.getInt("score");
+            int co2 = json.getInt("co2Collected");
+            int lives = json.getInt("lives");
+
+            this.setCoinsCollected(coins);
+            this.setGemsAcquired(gems);
+            this.setScore(score);
+            this.setCO2Collected(co2);
+
+            System.out.println("Game loaded from: " + filePath);
+        } catch (IOException e) {
+            System.err.println("Error loading game: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

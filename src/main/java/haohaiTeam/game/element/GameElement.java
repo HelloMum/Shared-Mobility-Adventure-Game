@@ -2,6 +2,7 @@ package haohaiTeam.game.element;
 
 import haohaiTeam.game.gui.GameWindow;
 import haohaiTeam.game.input.CommandListener;
+import haohaiTeam.game.logic.GameStatus;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -262,7 +263,10 @@ public abstract class GameElement implements CommandListener {
 
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_ESCAPE) {
-            System.exit(0); // Exit the program gracefully
+            System.exit(0);} // Exit the program gracefully
+
+        if  (key == KeyEvent.VK_Q) {
+            GameStatus.saveGame = true; // Trigger save
         }
         if (beingControlled) {
             System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
@@ -487,4 +491,5 @@ public abstract class GameElement implements CommandListener {
     public void onCO2Generated(int value) {
 
     }
+
 }
