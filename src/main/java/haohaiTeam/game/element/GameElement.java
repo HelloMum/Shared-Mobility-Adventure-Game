@@ -31,7 +31,7 @@ public abstract class GameElement implements CommandListener {
     public boolean isVisible; // hide the visibility
     public boolean playerOnTop;
     public Direction direction; // Direction the element is facing
-    CommandListener commandListener;
+    protected CommandListener commandListener;
     public int tickCount = 0;
     private boolean canMove = true;
 
