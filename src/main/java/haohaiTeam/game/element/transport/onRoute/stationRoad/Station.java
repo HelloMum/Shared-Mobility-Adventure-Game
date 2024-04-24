@@ -2,174 +2,72 @@ package haohaiTeam.game.element.transport.onRoute.stationRoad;
 
 import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.element.Player;
-import haohaiTeam.game.element.PopUp;
 import haohaiTeam.game.element.transport.onRoute.auto.AutoMoveTransport;
-import haohaiTeam.game.element.transport.onRoute.faketrans.FakeBus;
-import haohaiTeam.game.element.transport.onRoute.faketrans.FakeLuas;
-import haohaiTeam.game.element.transport.onRoute.faketrans.FakeTaxi;
-import haohaiTeam.game.element.transport.onRoute.faketrans.FakeVehicle;
-import haohaiTeam.game.gui.GameWindow;
-import haohaiTeam.game.logic.*;
 
-import java.util.List;
 
-import static haohaiTeam.game.gui.GameWindow.gameStatus;
-
-import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public abstract class Station extends Road {
-    protected char stationType;// this is an identifier for station
-    private static HashMap<Character, Boolean> playerOnStationMap = new HashMap<>(); // use hashMap to save the stations the player passes through
+    public AutoMoveTransport transportReference; // Reference to the transport
+//    CommandListener commandListener;
+    public static final int CO2_PER_CELL = 0;
+    public int distanceNext = 0;
 
-    static {
-        playerOnStationMap.put('b', false); // Bus
-        playerOnStationMap.put('l', false); // Luas
-        playerOnStationMap.put('t', false); // Taxi
-    }
     public Station(int x, int y) {
         super(x, y);
         this.walkable = false;
+        this.transportReference = null;
+    }
+
+    protected void clearTransportReference() {
+        this.transportReference = null;
+    }
+
+    public void setDistanceNextStation(int distance) {
+        System.out.println("Distance next station set to" + distance);
+        this.distanceNext = distance;
+    }
+
+    public int getDistanceNextStation() {
+        return distanceNext;
     }
 
     @Override
-    public void interactKeyPressedOnYou(GameElement gameElement) {
-        // If player wants to interact and bus linked to station give move player onto the bus and link to it
-
-        if (gameElement instanceof Player) {
-            FakeVehicle vehicle;
-            if (this instanceof BusStation) {
-                vehicle = new FakeBus(this.X, this.Y);
-            } else if (this instanceof LuasStation) {
-                vehicle = new FakeLuas(this.X, this.Y);
-            } else if (this instanceof TaxiStation) {
-                vehicle = new FakeTaxi(this.X, this.Y);
-            } else {
-                return;
-            }
-            vehicle.initiateMovement(this);
-            System.out.println("key-------successfully");
-
+    public void goingToBeWalkedOverBy(GameElement gameElement) {
+        if (gameElement instanceof AutoMoveTransport transport) {
+            this.transportReference = (AutoMoveTransport) gameElement;
+            this.transportReference.toggleAutoStation();
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    transport.toggleAutoStation(); // Changed to transport
+                    clearTransportReference();
+                }
+            }, 3000);
         }
     }
+
     @Override
-    public void onBeingCollidedOnYou(GameElement gameElement) {
-        System.out.println(this + " collision on the element " + gameElement);
-
-        if (!(gameElement instanceof Player)) {
-            return;
-        }
-
-        // Notify the other element about the collision if needed
-        gameElement.onBeingCollidedOnYou(this);
-
-        double co2Emission = calculateCO2Emission();
-        String popupStationName = null;
-
-        if (stationType == 'l') {popupStationName = "Luas stop";}
-        else if (stationType == 'b') {popupStationName = "Bus stop";}
-        else if (stationType == 't') {popupStationName = "Taxi rank";}
-
-        new PopUp(this.X, this.Y, "This is a " + popupStationName + ". " + getCollisionPopupMessage(co2Emission), 2000);
-
-
-        // Check if the player is on any vehicle and handle accordingly
-        handleBoarding(gameElement);
+    public void handleNearbyElement(GameElement element) {
+        System.out.println("This station takes " + getDistanceNextStation() + "to the next station!");
     }
 
-
-    // Optional: Separate boarding logic into its own method
-    public void handleBoarding(GameElement gameElement) {
-        AutoMoveTransport real_vehicle = findVehicleAtStation();
-        if (real_vehicle != null && real_vehicle.isAtStation() && !playerOnStationMap.get(stationType)) {
-            real_vehicle.linkElement(gameElement);
-            gameElement.linkElement(real_vehicle);
-            gameElement.moveToLinked();
-            real_vehicle.setBeingControlled(false);
-            gameElement.setBeingControlled(false);
-            playerOnStationMap.put(stationType, true);
-            gameStatus.co2increase = true;
-            System.out.println("Player is now on board the " + real_vehicle.getClass().getSimpleName());
-        }
-    }
-    private AutoMoveTransport findVehicleAtStation() {
-        // Try to find an AutoMoveTransport at the same coordinates
-        for (GameElement element : GameWindow.getElements()) {
-            if (element instanceof AutoMoveTransport && element.getLogicalPosX() == this.getLogicalPosX() && element.getLogicalPosY() == this.getLogicalPosY()) {
-                return (AutoMoveTransport) element;
+    @Override
+    public void onBeingCollidedOnYou(GameElement element) {
+        System.out.println("This station takes " + getDistanceNextStation() + "to the next station!");
+        if (element instanceof Player player) {
+            if (transportReference != null) {
+                this.transportReference.linkElement(element);
+                element.linkElement(this.transportReference);
+                element.setBeingControlled(false);
+                element.moveToLinked();
+                // if player linked with vehicles, we should add co2 as we know from current station
+                // here use getDistanceNextStation() * CO2_PER_CELL to calculate co2
+                // record the trips and vehicles that the user used as we need to implement pop-up environment impact
+                this.commandListener.onCO2Generated((int)this.getDistanceNextStation() * CO2_PER_CELL);
             }
         }
-        return null;
-    }
-
-    // sorry here I just use popup to check my co2 info so if you want to delete it is ok
-    private String getCollisionPopupMessage(double co2Emission) {
-        if (co2Emission > 0) {
-            return String.format("CO2 Emission to next station: %.2f kg", co2Emission);
-        } else {
-            return "No next station found or zero distance.";
-        }
-    }
-
-    // Override on children
-
-
-
-    // This is wrong as stated in the git issues
-    public Station findClosestStation() {
-        List<GameElement> elements = GameWindow.getElements(); // Get all elements from the game window
-        Station closest = null;
-        double minDistance = Double.MAX_VALUE;
-
-        for (GameElement element : elements) {
-            if (element instanceof Station && element != this && ((Station)element).stationType == this.stationType) {
-                double distance = calculateDistance(this.X, this.Y, element.X, element.Y);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closest = (Station)element;
-                }
-            }
-        }
-        return closest; // Return the closest station found
-    }
-
-    // Helper method to calculate distance between two points
-    private double calculateDistance(int x1, int y1, int x2, int y2) {
-        return Math.abs(x2 - x1) + Math.abs(y2 - y1);
-    }
-
-    // will implement in child classes
-    protected void setStationType(char type) {
-        this.stationType = type;
-    }
-
-
-    protected int calculateDistanceToNextStation() {
-        List<GameElement> elements = GameWindow.getElements();
-        int minDistance = Integer.MAX_VALUE;
-        int currentX = this.X / GameWindow.CELL_SIZE;
-        int currentY = this.Y / GameWindow.CELL_SIZE;
-
-        for (GameElement element : elements) {
-            if (element instanceof Station && ((Station)element).stationType == this.stationType && element != this) {
-                int elementX = element.X / GameWindow.CELL_SIZE;
-                int elementY = element.Y / GameWindow.CELL_SIZE;
-                int distance = Math.abs(elementX - currentX) + Math.abs(elementY - currentY);
-
-                if (distance < minDistance) {
-                    minDistance = distance;
-                }
-            }
-        }
-
-        return minDistance == Integer.MAX_VALUE ? -1 : minDistance;
-    }
-
-    protected abstract double getCO2PerCell(); //I dont want to add new variable so just use method to get inside each subclass
-    public double calculateCO2Emission() {
-        int distance = calculateDistanceToNextStation();
-        if (distance > 0) {
-            return distance * getCO2PerCell();
-        }
-        return 0;
     }
 }

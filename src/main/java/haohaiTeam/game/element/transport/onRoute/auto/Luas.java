@@ -1,7 +1,5 @@
 package haohaiTeam.game.element.transport.onRoute.auto;
 
-import haohaiTeam.game.element.transport.onRoute.auto.AutoMoveTransport;
-
 import java.awt.*;
 
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
@@ -17,7 +15,6 @@ public class Luas extends AutoMoveTransport {
         // Draw the fake shadow
         g2d.setColor(new Color(0, 0, 0, 100));
         g2d.fillOval(renderX + 5, renderY + 5, CELL_SIZE, CELL_SIZE);
-
 
 
         // Draw a gray circle

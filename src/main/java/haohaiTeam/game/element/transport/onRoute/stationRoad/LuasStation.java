@@ -1,23 +1,14 @@
 package haohaiTeam.game.element.transport.onRoute.stationRoad;
 
-import haohaiTeam.game.element.GameElement;
-import haohaiTeam.game.element.transport.onRoute.auto.Luas;
-
 import java.awt.*;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
 
 public class LuasStation extends Station {
     private static final double CO2_PER_CELL = 0.7;
+
     public LuasStation(int x, int y) {
         super(x, y);
-        setStationType('l');
-    }
-    @Override
-    protected double getCO2PerCell() {
-        return CO2_PER_CELL;
     }
 
     @Override
@@ -47,18 +38,5 @@ public class LuasStation extends Station {
         // Draw the "STOP" text
         g2d.drawString(stopText, textX, textY);
     }
-    public void goingToBeWalkedOverBy(GameElement gameElement) {
-        if (gameElement instanceof Luas luas) {
-            luas.toggleAutoStation();
 
-            // Schedule a task to toggle autoStation again after 3 seconds
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    luas.toggleAutoStation();
-                }
-            }, 3000);
-        }
-    }
 }

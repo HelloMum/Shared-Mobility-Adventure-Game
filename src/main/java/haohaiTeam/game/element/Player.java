@@ -30,17 +30,19 @@ public class Player extends GameElement {
             }
         }
     }
+
     public void foundByPlayer(Player2 gameElement) {
-        System.out.println("Linking to player2" );
+        System.out.println("Linking to player2");
         player2Link = gameElement;
     }
-        @Override
+
+    @Override
     public void draw(Graphics2D g2d) {
         // Draw line to Player2 if player2Link is not null
         if (player2Link != null) {
             g2d.setColor(Color.darkGray);
-            g2d.drawLine(renderX+3, renderY + CELL_SIZE / 2,
-                    player2Link.renderX + CELL_SIZE / 2, player2Link.renderY+10 + CELL_SIZE / 2);
+            g2d.drawLine(renderX + 3, renderY + CELL_SIZE / 2,
+                    player2Link.renderX + CELL_SIZE / 2, player2Link.renderY + 10 + CELL_SIZE / 2);
         }
         // Draw the fake shadow
         g2d.setColor(new Color(0, 0, 0, 100));
@@ -49,7 +51,6 @@ public class Player extends GameElement {
         // Draw the balloon body
         g2d.setColor(Color.CYAN);
         g2d.fillOval(renderX, renderY, CELL_SIZE, CELL_SIZE);
-
 
 
         // Draw eyes and nose based on movement direction

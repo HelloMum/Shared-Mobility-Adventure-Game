@@ -1,7 +1,5 @@
 package haohaiTeam.game.element.transport.onRoute.auto;
 
-import haohaiTeam.game.element.transport.onRoute.auto.AutoMoveTransport;
-
 import java.awt.*;
 
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
@@ -31,7 +29,7 @@ public class Bus extends AutoMoveTransport {
         g2d.setColor(Color.BLACK);
         g2d.setFont(new Font("Arial", Font.BOLD, 12)); // Adjust font size as needed
         FontMetrics fm = g2d.getFontMetrics();
-        String taxiText = "BUS";
+        String taxiText = "Bus";
         int textWidth = fm.stringWidth(taxiText);
         int textX = renderX + (CELL_SIZE - textWidth) / 2; // Center the text in the circle
         int textY = renderY + (CELL_SIZE / 2) + fm.getAscent() / 2; // Vertically center the text in the circle

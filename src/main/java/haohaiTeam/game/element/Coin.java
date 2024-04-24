@@ -1,7 +1,10 @@
 package haohaiTeam.game.element;
+
 import haohaiTeam.game.gui.GameWindow;
+
 import java.awt.*;
 import java.util.List;
+
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
 
 public class Coin extends GameElement {
@@ -17,7 +20,7 @@ public class Coin extends GameElement {
     public void draw(Graphics2D g2d) {
         // Draw the fake shadow
         g2d.setColor(new Color(0, 0, 0, 100));
-        g2d.fillOval(renderX+12 , renderY+10 , CELL_SIZE/ 2, CELL_SIZE/ 2);
+        g2d.fillOval(renderX + 12, renderY + 10, CELL_SIZE / 2, CELL_SIZE / 2);
 
 
         int centerX = renderX + CELL_SIZE / 4; // Calculate the x-coordinate of the center of the cell
@@ -25,6 +28,7 @@ public class Coin extends GameElement {
         g2d.setColor(COIN_COLOR);
         g2d.fillOval(centerX, centerY, CELL_SIZE / 2, CELL_SIZE / 2); // Draw the circle at the center of the cell
     }
+
     @Override
     public void goingToBeWalkedOverBy(GameElement gameElement) {
         List<GameElement> elements = GameWindow.getElements();
