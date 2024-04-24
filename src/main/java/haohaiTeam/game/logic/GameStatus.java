@@ -1,9 +1,10 @@
 package haohaiTeam.game.logic;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.input.CommandListener;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameStatus implements CommandListener {
     private int score = 0;
@@ -11,7 +12,7 @@ public class GameStatus implements CommandListener {
     private int coinsCollected = 0;
     private int gemsAcquired = 0;
     private int co2Collected = 0;
-    private long elapsedTimeInSeconds = 0; // Variable to track elapsed time
+    private long elapsedTimeInMileSeconds = 0; // Variable to track elapsed time
     private boolean gameOver = false;
     private int tickCount;
     private static final int MAX_CO2_LEVEL = 100;
@@ -22,7 +23,7 @@ public class GameStatus implements CommandListener {
     private boolean gameWon = false;
 
     // here I am not sure there is a need to have a timer for co2 but this one is for checking game time
-    private static final long TIME_LIMIT_IN_SECONDS = 600; // this is for limiting the player to pass current level in 60 seconds
+    public static final long TIME_LIMIT_IN_MILESECONDS = 10 * 1000; // this is for limiting the player to pass current level in 600 seconds
 
     public GameStatus() {
         // Initialize the CO2 timer
@@ -48,11 +49,22 @@ public class GameStatus implements CommandListener {
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
+
     public boolean isGameOver() {
         return gameOver;
     }
 
+    public long getElapsedTimeInMileSeconds() {
+        return elapsedTimeInMileSeconds;
+    }
 
+    public int getCutDownTime() {
+        if (TIME_LIMIT_IN_MILESECONDS - elapsedTimeInMileSeconds > 0) {
+            return (int) (TIME_LIMIT_IN_MILESECONDS - elapsedTimeInMileSeconds) / 1000;
+        }
+        return 0;
+
+    }
     public void gameTimer() {
         // Initialize the timer
         timer = new Timer();
@@ -63,21 +75,21 @@ public class GameStatus implements CommandListener {
                 if (gameOver) {
                     cancel();
                 } else {
-                updateElapsedTime(1);
-                if (co2increase) {
-                increaseCO2();
+                    updateElapsedTime(TIMER_DELAY);
+                    if (co2increase) {
+                        increaseCO2();
+                    }
+                    trackCO2Level();
                 }
-                trackCO2Level();
-            }
             }
         }, TIMER_DELAY, TIMER_DELAY);
     }
 
     // Method to update elapsed time
-    public void updateElapsedTime(long elapsedTimeInSeconds) {
-        this.elapsedTimeInSeconds += elapsedTimeInSeconds;
+    public void updateElapsedTime(long elapsedTimeInMileSeconds) {
+        this.elapsedTimeInMileSeconds += elapsedTimeInMileSeconds;
         // check if time limit is exceeded
-        if (this.elapsedTimeInSeconds > TIME_LIMIT_IN_SECONDS) {
+        if (this.elapsedTimeInMileSeconds > TIME_LIMIT_IN_MILESECONDS) {
             System.out.println("Time's up! Game over!");
             setGameOver(true);
         }
@@ -92,6 +104,10 @@ public class GameStatus implements CommandListener {
 
     public void increaseCO2() {
         this.co2Collected++;
+    }
+
+    public void increaseCO2(int co2Cost) {
+        this.co2Collected += co2Cost;
     }
 
     public void addCoins(int numCoins) {
@@ -122,10 +138,10 @@ public class GameStatus implements CommandListener {
     }
 
     public void checkGameConditions() {
-        if (lives <= 0 || elapsedTimeInSeconds > TIME_LIMIT_IN_SECONDS || co2Collected > MAX_CO2_LEVEL) {
+        if (lives <= 0 || elapsedTimeInMileSeconds > TIME_LIMIT_IN_MILESECONDS || co2Collected > MAX_CO2_LEVEL) {
             gameOver = true;
             System.out.println("Game Over! You have lost.");
-        } else if (gemsAcquired >= REQUIRED_GEMS && co2Collected <= MAX_CO2_LEVEL && elapsedTimeInSeconds <= TIME_LIMIT_IN_SECONDS) {
+        } else if (gemsAcquired >= REQUIRED_GEMS) {
             gameOver = true;
             setGameWon(true);
             System.out.println("Congratulations! You have won.");
