@@ -3,6 +3,7 @@ package haohaiTeam.game.element;
 import haohaiTeam.game.gui.GameWindow;
 import haohaiTeam.game.input.CommandListener;
 import haohaiTeam.game.logic.GameStatus;
+import haohaiTeam.game.map.MapLoader;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -268,6 +269,12 @@ public abstract class GameElement implements CommandListener {
         if  (key == KeyEvent.VK_Q) {
             GameStatus.saveGame = true; // Trigger save
         }
+        if (e.getKeyCode() == KeyEvent.VK_F) {
+            if (gameStatus.isGameWon()) {
+                MapLoader.loadNextLevel();
+            }
+        }
+
         if (beingControlled) {
             System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
 
