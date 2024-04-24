@@ -36,9 +36,9 @@ public class Player2 extends Player {
     }
 
     public void foundByPlayer2(Player gameElement) {
-        System.out.println("Linking to player" );
+        System.out.println("Linking to player");
         playerLink = gameElement;
-        }
+    }
 
 
     @Override
@@ -84,20 +84,18 @@ public class Player2 extends Player {
 
 
             // Max distance allowed
-            int maxDistance = 900*3;
+            int maxDistance = 900 * 3;
 
             if (distance > maxDistance) { // Check distance in terms of cells, not just cells width/height
-                System.out.println("Max length reached" );
+                System.out.println("Max length reached");
                 // Calculate the direction towards playerLink
                 int moveX = (int) Math.signum(-dx);
                 int moveY = (int) Math.signum(-dy);
                 // Move this element closer to playerLink
-                this.logicalMove(moveX,moveY);
-                }
+                this.logicalMove(moveX, moveY);
             }
         }
-
-
+    }
 
 
     @Override
@@ -108,6 +106,7 @@ public class Player2 extends Player {
     @Override
     public void goingToBeWalkedOverBy(GameElement gameElement) {
     }
+
     @Override
     public void interactKeyPressedByYou() {
         // No implementation needed for Player2
@@ -192,7 +191,6 @@ public class Player2 extends Player {
         this.prevX = X;
         this.prevY = Y;
     }
-
 
 
 }

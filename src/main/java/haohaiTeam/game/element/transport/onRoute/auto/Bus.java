@@ -1,7 +1,5 @@
 package haohaiTeam.game.element.transport.onRoute.auto;
 
-import haohaiTeam.game.element.transport.onRoute.auto.AutoMoveTransport;
-
 import java.awt.*;
 
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;

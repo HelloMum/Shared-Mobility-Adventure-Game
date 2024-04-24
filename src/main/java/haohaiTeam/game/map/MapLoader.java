@@ -1,22 +1,21 @@
 package haohaiTeam.game.map;
 
 
+import haohaiTeam.game.element.*;
+import haohaiTeam.game.element.transport.Bike;
 import haohaiTeam.game.element.transport.onRoute.auto.Bus;
 import haohaiTeam.game.element.transport.onRoute.auto.Luas;
 import haohaiTeam.game.element.transport.onRoute.auto.Taxi;
 import haohaiTeam.game.element.transport.onRoute.stationRoad.*;
 import haohaiTeam.game.gui.GameWindow;
-import haohaiTeam.game.element.*;
-import haohaiTeam.game.element.transport.*;
-import java.util.Random;
-
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
 //import HaohaiTeam.Game.Logic.ElementBehavior;
 
@@ -32,6 +31,7 @@ public class MapLoader {
         String levelFile = String.format("src/main/resources/MapElement/level_%d.json", currentLevel);
         loadMapFromJson(levelFile);
     }
+
     public static void reloadCurrentLevel() {
         loadCurrentLevel(); // Reload the current level
     }
@@ -68,22 +68,55 @@ public class MapLoader {
 
     private static void processTile(char tile, int posX, int posY, ArrayList<Object> validGemCoordinates) {
         switch (tile) {
-            case 'W': GameWindow.addElement(new Wall(posX, posY)); break;
-            case 'G': GameWindow.addElement(new Gem(posX, posY)); break;
-            case 'C': GameWindow.addElement(new Coin(posX, posY)); break;
-            case 'P': GameWindow.addElement(new Player(posX, posY)); break;
-            case '2': GameWindow.addElement(new Player2(posX, posY)); break;
-            case 'B': GameWindow.addElement(new Bike(posX, posY)); break;
-            case 'U': GameWindow.addElement(new Bus(posX, posY)); break;
-            case 'T': GameWindow.addElement(new Taxi(posX, posY)); break;
-            case 'L': GameWindow.addElement(new Luas(posX, posY)); break;
-            case 'r': GameWindow.addElement(new Road(posX, posY)); break;
-            case 'c': GameWindow.addElement(new Crosswalk(posX, posY)); break;
-            case 'E': GameWindow.addElement(new CameraEntity(posX, posY)); break;
-            case 'b': GameWindow.addElement(new BusStation(posX, posY)); break;
-            case 't': GameWindow.addElement(new TaxiStation(posX, posY)); break;
-            case 'l': GameWindow.addElement(new LuasStation(posX, posY)); break;
-            case ' ': validGemCoordinates.add(posX); validGemCoordinates.add(posY); break;
+            case 'W':
+                GameWindow.addElement(new Wall(posX, posY));
+                break;
+            case 'G':
+                GameWindow.addElement(new Gem(posX, posY));
+                break;
+            case 'C':
+                GameWindow.addElement(new Coin(posX, posY));
+                break;
+            case 'P':
+                GameWindow.addElement(new Player(posX, posY));
+                break;
+            case '2':
+                GameWindow.addElement(new Player2(posX, posY));
+                break;
+            case 'B':
+                GameWindow.addElement(new Bike(posX, posY));
+                break;
+            case 'U':
+                GameWindow.addElement(new Bus(posX, posY));
+                break;
+            case 'T':
+                GameWindow.addElement(new Taxi(posX, posY));
+                break;
+            case 'L':
+                GameWindow.addElement(new Luas(posX, posY));
+                break;
+            case 'r':
+                GameWindow.addElement(new Road(posX, posY));
+                break;
+            case 'c':
+                GameWindow.addElement(new Crosswalk(posX, posY));
+                break;
+            case 'E':
+                GameWindow.addElement(new CameraEntity(posX, posY));
+                break;
+            case 'b':
+                GameWindow.addElement(new BusStation(posX, posY));
+                break;
+            case 't':
+                GameWindow.addElement(new TaxiStation(posX, posY));
+                break;
+            case 'l':
+                GameWindow.addElement(new LuasStation(posX, posY));
+                break;
+            case ' ':
+                validGemCoordinates.add(posX);
+                validGemCoordinates.add(posY);
+                break;
 
             // Additional cases can be added here
         }
@@ -102,11 +135,9 @@ public class MapLoader {
         }
     }
 
-    private void placeReport(String placeName, int posX , int posY) {
+    private void placeReport(String placeName, int posX, int posY) {
         // This reports the map import is working correctly
-        System.out.println( placeName );
-        System.out.println("has been placed in the position X: " + posX + ", Y: " + posY );
-
-
+        System.out.println(placeName);
+        System.out.println("has been placed in the position X: " + posX + ", Y: " + posY);
     }
 }

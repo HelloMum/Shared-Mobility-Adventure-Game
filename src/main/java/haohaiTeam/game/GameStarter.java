@@ -1,4 +1,5 @@
 package haohaiTeam.game;
+
 import haohaiTeam.game.gui.GameWindow;
 import haohaiTeam.game.map.MapLoader;
 

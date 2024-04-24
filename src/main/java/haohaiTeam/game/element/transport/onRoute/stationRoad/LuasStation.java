@@ -1,16 +1,12 @@
 package haohaiTeam.game.element.transport.onRoute.stationRoad;
 
-import haohaiTeam.game.element.GameElement;
-import haohaiTeam.game.element.transport.onRoute.auto.Luas;
-
 import java.awt.*;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
 
 public class LuasStation extends Station {
     private static final double CO2_PER_CELL = 0.7;
+
     public LuasStation(int x, int y) {
         super(x, y);
     }

@@ -1,17 +1,15 @@
 package haohaiTeam.app;
-import haohaiTeam.game.GameStarter;
 
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.File;
-import java.io.IOException;
+import haohaiTeam.game.GameStarter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class AppStarter {
 
@@ -20,7 +18,7 @@ public class AppStarter {
         System.out.println("App is starting...");
         startApp();
     }
-    
+
     public static void startApp() {
         // font
         try {
@@ -41,9 +39,9 @@ public class AppStarter {
         // Set the custom font for all Swing components
         Font buttonFont = loadCustomFont(10);
         Font textFont = loadCustomFont(10);
-        infoTextArea.setEditable(false); 
-        infoTextArea.setLineWrap(true); 
-        infoTextArea.setWrapStyleWord(true); 
+        infoTextArea.setEditable(false);
+        infoTextArea.setLineWrap(true);
+        infoTextArea.setWrapStyleWord(true);
         JScrollPane scrollPane = new JScrollPane(infoTextArea);
         frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
         //Loading text
@@ -61,9 +59,9 @@ public class AppStarter {
             infoTextArea.setText("Failed to load initial text.");
         }
         // add button functionality (Play Game)
-        Color bgButtonColour = new Color(0,102,17);
+        Color bgButtonColour = new Color(0, 102, 17);
         runGameButton.setBackground(bgButtonColour);
-        runGameButton.setForeground(Color.WHITE); 
+        runGameButton.setForeground(Color.WHITE);
         runGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -73,7 +71,7 @@ public class AppStarter {
         });
         // add button functionality (About)
         aboutButton.setBackground(bgButtonColour);
-        aboutButton.setForeground(Color.WHITE); 
+        aboutButton.setForeground(Color.WHITE);
         aboutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -82,7 +80,7 @@ public class AppStarter {
         });
         // add button functionality (How to Play)
         howToPlayButton.setBackground(bgButtonColour);
-        howToPlayButton.setForeground(Color.WHITE); 
+        howToPlayButton.setForeground(Color.WHITE);
         howToPlayButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -110,6 +108,7 @@ public class AppStarter {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+
     private static void loadTextFromFile(String filePath, JTextArea textArea) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -125,6 +124,7 @@ public class AppStarter {
             textArea.setText("Failed to load text from file.");
         }
     }
+
     private static Font loadCustomFont(float fontSize) {
         try {
             File fontFile = new File("src/main/resources/Text/Quinquefive-ALoRM.ttf");

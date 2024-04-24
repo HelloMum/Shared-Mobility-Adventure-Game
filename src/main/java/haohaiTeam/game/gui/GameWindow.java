@@ -5,18 +5,18 @@ import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.element.Player;
 import haohaiTeam.game.element.Player2;
 import haohaiTeam.game.logic.GameStatus;
+import haohaiTeam.game.logic.LevelScreen;
 import haohaiTeam.game.logic.OverlayHUD;
 import haohaiTeam.game.logic.TickGenerator;
-import haohaiTeam.game.logic.LevelScreen;
 
 import javax.swing.*;
-import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class GameWindow {
@@ -57,6 +57,7 @@ public class GameWindow {
     public static void clearElements() {
         elements.clear();
     }
+
     // For logic checking, game elements can access this
     public static List<GameElement> getElements() {
         return elements;
@@ -174,7 +175,6 @@ public class GameWindow {
             updateCameraPosition(camera);
         }
     }
-
 
 
     private void renderHUD(Graphics g) {

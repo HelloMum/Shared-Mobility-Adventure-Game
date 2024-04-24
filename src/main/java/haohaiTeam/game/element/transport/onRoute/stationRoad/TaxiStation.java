@@ -1,12 +1,6 @@
 package haohaiTeam.game.element.transport.onRoute.stationRoad;
 
-import haohaiTeam.game.element.GameElement;
-import haohaiTeam.game.element.transport.onRoute.auto.Taxi;
-import haohaiTeam.game.element.transport.onRoute.stationRoad.Station;
-
 import java.awt.*;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
 
