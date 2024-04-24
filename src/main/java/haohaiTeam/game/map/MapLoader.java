@@ -122,9 +122,9 @@ public class MapLoader {
         System.out.println("Random gems produced: " + randomGemCount);
         for (int i = 0; i < randomGemCount; i++) {
             int index = indices.get(i);
-            int gemPosX = (int) validGemCoordinates.get(index * 2); // X coordinate
-            int gemPosY = (int) validGemCoordinates.get(index * 2 + 1); // Y coordinate
-            gameWindow.addElement(new Gem(gemPosX, gemPosY));
+            int gemPosX = (int) validGemCoordinates.get(index * 2);
+            int gemPosY = (int) validGemCoordinates.get(index * 2 + 1);
+            GameWindow.addElement(new Gem(gemPosX, gemPosY));
         }
 
     }

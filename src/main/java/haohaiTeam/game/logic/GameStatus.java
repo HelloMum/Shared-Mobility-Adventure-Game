@@ -6,6 +6,15 @@ import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.input.CommandListener;
 import haohaiTeam.game.map.MapLoader;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.IOException;
+import java.io.FileWriter;
+
+import static haohaiTeam.game.element.GameElement.elements;
+
 public class GameStatus implements CommandListener {
     private int score = 0;
     private int lives = 3; // assume 3 lives at start
@@ -168,5 +177,26 @@ public class GameStatus implements CommandListener {
     @Override
     public void onCO2Generated(int value) {
 
+    }
+
+    public void saveGame(String filePath) {
+        JSONObject savedGame = new JSONObject();
+
+        savedGame.put("coinsCollected", coinsCollected);
+        savedGame.put("gemsAcquired", gemsAcquired);
+        savedGame.put("score", score);
+        savedGame.put("co2Collected", co2Collected);
+
+        JSONArray elementsArray = new JSONArray(elements);
+        savedGame.put("Map", elementsArray);
+
+        try (FileWriter file = new FileWriter(filePath)) {
+            file.write(savedGame.toString());
+            System.out.println("Game saved to: " + filePath);
+        } catch (IOException e) {
+            System.err.println("Save Game Error: " + e.getMessage());
+            e.printStackTrace();
+
+        }
     }
 }
