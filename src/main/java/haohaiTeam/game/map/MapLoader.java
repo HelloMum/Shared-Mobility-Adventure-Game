@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static haohaiTeam.game.gui.GameWindow.gameStatus;
 
 
 public class MapLoader {
@@ -24,6 +25,7 @@ public class MapLoader {
 
     public static void loadNextLevel() {
         currentLevel++;  // Increment to next level
+        gameStatus.hideLevelScreen(); // Hide level screen before loading new level
         loadCurrentLevel(); // Load the next level
     }
 
