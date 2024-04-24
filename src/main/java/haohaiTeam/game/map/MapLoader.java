@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-
 public class MapLoader {
     private static int currentLevel = 1; // Track the current level
 

@@ -2,18 +2,17 @@ package haohaiTeam.game.logic;
 
 import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.input.CommandListener;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.io.IOException;
-import java.io.FileWriter;
 
 import static haohaiTeam.game.element.GameElement.elements;
 
@@ -37,6 +36,7 @@ public class GameStatus implements CommandListener {
     public static final long TIME_LIMIT_IN_MILESECONDS = 60 * 1000; // this is for limiting the player to pass current level in 600 seconds
 
     public static boolean saveGame = false;
+
     public GameStatus() {
         // Initialize the CO2 timer
         gameTimer();
@@ -81,15 +81,19 @@ public class GameStatus implements CommandListener {
     private void setScore(int newScore) {
         score = newScore;
     }
+
     public void setGemsAcquired(int newGems) {
         gemsAcquired = newGems;
     }
+
     public void setCO2Collected(int newco2) {
         co2Collected = newco2;
     }
+
     public void setCoinsCollected(int newCoins) {
         coinsCollected = newCoins;
     }
+
     public void gameTimer() {
         // Initialize the timer
         timer = new Timer();

@@ -2,8 +2,6 @@ package haohaiTeam.game.input;
 
 import haohaiTeam.game.element.GameElement;
 
-import java.awt.event.KeyEvent;
-
 public class CommandHandler implements CommandListener {
     @Override
     public void onPickedCoin(GameElement element) {

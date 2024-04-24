@@ -2,8 +2,6 @@ package haohaiTeam.game.input;
 
 import haohaiTeam.game.element.GameElement;
 
-import java.awt.event.KeyEvent;
-
 
 public interface CommandListener {
     void onPickedCoin(GameElement element);
