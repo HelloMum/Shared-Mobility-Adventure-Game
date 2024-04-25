@@ -1,9 +1,6 @@
 package haohaiTeam.game.gui;
 
-import haohaiTeam.game.element.CameraEntity;
-import haohaiTeam.game.element.GameElement;
-import haohaiTeam.game.element.Player;
-import haohaiTeam.game.element.Player2;
+import haohaiTeam.game.element.*;
 import haohaiTeam.game.logic.GameStatus;
 import haohaiTeam.game.logic.LevelScreen;
 import haohaiTeam.game.logic.OverlayHUD;
@@ -31,6 +28,7 @@ public class GameWindow {
     private double cameraOffsetY = 0;
     private final GamePanel gamePanel;
     private static List<GameElement> elements = null;
+
     private final OverlayHUD overlayHUD; // Reference to the HUD overlay
     private static LevelScreen levelScreen; // Reference Level Screen
     public static GameStatus gameStatus = new GameStatus(); // we should only have a GameStatus object
@@ -53,6 +51,7 @@ public class GameWindow {
 
     }
 
+
     public static void clearElements() {
         elements.forEach(GameElement::clear);
         elements.clear();
@@ -68,10 +67,11 @@ public class GameWindow {
         elements.add(element);
         TickGenerator.setCommandListener(element);
         TickGenerator.start();
-
     }
 
+
     public static void removeElement(GameElement element) {
+        element.clear();
         elements.remove(element);
     }
 
@@ -149,13 +149,14 @@ public class GameWindow {
 
     private void renderElements(Graphics2D g) {
         // Sort elements based on their layer
-        elements.sort(Comparator.comparingInt(GameElement::getLayer));
+        List<GameElement> temp = new ArrayList<>(elements);
+        temp.sort(Comparator.comparingInt(GameElement::getLayer));
 
         GameElement player = null;
         GameElement camera = null;
 
         // Find the player and camera in the list of elements
-        for (GameElement element : elements) {
+        for (GameElement element : temp) {
             if (element.isVisible()) {
                 // Draw the element itself
                 element.helperDrawer(g);
@@ -196,13 +197,18 @@ public class GameWindow {
         if (levelScreen != null) {
             Graphics2D g2d = (Graphics2D) g.create();
             g2d.translate(-cameraOffsetX, -cameraOffsetY);
-
             levelScreen.render(g2d);
             g2d.dispose();
         }
     }
 
     private void handleKeyEvent(KeyEvent e) {
+
+        int key = e.getKeyCode();
+        if (key == KeyEvent.VK_ESCAPE) {
+            System.exit(0);
+        } // Exit the program gracefully
+
         if (gameStatus.shouldShowLevelScreen()) {
             return;
         } else {
@@ -212,7 +218,7 @@ public class GameWindow {
         for (GameElement element : elements) {
             element.handleKeyEvent(e);
         }
-    }
 
+    }
 
 }
