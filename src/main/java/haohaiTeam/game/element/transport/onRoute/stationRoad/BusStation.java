@@ -1,17 +1,25 @@
 package haohaiTeam.game.element.transport.onRoute.stationRoad;
 
+import haohaiTeam.game.element.GameElement;
+import haohaiTeam.game.element.transport.onRoute.auto.Bus;
+
 import java.awt.*;
 
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
 
 public class BusStation extends Station {
-    public static final double CO2_PER_CELL = 0.5;
+    public static final double CO2_PER_CELL = 0.2;
 
     public BusStation(int x, int y) {
         super(x, y);
     }
 
-
+    @Override
+    public void goingToBeWalkedOverBy(GameElement gameElement) {
+        if (gameElement instanceof Bus transport) {
+            correctStationMethod(transport);
+        }
+    }
     @Override
     public void draw(Graphics2D g2d) {
         // Draw black background square
