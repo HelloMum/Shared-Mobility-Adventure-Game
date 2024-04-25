@@ -1,93 +1,71 @@
 package haohaiTeam.game.element;
 
-import haohaiTeam.game.gui.GameWindow;
-
+import javax.swing.*;
 import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class PopUp extends GameElement {
+
+public class PopUp {
 
     private String message;
-    private int renderCount;
+    private int duration;
+    private JFrame frame;
 
-
-    public PopUp(int x, int y, String message, int Duration) {
-        // Call the first constructor with adjusted coordinates
-        super(x, y);
-
-        // Initialize other properties
-        layer = 120;
-        isVisible = true;
-        walkable = true;
-        renderCount = 0;
-        int popUpDuration = Duration;
-
-        // Add the PopUp to the GameWindow elements
-        GameWindow.addElement(this);
-
-        // Set the message
+    public PopUp(int x, int y, String message, int duration) {
         this.message = message;
-        setMessage(message);
-        System.out.println("Showing message: " + message);
+        this.duration = duration;
 
-        Timer PopupSelfRemovetimer = new Timer();
-        PopupSelfRemovetimer.schedule(new TimerTask() {
+        initComponents(x, y);
+    }
+
+    private void initComponents(int x, int y) {
+        frame = new JFrame();
+        frame.setUndecorated(true); // Remove window border
+        frame.setTitle("Pop Up");
+        frame.setSize(300, 100);
+
+        // Calculate the center position of the screen
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int centerX = (int) ((screenSize.getWidth() - frame.getWidth()) / 2);
+        int centerY = (int) ((screenSize.getHeight() - frame.getHeight()) / 2);
+
+        // Set the location based on the center position of the screen
+        frame.setLocation(centerX, centerY);
+
+        JLabel label = new JLabel(message, SwingConstants.CENTER);
+        frame.getContentPane().add(label, BorderLayout.CENTER);
+
+        // Start a timer to close the window after the specified duration
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                PopUp.this.setRemoved(Boolean.TRUE);
+                closePopUp();
             }
-        }, popUpDuration);
+        }, duration);
+
+        // Add a window listener to cancel the timer when the window is closed manually
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                timer.cancel();
+            }
+        });
+
+        frame.setVisible(true);
     }
 
-
-    public void setMessage(String message) {
-        this.message = message;
+    private void closePopUp() {
+        SwingUtilities.invokeLater(() -> {
+            frame.setVisible(false);
+            frame.dispose(); // Close the window
+        });
     }
 
-
-    // Method to show the PopUp with a message
-    public void show(String message) {
-        setMessage(message);
-        System.out.println("Showing message: " + message);
-    }
-
-    // Method to hide the PopUp if needed
-    public void hide() {
-        this.isVisible = false;
-    }
-
-
-    @Override
-    public void draw(Graphics2D g2d) {
-        if (isVisible) {
-            int boxWidth = 300; // Set the width of the box
-            int boxHeight = 30; // this should adapt to message length
-
-            // Calculate the current opacity based on the render count
-            float opacity = Math.max(1.0f - ((float) renderCount / 100.0f), 0.0f);
-
-            // Save the current composite to restore it later
-            Composite originalComposite = g2d.getComposite();
-
-            // Set the composite with the calculated opacity
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-
-            // Set the color to black
-            g2d.setColor(Color.BLACK);
-            // Fill the rectangle with the black color
-            g2d.fillRect(getRenderX(), getRenderY(), boxWidth, boxHeight);
-
-            // Set the color to white
-            g2d.setColor(Color.WHITE);
-            // Draw the message inside the box
-            g2d.drawString(message, getRenderX() + 10, getRenderY() + 20);
-
-            // Reset the composite to its original value
-            g2d.setComposite(originalComposite);
-
-            // Increment the render count
-            renderCount++;
-        }
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+        });
     }
 }
+

@@ -32,7 +32,7 @@ public class Road extends GameElement {
         System.out.println(this + " collision on the element " + gameElement);
         if (gameElement instanceof Player) {
             // If the collision is with a Wall, show a pop-up indicating inability to walk through walls
-            new PopUp(this.X, this.Y, "Not using the crosswalk is dangerous!", 3000);
+            new PopUp(this.X, this.Y, "Not using the crosswalk is dangerous!", 500);
         }
         // Notify the other element about the collision if needed
         gameElement.onBeingCollidedOnYou(this);

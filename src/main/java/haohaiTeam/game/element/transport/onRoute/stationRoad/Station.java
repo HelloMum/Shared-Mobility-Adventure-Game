@@ -63,7 +63,7 @@ public abstract class Station extends Road {
 
     @Override
     public void onBeingCollidedOnYou(GameElement element) {
-        new PopUp(this.X, this.Y, "The next station cost " + calculateCO2(distanceNext) + " CO2", 3000);
+        new PopUp(this.X, this.Y, "The next station cost " + calculateCO2(distanceNext) + " CO2", 500);
 
         if (element instanceof Player player) {
             if (transportReference != null) {

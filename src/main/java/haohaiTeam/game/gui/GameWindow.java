@@ -65,8 +65,6 @@ public class GameWindow {
     public static void addElement(GameElement element) {
         element.setCommandListener(gameStatus);
         elements.add(element);
-        TickGenerator.setCommandListener(element);
-        TickGenerator.start();
     }
 
 
@@ -149,14 +147,13 @@ public class GameWindow {
 
     private void renderElements(Graphics2D g) {
         // Sort elements based on their layer
-        List<GameElement> temp = new ArrayList<>(elements);
-        temp.sort(Comparator.comparingInt(GameElement::getLayer));
+        elements.sort(Comparator.comparingInt(GameElement::getLayer));
 
         GameElement player = null;
         GameElement camera = null;
 
         // Find the player and camera in the list of elements
-        for (GameElement element : temp) {
+        for (GameElement element : elements) {
             if (element.isVisible()) {
                 // Draw the element itself
                 element.helperDrawer(g);
@@ -179,6 +176,7 @@ public class GameWindow {
             updateCameraPosition(camera);
         }
     }
+
 
 
     private void renderHUD(Graphics g) {
