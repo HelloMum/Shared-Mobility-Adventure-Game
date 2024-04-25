@@ -1,5 +1,8 @@
 package haohaiTeam.game.element.transport.onRoute.stationRoad;
 
+import haohaiTeam.game.element.GameElement;
+import haohaiTeam.game.element.transport.onRoute.auto.Bus;
+
 import java.awt.*;
 
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
