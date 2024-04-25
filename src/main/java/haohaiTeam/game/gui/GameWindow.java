@@ -10,13 +10,13 @@ import haohaiTeam.game.logic.OverlayHUD;
 import haohaiTeam.game.logic.TickGenerator;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
 import java.util.List;
 
 public class GameWindow {
@@ -25,7 +25,6 @@ public class GameWindow {
     private static final int GRID_HEIGHT = 18; // Number of grid cells vertically
     public static final int FRAME_WIDTH = CELL_SIZE * GRID_WIDTH; // This is equal to 720p resolution
     public static final int FRAME_HEIGHT = CELL_SIZE * GRID_HEIGHT;
-    private GameElement player;
     private final TickGenerator tickGenerator; // Declare tickGenerator variable
 
     private double cameraOffsetX = 0;
@@ -33,7 +32,7 @@ public class GameWindow {
     private final GamePanel gamePanel;
     private static List<GameElement> elements = null;
     private final OverlayHUD overlayHUD; // Reference to the HUD overlay
-    private final LevelScreen LevelScreen; // Reference Level Screen
+    private static LevelScreen levelScreen; // Reference Level Screen
     public static GameStatus gameStatus = new GameStatus(); // we should only have a GameStatus object
 
     private double scaleX = 1.0; // Scale factor for X-axis
@@ -41,7 +40,7 @@ public class GameWindow {
 
     public GameWindow() {
         elements = new ArrayList<>();
-        this.LevelScreen = new LevelScreen(gameStatus);
+        levelScreen = new LevelScreen(gameStatus);
         this.gamePanel = new GamePanel();
         this.overlayHUD = new OverlayHUD(gameStatus); // use the same GameStatus object
 
@@ -55,6 +54,7 @@ public class GameWindow {
     }
 
     public static void clearElements() {
+        elements.forEach(GameElement::clear);
         elements.clear();
     }
 
@@ -105,8 +105,11 @@ public class GameWindow {
             }
         });
 
-        Timer timer = new Timer(10, e -> gamePanel.repaint());
+        Timer timer = new Timer(10, e -> {
+            gamePanel.repaint();
+        });
         timer.start();
+
 
     }
 
@@ -190,20 +193,27 @@ public class GameWindow {
     }
 
     private void renderLevelScreen(Graphics g) {
-        if (LevelScreen != null) {
+        if (levelScreen != null) {
             Graphics2D g2d = (Graphics2D) g.create();
             g2d.translate(-cameraOffsetX, -cameraOffsetY);
 
-            LevelScreen.render(g2d);
+            levelScreen.render(g2d);
             g2d.dispose();
         }
     }
 
     private void handleKeyEvent(KeyEvent e) {
-        List<GameElement> copy = new ArrayList<>(elements); // Create a copy of the elements list
-        for (GameElement element : copy) {
+        if (gameStatus.shouldShowLevelScreen()) {
+            return;
+        } else {
+            gameStatus.start();
+        }
+
+        for (GameElement element : elements) {
             element.handleKeyEvent(e);
         }
     }
+
+
 
 }
