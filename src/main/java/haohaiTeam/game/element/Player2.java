@@ -78,8 +78,6 @@ public class Player2 extends Player {
             // Calculate the distance between this element and playerLink
             int dx = this.getLogicalPosX() - playerLink.getLogicalPosX();
             int dy = this.getLogicalPosY() - playerLink.getLogicalPosY();
-            System.out.println(dx);
-            System.out.println(dy);
             int distance = Math.abs(dx) + Math.abs(dy); // Manhattan distance for simplicity
 
 
@@ -87,7 +85,6 @@ public class Player2 extends Player {
             int maxDistance = 900 * 3;
 
             if (distance > maxDistance) { // Check distance in terms of cells, not just cells width/height
-                System.out.println("Max length reached");
                 // Calculate the direction towards playerLink
                 int moveX = (int) Math.signum(-dx);
                 int moveY = (int) Math.signum(-dy);
@@ -138,6 +135,7 @@ public class Player2 extends Player {
 
     @Override
     public void draw(Graphics2D g2d) {
+        ensurePlayerClose();
         int newCellSize = CELL_SIZE * 2 / 3;
         int newRenderX = renderX + (CELL_SIZE - newCellSize) / 2;
         int newRenderY = renderY + (CELL_SIZE - newCellSize) / 2;
@@ -173,7 +171,7 @@ public class Player2 extends Player {
 
     @Override
     public void helperDrawer(Graphics2D g2d) {
-        double stepSizeScaled = 1.9;
+        double stepSizeScaled = 2.8;
 
         // Calculate the direction of movement
         int dx = (prevX - renderX) * 2;
@@ -199,6 +197,5 @@ public class Player2 extends Player {
         this.prevX = X;
         this.prevY = Y;
     }
-
 
 }
