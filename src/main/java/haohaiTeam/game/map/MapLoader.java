@@ -26,8 +26,6 @@ public class MapLoader {
     public static void loadNextLevel() {
         currentLevel++;  // Increment to next level
         loadCurrentLevel(); // Load the next level
-        gameStatus.resetGameStatusForNewLevel();
-        gameStatus.hideLevelScreen();
     }
 
     public static void loadCurrentLevel() {
@@ -73,6 +71,9 @@ public class MapLoader {
             }
         }
         placeRandomGems(validGemCoordinates);
+
+        gameStatus.resetGameStatusForNewLevel();
+        gameStatus.hideLevelScreen();
     }
 
     private static void processTile(char tile, int posX, int posY, ArrayList<Object> validGemCoordinates) {
