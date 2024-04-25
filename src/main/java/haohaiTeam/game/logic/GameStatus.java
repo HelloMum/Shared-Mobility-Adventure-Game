@@ -98,7 +98,12 @@ public class GameStatus implements CommandListener {
 
     // when win or lose then call the level screen
     public void triggerLevelScreen() {
-        showLevelScreen = true;
+        showLevelScreen = true; // Show the level screen
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     // loading level then call
@@ -115,13 +120,6 @@ public class GameStatus implements CommandListener {
             @Override
             public void run() {
                 if (started) {
-                    if (!gameOver) {  // Only update game time if the game isn't over
-                        updateElapsedTime(TIMER_DELAY);
-                        if (saveGame) {
-                            saveGame();
-                            saveGame = false;
-                        }
-                    }
                     checkGameConditions();
                 }
             }
@@ -135,18 +133,9 @@ public class GameStatus implements CommandListener {
         }
     }
 
-
-    // Method to update elapsed time
     public void updateElapsedTime(long elapsedTimeInMileSeconds) {
         this.elapsedTimeInMileSeconds += elapsedTimeInMileSeconds;
-        // check if time limit is exceeded
-        if (this.elapsedTimeInMileSeconds > TIME_LIMIT_IN_MILESECONDS) {
-            System.out.println("Time's up! Game over!");
-            checkGameConditions();
-        }
     }
-
-
 
     public void addCoins(int numCoins) {
         this.coinsCollected += numCoins;
@@ -154,7 +143,6 @@ public class GameStatus implements CommandListener {
         addScore(points);
         System.out.println(numCoins + " coin(s) added to the game status. Total coins collected: " + coinsCollected);
     }
-
 
     public void addGems(int numGems) {
         this.gemsAcquired += numGems;
@@ -174,10 +162,15 @@ public class GameStatus implements CommandListener {
         return co2Collected;
     }
 
-
     public void checkGameConditions() {
-        if (gameOver) {  // If the game is already over, avoid rechecking conditions
-            return;
+
+        if (!gameOver) {  // Only update game time if the game isn't over
+            updateElapsedTime(TIMER_DELAY);
+        }
+
+        if (saveGame) {
+            saveGame();
+            saveGame = false;
         }
 
         if (lives <= 0 || elapsedTimeInMileSeconds > TIME_LIMIT_IN_MILESECONDS || co2Collected > MAX_CO2_LEVEL) {
@@ -190,6 +183,10 @@ public class GameStatus implements CommandListener {
             gameOver = true;
             triggerLevelScreen();
             System.out.println("Game Over! You have lost.");
+        }
+        if (this.elapsedTimeInMileSeconds > TIME_LIMIT_IN_MILESECONDS) {
+            System.out.println("Time's up! Game over!");
+            checkGameConditions();
         }
         else if (gemsAcquired >= REQUIRED_GEMS) {
             gameOver = true;
@@ -251,18 +248,14 @@ public class GameStatus implements CommandListener {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String dateTime = dateFormat.format(new Date());
         String filePath = "Saved_Game_" + dateTime + ".json";
-
         JSONObject savedGame = new JSONObject();
-
         savedGame.put("coinsCollected", coinsCollected);
         savedGame.put("gemsAcquired", gemsAcquired);
         savedGame.put("score", score);
         savedGame.put("co2Collected", co2Collected);
         savedGame.put("lives", lives);
-
         JSONArray elementsArray = new JSONArray(elements);
         savedGame.put("map", elementsArray);
-
         try (FileWriter file = new FileWriter(filePath)) {
             file.write(savedGame.toString());
             System.out.println("Game saved to: " + filePath);
