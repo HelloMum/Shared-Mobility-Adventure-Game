@@ -1,26 +1,26 @@
 package haohaiTeam.game.element.transport.onRoute.stationRoad;
 
 import haohaiTeam.game.element.GameElement;
+import haohaiTeam.game.element.transport.onRoute.auto.AutoMoveTransport;
 import haohaiTeam.game.element.transport.onRoute.auto.Luas;
 
 import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
 
 public class LuasStation extends Station {
     private static final double CO2_PER_CELL = 0.1;
-
     public LuasStation(int x, int y) {
         super(x, y);
     }
-
     @Override
     public void goingToBeWalkedOverBy(GameElement gameElement) {
         if (gameElement instanceof Luas transport) {
             correctStationMethod(transport);
         }
     }
-
     @Override
     public void draw(Graphics2D g2d) {
         // Draw black background square

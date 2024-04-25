@@ -28,14 +28,14 @@ public class GameWindow {
     private double cameraOffsetY = 0;
     private final GamePanel gamePanel;
     private static List<GameElement> elements = null;
-
+    
     private final OverlayHUD overlayHUD; // Reference to the HUD overlay
     private static LevelScreen levelScreen; // Reference Level Screen
     public static GameStatus gameStatus = new GameStatus(); // we should only have a GameStatus object
 
     private double scaleX = 1.0; // Scale factor for X-axis
     private double scaleY = 1.0; // Scale factor for Y-axis
-
+    
     public GameWindow() {
         elements = new ArrayList<>();
         levelScreen = new LevelScreen(gameStatus);
@@ -106,7 +106,7 @@ public class GameWindow {
         });
 
         Timer timer = new Timer(10, e -> {
-            gamePanel.repaint();
+                gamePanel.repaint();
         });
         timer.start();
 
@@ -215,10 +215,18 @@ public class GameWindow {
             gameStatus.start();
         }
 
-        for (GameElement element : elements) {
+        ArrayList<GameElement> copy = new ArrayList<>(elements);
+        for (GameElement element : copy) {
+            if (element instanceof Grass) {
+                continue;
+            }
             element.handleKeyEvent(e);
         }
-
+        
     }
+
+    
+    
+
 
 }

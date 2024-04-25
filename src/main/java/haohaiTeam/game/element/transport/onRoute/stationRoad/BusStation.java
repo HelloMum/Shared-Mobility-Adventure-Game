@@ -20,7 +20,6 @@ public class BusStation extends Station {
             correctStationMethod(transport);
         }
     }
-
     @Override
     public void draw(Graphics2D g2d) {
         // Draw black background square

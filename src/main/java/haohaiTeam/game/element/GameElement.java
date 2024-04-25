@@ -2,7 +2,6 @@ package haohaiTeam.game.element;
 
 import haohaiTeam.game.gui.GameWindow;
 import haohaiTeam.game.input.CommandListener;
-import haohaiTeam.game.logic.GameStatus;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -13,7 +12,7 @@ import static haohaiTeam.game.gui.GameWindow.gameStatus;
 
 public abstract class GameElement implements CommandListener {
 
-
+    
     /// The basics of the Game element
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static List<GameElement> elements;
@@ -36,7 +35,7 @@ public abstract class GameElement implements CommandListener {
     public CommandListener commandListener;
     public int tickCount = 0;
     private boolean canMove = true;
-
+    
     protected boolean removed = false;
 
     private long lastMoveTime;
@@ -170,6 +169,9 @@ public abstract class GameElement implements CommandListener {
         List<GameElement> elements = GameWindow.getElements();
         if (beingControlled) {
             for (GameElement element : elements) {
+                if (element instanceof Grass) {
+                    continue;
+                }
                 // Calculate the next step
                 int nextPosX = convertToLogicalPos(nextX) + this.X;
                 int nextPosY = convertToLogicalPos(nextY) + this.Y;
@@ -269,9 +271,7 @@ public abstract class GameElement implements CommandListener {
         }
 
         int key = e.getKeyCode();
-        if (key == KeyEvent.VK_Q) {
-            GameStatus.saveGame = true; // Trigger save
-        }
+
         if (beingControlled) {
             System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
 

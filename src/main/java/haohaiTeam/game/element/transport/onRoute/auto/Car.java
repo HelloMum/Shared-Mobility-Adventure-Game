@@ -12,7 +12,6 @@ public class Car extends AutoMoveTransport {
         super(x, y);
         layer = 102; // Drawn over player and roads
     }
-
     @Override
     public void goingToBeWalkedOverBy(GameElement gameElement) {
         //nothing here as no bus stop needed

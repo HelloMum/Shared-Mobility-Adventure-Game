@@ -41,8 +41,8 @@ public class GameStatus implements CommandListener {
     private boolean showLevelScreen = false;
 
     public static boolean saveGame = false;
-
-
+    
+    
     public GameStatus() {
         // Initialize the CO2 timer
         gameTimer();

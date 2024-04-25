@@ -12,7 +12,7 @@ import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
 
 public class Grass extends GameElement {
     private static BufferedImage blockImage = null;
-
+    
     static {
         try {
             URL resource = Grass.class.getClassLoader().getResource("Image" + File.separator + "grass.png");

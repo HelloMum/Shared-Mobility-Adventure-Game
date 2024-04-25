@@ -27,7 +27,6 @@ public abstract class Station extends Road {
     public void setDistanceNextStation(int distance) {
         this.distanceNext = distance;
     }
-
     public int getDistanceNextStation() {
         return distanceNext;
     }
@@ -38,7 +37,6 @@ public abstract class Station extends Road {
             correctStationMethod(transport);
         }
     }
-
     public void correctStationMethod(AutoMoveTransport transport) {
         this.transportReference = transport;
         this.transportReference.toggleAutoStation();
@@ -51,19 +49,17 @@ public abstract class Station extends Road {
             }
         }, 3000);
     }
-
     @Override
     public void handleNearbyElement(GameElement element) {
         System.out.println("The next station is at " + distanceNext);
     }
-
     public int calculateCO2(int distance) {
         return (int) (distance * CO2_PER_CELL); // Calculate CO2 emissions based on distance
     }
 
     @Override
     public void onBeingCollidedOnYou(GameElement element) {
-        new PopUp(this.X, this.Y, "The next station cost " + calculateCO2(distanceNext) + " CO2", 3000);
+        new PopUp(this.X, this.Y,"The next station cost " + calculateCO2(distanceNext) + " CO2",3000);
 
         if (element instanceof Player player) {
             if (transportReference != null) {
