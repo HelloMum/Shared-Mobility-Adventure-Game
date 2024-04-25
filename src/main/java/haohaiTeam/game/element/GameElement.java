@@ -269,6 +269,10 @@ public abstract class GameElement implements CommandListener {
         }
 
         int key = e.getKeyCode();
+
+        if (key == KeyEvent.VK_ESCAPE) {
+            System.exit(0);
+        }
         if (key == KeyEvent.VK_Q) {
             GameStatus.saveGame = true; // Trigger save
         }
