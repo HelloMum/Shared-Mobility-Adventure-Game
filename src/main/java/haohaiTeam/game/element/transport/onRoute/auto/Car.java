@@ -1,7 +1,6 @@
 package haohaiTeam.game.element.transport.onRoute.auto;
 
 import haohaiTeam.game.element.GameElement;
-import haohaiTeam.game.element.transport.onRoute.auto.AutoMoveTransport;
 
 import java.awt.*;
 

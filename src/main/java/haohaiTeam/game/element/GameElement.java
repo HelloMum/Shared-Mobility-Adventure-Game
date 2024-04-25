@@ -2,14 +2,16 @@ package haohaiTeam.game.element;
 
 import haohaiTeam.game.gui.GameWindow;
 import haohaiTeam.game.input.CommandListener;
+import haohaiTeam.game.logic.GameStatus;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
+
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
 import static haohaiTeam.game.gui.GameWindow.gameStatus;
 
-public abstract class GameElement implements CommandListener  {
+public abstract class GameElement implements CommandListener {
 
     /// The basics of the Game element
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,7 +38,7 @@ public abstract class GameElement implements CommandListener  {
 
     private long lastMoveTime;
     private int moveInterval;  // Time in milliseconds required to pass before the next move can happen
-    
+
     public GameElement(int x, int y) {
         this.renderX = x; // just for rendering
         this.renderY = y;
@@ -44,7 +46,7 @@ public abstract class GameElement implements CommandListener  {
         this.walkable = false;
         this.layer = 99; // Default layer
         this.isVisible = true;
-        this.playerOnTop =false;
+        this.playerOnTop = false;
         this.direction = Direction.DOWN; // Default direction
         this.commandListener = null; // we need to start this later
         this.X = x; // Real pixel position
@@ -52,6 +54,7 @@ public abstract class GameElement implements CommandListener  {
         this.moveInterval = 200;  // default interval set as 200 ms
 
     }
+
     public void setCommandListener(CommandListener commandListener) { // set up a command listen
         this.commandListener = commandListener;
     }
@@ -130,6 +133,7 @@ public abstract class GameElement implements CommandListener  {
             }
         }
     }
+
     public void moveLogical(int dx, int dy) {
         // Update the actual position of the object based on logic
         if (checkCollision(dx, dy)) {
@@ -137,6 +141,7 @@ public abstract class GameElement implements CommandListener  {
             setToLogicalPosY(dy);
         }
     }
+
     /// Check for the direction of the element
     // Getter method for direction
     public Direction getDirection() {
@@ -147,6 +152,7 @@ public abstract class GameElement implements CommandListener  {
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
+
     private boolean isWithinBounds(int nextX, int nextY) {
         // Check if the next position is within the game window bounds
         return (nextX >= 0 && nextX < GameWindow.FRAME_WIDTH && nextY >= 0 && nextY < GameWindow.FRAME_HEIGHT);
@@ -181,6 +187,7 @@ public abstract class GameElement implements CommandListener  {
         }
         return true; // No collision detected, return false
     }
+
     public void nearbyDetectorCall() {
         List<GameElement> elements = GameWindow.getElements();
         int x = this.X;
@@ -205,7 +212,7 @@ public abstract class GameElement implements CommandListener  {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void linkElement(GameElement other) {
         this.linkedElement = other;
-        System.out.println(this + " has added linked to " + other );
+        System.out.println(this + " has added linked to " + other);
         this.linkedElement = other; // Link the other element back
     }
 
@@ -220,11 +227,13 @@ public abstract class GameElement implements CommandListener  {
             this.linkedElement = null;
         }
     }
+
     public void moveToLinked() {
         // Move this element to the same position as the linked element
         this.X = linkedElement.X;
         this.Y = linkedElement.Y;
     }
+
     // Toggle the link state
     public void toggleLink(GameElement other) {
         if (this.linkedElement == other) {
@@ -255,7 +264,11 @@ public abstract class GameElement implements CommandListener  {
 
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_ESCAPE) {
-            System.exit(0); // Exit the program gracefully
+            System.exit(0);
+        } // Exit the program gracefully
+
+        if (key == KeyEvent.VK_Q) {
+            GameStatus.saveGame = true; // Trigger save
         }
         if (beingControlled) {
             System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
@@ -321,6 +334,7 @@ public abstract class GameElement implements CommandListener  {
             );
         }
     }
+
     public void moveFacing() {
         int[] direction = getDirectionBasedMovement();
         logicalMove(direction[0], direction[1]);
@@ -374,6 +388,7 @@ public abstract class GameElement implements CommandListener  {
             System.out.println("Visibility has changed for: " + this);
         }
     }
+
     public void toggleVisibility() {
         // Toggle the visibility of the element
         isVisible = !isVisible;
@@ -387,6 +402,7 @@ public abstract class GameElement implements CommandListener  {
         // Triggered when something walks over this element, probably a player
         //     @Override on your class, someone / something on top
     }
+
     public void interactKeyPressedByYou() {
         System.out.println(this + " wants to interact");
         // this.moveFacing();
@@ -450,9 +466,10 @@ public abstract class GameElement implements CommandListener  {
         return renderX;
     }
 
-    public int getRenderY(){
+    public int getRenderY() {
         return renderY;
     }
+
     @Override
     public void onPickedCoin(GameElement element) {
 
@@ -462,15 +479,18 @@ public abstract class GameElement implements CommandListener  {
     public void onPickedGem(GameElement element) {
 
     }
+
     @Override
     public void onTick() {
         tickCount++;
-       if (tickCount % 12000 == 0) {
-           System.out.println("Tic is working but only for the game element ");
-       }
+        if (tickCount % 12000 == 0) {
+            System.out.println("Tic is working but only for the game element ");
+        }
     }
+
     @Override
     public void onCO2Generated(int value) {
 
     }
+
 }

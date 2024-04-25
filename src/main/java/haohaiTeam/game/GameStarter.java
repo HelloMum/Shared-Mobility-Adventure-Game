@@ -1,4 +1,5 @@
 package haohaiTeam.game;
+
 import haohaiTeam.game.gui.GameWindow;
 import haohaiTeam.game.map.MapLoader;
 
@@ -7,10 +8,9 @@ public class GameStarter {
     public void startGame() { // Previously startApp, now renamed to startGame
         System.out.println("Welcome to Dublin!");
         GameWindow gameWindow = new GameWindow(); // Create a new GameWindow (empty initially)
-        MapLoader mapLoader = new MapLoader(gameWindow); // Create the map loader with a reference to the GameWindow
 
         // Instead of loading static level_1, initiate loading the first level from JSON
-        mapLoader.loadNextLevel(); // This will load level_1.json for the first call, and prepare for the next levels
+        MapLoader.loadCurrentLevel(); // This will load level_1.json for the first call, and prepare for the next levels
 
         gameWindow.openWindow(); // Open the window with all elements set up
     }

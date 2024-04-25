@@ -2,10 +2,11 @@ package haohaiTeam.game.element.transport;
 
 
 import haohaiTeam.game.element.GameElement;
-import java.awt.Graphics2D;
-import java.awt.Color;
-import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
 
 public class Bike extends TransportMode {
     private static final Color BIKE_COLOR = Color.darkGray;
@@ -18,9 +19,10 @@ public class Bike extends TransportMode {
         walkable = true;
         layer = 105; // Default layer
     }
+
     @Override
     public void interactKeyPressedOnYou(GameElement gameElement) {
-        System.out.println(gameElement + " wants to interact with" + this );
+        System.out.println(gameElement + " wants to interact with" + this);
         if (gameElement.getLinkedElement() == this) {
             // If gameElement is already linked to this, unlink them
             gameElement.unlinkElement();
@@ -31,6 +33,7 @@ public class Bike extends TransportMode {
             gameElement.setMoveInterval(100);
         }
     }
+
     // We need to implement something for the real stepping on
 //    @Override
 //    public void goingToBeWalkedOverBy(GameElement gameElement) {

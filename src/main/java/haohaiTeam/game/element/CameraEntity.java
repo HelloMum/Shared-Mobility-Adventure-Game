@@ -14,6 +14,7 @@ public class CameraEntity extends GameElement {
     @Override
     public void draw(Graphics2D g2d) {
     }
+
     @Override
     public void helperDrawer(Graphics2D g2d) {
         // Define a constant step to get closer to objetive
@@ -48,7 +49,7 @@ public class CameraEntity extends GameElement {
         return renderX;
     }
 
-    public int getRenderY(){
+    public int getRenderY() {
         return renderY;
     }
 }

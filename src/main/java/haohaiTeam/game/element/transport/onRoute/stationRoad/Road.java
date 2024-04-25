@@ -15,21 +15,24 @@ public class Road extends GameElement {
         super(x, y);
         this.walkable = false;
     }
+
     @Override
     public void handleNearbyElement(GameElement element) {
     }
+
     @Override
     public void draw(Graphics2D g2d) {
         // Draw black background square
         g2d.setColor(ROAD_COLOR);
         g2d.fillRect(renderX, renderY, CELL_SIZE, CELL_SIZE);
     }
+
     @Override
     public void onBeingCollidedOnYou(GameElement gameElement) {
         System.out.println(this + " collision on the element " + gameElement);
         if (gameElement instanceof Player) {
             // If the collision is with a Wall, show a pop-up indicating inability to walk through walls
-            new PopUp(this.X, this.Y,"Not using the crosswalk is dangerous!",3000);
+            new PopUp(this.X, this.Y, "Not using the crosswalk is dangerous!", 3000);
         }
         // Notify the other element about the collision if needed
         gameElement.onBeingCollidedOnYou(this);

@@ -17,6 +17,7 @@ public class CommandHandler implements CommandListener {
 
     @Override
     public void onTick() {
+
     }
 
     @Override

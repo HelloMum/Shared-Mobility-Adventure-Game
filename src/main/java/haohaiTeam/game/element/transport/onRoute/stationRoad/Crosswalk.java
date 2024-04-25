@@ -1,9 +1,9 @@
 package haohaiTeam.game.element.transport.onRoute.stationRoad;
 
 import haohaiTeam.game.element.GameElement;
-import haohaiTeam.game.element.transport.onRoute.stationRoad.Road;
 
 import java.awt.*;
+
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
 
 public class Crosswalk extends Road {
@@ -11,6 +11,7 @@ public class Crosswalk extends Road {
         super(x, y);
         this.walkable = true;
     }
+
     @Override
     public void onBeingCollidedOnYou(GameElement gameElement) {
 //        // Get the direction of the other element
@@ -22,6 +23,7 @@ public class Crosswalk extends Road {
 //        // There is an issue with using thread sleep tick must be implemented
 //        gameElement.setBeingControlled(true); // Your free will has been given back
     }
+
     @Override
     public void draw(Graphics2D g2d) {
         // Draw black background square
