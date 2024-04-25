@@ -80,6 +80,9 @@ public abstract class GameElement implements CommandListener {
         return moveInterval;
     }
 
+    public void clear() {
+    }
+
 
     // direction that the element is facing
     public enum Direction {
