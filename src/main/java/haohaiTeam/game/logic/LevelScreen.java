@@ -64,7 +64,7 @@ public class LevelScreen {
             if (this.gameStatus.isGameWon()) {
                 g.drawString(winMessage, widthWinMessage, 50);
             } else {
-                g.drawString(gameOverMessage, x, 50);
+                g.drawString(gameOverMessage, widthLoseMessage,50);
             }
         }
     }
