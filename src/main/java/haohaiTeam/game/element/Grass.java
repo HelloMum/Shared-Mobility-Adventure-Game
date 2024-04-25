@@ -10,13 +10,12 @@ import java.util.Objects;
 
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
 
-public class Wall extends GameElement {
-
+public class Grass extends GameElement {
     private static BufferedImage blockImage = null;
 
     static {
         try {
-            URL resource = Wall.class.getClassLoader().getResource("Image" + File.separator + "wall.png");
+            URL resource = Grass.class.getClassLoader().getResource("Image" + File.separator + "grass.png");
             if (Objects.isNull(blockImage) && Objects.nonNull(resource)) {
                 blockImage = ImageIO.read(resource);
             }
@@ -25,23 +24,20 @@ public class Wall extends GameElement {
         }
     }
 
-    public Wall(int x, int y) {
+    public Grass(int x, int y) {
         super(x, y);
-        layer = 101;
+        walkable = true;
+        layer = 0;
     }
 
-    @Override
     public void draw(Graphics2D g2d) {
+        drawWithGrass(g2d);
+    }
+
+    protected void drawWithGrass(Graphics2D g2d) {
         g2d.setColor(new Color(0, 0, 0, 20));
         g2d.fillRect(renderX + 2, renderY + 2, CELL_SIZE, CELL_SIZE);
         // Draw the block
         g2d.drawImage(blockImage, renderX, renderY, CELL_SIZE, CELL_SIZE, null);
-    }
-
-    @Override
-    public void onBeingCollidedOnYou(GameElement gameElement) {
-        System.out.println(this + " collision on the element " + gameElement);
-        // Notify the other element about the collision if needed
-        gameElement.onBeingCollidedOnYou(this);
     }
 }

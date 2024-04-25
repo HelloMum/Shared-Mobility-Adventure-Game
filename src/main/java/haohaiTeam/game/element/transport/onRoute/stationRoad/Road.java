@@ -4,12 +4,30 @@ import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.element.Player;
 import haohaiTeam.game.element.PopUp;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Objects;
 
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
 
 public class Road extends GameElement {
-    private static final Color ROAD_COLOR = Color.black;
+
+    private static BufferedImage blockImage = null;
+
+    static {
+        try {
+            URL resource = Road.class.getClassLoader().getResource("Image" + File.separator + "road.png");
+            if (Objects.isNull(blockImage) && Objects.nonNull(resource)) {
+                blockImage = ImageIO.read(resource);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public Road(int x, int y) {
         super(x, y);
@@ -22,9 +40,8 @@ public class Road extends GameElement {
 
     @Override
     public void draw(Graphics2D g2d) {
-        // Draw black background square
-        g2d.setColor(ROAD_COLOR);
-        g2d.fillRect(renderX, renderY, CELL_SIZE, CELL_SIZE);
+        // Draw the block
+        g2d.drawImage(blockImage, renderX, renderY, CELL_SIZE, CELL_SIZE, null);
     }
 
     @Override

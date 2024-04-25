@@ -128,6 +128,12 @@ public class MapLoader {
                 validGemCoordinates.add(posX);
                 validGemCoordinates.add(posY);
                 break;
+            default: GameWindow.addElement(new Grass(posX, posY));
+                // Additional cases can be added here
+        }
+
+        switch (tile) {
+            case 'G', 'C', 'P', '2', 'U', 'T', 'L', 'E', 'B', 'a', ' ' -> GameWindow.addElement(new Grass(posX, posY));
         }
     }
 
