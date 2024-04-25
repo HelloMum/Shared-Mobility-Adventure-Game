@@ -31,7 +31,7 @@ public class GameStatus implements CommandListener {
 
     private volatile boolean started = false;
     private static final long TIMER_DELAY = 300;
-    private static final int REQUIRED_GEMS = 3; // Number of gems required to win
+    private static final int REQUIRED_GEMS = 10; // Number of gems required to win
     private boolean gameWon = false;
 
     // a timer for checking game time
