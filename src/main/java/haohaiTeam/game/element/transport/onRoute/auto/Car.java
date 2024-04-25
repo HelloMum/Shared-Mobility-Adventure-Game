@@ -1,5 +1,6 @@
 package haohaiTeam.game.element.transport.onRoute.auto;
 
+import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.element.transport.onRoute.auto.AutoMoveTransport;
 
 import java.awt.*;
@@ -12,7 +13,10 @@ public class Car extends AutoMoveTransport {
         super(x, y);
         layer = 102; // Drawn over player and roads
     }
-
+    @Override
+    public void goingToBeWalkedOverBy(GameElement gameElement) {
+        //nothing here as no bus stop needed
+    }
 
     @Override
     public void draw(Graphics2D g2d) {

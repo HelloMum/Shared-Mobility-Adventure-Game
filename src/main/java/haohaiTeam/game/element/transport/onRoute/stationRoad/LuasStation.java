@@ -1,6 +1,7 @@
 package haohaiTeam.game.element.transport.onRoute.stationRoad;
 
 import haohaiTeam.game.element.GameElement;
+import haohaiTeam.game.element.transport.onRoute.auto.AutoMoveTransport;
 import haohaiTeam.game.element.transport.onRoute.auto.Luas;
 
 import java.awt.*;
@@ -14,7 +15,12 @@ public class LuasStation extends Station {
     public LuasStation(int x, int y) {
         super(x, y);
     }
-
+    @Override
+    public void goingToBeWalkedOverBy(GameElement gameElement) {
+        if (gameElement instanceof Luas transport) {
+            correctStationMethod(transport);
+        }
+    }
     @Override
     public void draw(Graphics2D g2d) {
         // Draw black background square

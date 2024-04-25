@@ -20,20 +20,18 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
     protected Color color;
     protected static final int MOVE_INTERVAL_MS = 100;
 
-    private int totalSteps = 0;
     protected int headingX = 0;
     protected int headingY = 1;
     protected boolean autoMove;
     protected boolean isAtStation;
     private Station onStation = null;
     private Station lastStation = null;
-
+    private int stepsCount = 0; // Step counter
     public AutoMoveTransport(int x, int y) {
         super(x, y);
         startMoving();
         autoMove = true;
         isAtStation = false;
-        totalSteps = 0;
     }
 
     protected void startMoving() {
@@ -47,19 +45,20 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
     }
 
     public void toggleAutoStation() {
-        if (lastStation != null) {
-            lastStation.setDistanceNextStation(this.totalSteps);
-            totalSteps = 0;
-        }
-        lastStation = onStation;
-        onStation = null;
         autoMove = !autoMove;
         isAtStation = !isAtStation;
+
         if (isAtStation && this.getLinkedElement() != null) {
             this.linkedElement.setBeingControlled(true);
             this.linkedElement.unlinkElement();
             this.unlinkElement();
         }
+
+        if (lastStation != null && isAtStation) {
+            lastStation.setDistanceNextStation(stepsCount); // Set distance using steps count
+            stepsCount = 0;
+        }
+        lastStation = onStation;
     }
 
     protected void moveOnRoad() {
@@ -82,6 +81,7 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
         int nextX = X + headingX * CELL_SIZE;
         int nextY = Y + headingY * CELL_SIZE;
         if (isRoadAtPosition(nextX, nextY, elements)) {
+            stepsCount++; // Increment steps count when turning
             logicalMove(headingX, headingY);
             return true;
         }
@@ -92,9 +92,9 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
         int nextX = X + dx * CELL_SIZE;
         int nextY = Y + dy * CELL_SIZE;
         if (isRoadAtPosition(nextX, nextY, elements)) {
+            stepsCount++; // Increment steps count when turning
             updateHeading(dx, dy);
             logicalMove(dx, dy);
-            totalSteps++;
             return true;
         }
         return false;

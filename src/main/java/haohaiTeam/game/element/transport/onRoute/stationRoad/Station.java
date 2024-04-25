@@ -2,6 +2,7 @@ package haohaiTeam.game.element.transport.onRoute.stationRoad;
 
 import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.element.Player;
+import haohaiTeam.game.element.PopUp;
 import haohaiTeam.game.element.transport.onRoute.auto.AutoMoveTransport;
 
 import java.util.Timer;
@@ -11,7 +12,7 @@ public abstract class Station extends Road {
     public AutoMoveTransport transportReference; // Reference to the transport
 
     public static final double CO2_PER_CELL = 99;
-    public int distanceNext = 0;
+    public int distanceNext = 99;
 
     public Station(int x, int y) {
         super(x, y);
@@ -24,7 +25,6 @@ public abstract class Station extends Road {
     }
 
     public void setDistanceNextStation(int distance) {
-        System.out.println("Distance next station set to" + distance);
         this.distanceNext = distance;
     }
     public int getDistanceNextStation() {
@@ -34,26 +34,31 @@ public abstract class Station extends Road {
     @Override
     public void goingToBeWalkedOverBy(GameElement gameElement) {
         if (gameElement instanceof AutoMoveTransport transport) {
-            this.transportReference = (AutoMoveTransport) gameElement;
-            this.transportReference.toggleAutoStation();
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    transport.toggleAutoStation(); // Changed to transport
-                    clearTransportReference();
-                }
-            }, 3000);
+            correctStationMethod(transport);
         }
+    }
+    public void correctStationMethod(AutoMoveTransport transport) {
+        this.transportReference = transport;
+        this.transportReference.toggleAutoStation();
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                transport.toggleAutoStation();
+                clearTransportReference();
+            }
+        }, 3000);
     }
     @Override
     public void handleNearbyElement(GameElement element) {
-        System.out.println("This station takes " + getDistanceNextStation() + "to the next station!");
+        System.out.println("The next station is at " + distanceNext);
+        new PopUp(this.X, this.Y,"The next station cost " + distanceNext + " CO2",3000);
     }
 
     @Override
     public void onBeingCollidedOnYou(GameElement element) {
-        System.out.println("This station takes " + getDistanceNextStation() + "to the next station!");
+        new PopUp(this.X, this.Y,"The next station cost " + distanceNext + " CO2",3000);
+
         if (element instanceof Player player) {
             if (transportReference != null) {
                 this.transportReference.linkElement(element);
