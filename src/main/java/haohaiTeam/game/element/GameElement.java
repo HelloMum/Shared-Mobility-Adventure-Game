@@ -2,8 +2,6 @@ package haohaiTeam.game.element;
 
 import haohaiTeam.game.gui.GameWindow;
 import haohaiTeam.game.input.CommandListener;
-import haohaiTeam.game.logic.GameStatus;
-import haohaiTeam.game.map.MapLoader;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -13,6 +11,7 @@ import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
 import static haohaiTeam.game.gui.GameWindow.gameStatus;
 
 public abstract class GameElement implements CommandListener {
+
 
     /// The basics of the Game element
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,6 +35,8 @@ public abstract class GameElement implements CommandListener {
     public CommandListener commandListener;
     public int tickCount = 0;
     private boolean canMove = true;
+
+    protected boolean removed = false;
 
     private long lastMoveTime;
     private int moveInterval;  // Time in milliseconds required to pass before the next move can happen
@@ -82,6 +83,7 @@ public abstract class GameElement implements CommandListener {
 
     public void clear() {
     }
+
 
 
     // direction that the element is facing
@@ -266,13 +268,7 @@ public abstract class GameElement implements CommandListener {
         }
 
         int key = e.getKeyCode();
-        if (key == KeyEvent.VK_ESCAPE) {
-            System.exit(0);
-        } // Exit the program gracefully
 
-        if (key == KeyEvent.VK_Q) {
-            GameStatus.saveGame = true; // Trigger save
-        }
         if (beingControlled) {
             System.out.println("Key pressed - Key Code: " + key); // Print the pressed key code
 
@@ -369,6 +365,8 @@ public abstract class GameElement implements CommandListener {
     }
 
 
+
+
     ////  Drawing methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -418,19 +416,16 @@ public abstract class GameElement implements CommandListener {
             }
         }
     }
-
     public void interactKeyPressedOnYou(GameElement gameElement) {
         System.out.println(gameElement + " wants to interact with" + this);
         // Override in your class
     }
-
     public void onBeingCollidedByYou(GameElement gameElement) {
         System.out.println(this + " collision on the element " + gameElement);
         //// Hey other class, this silly guy wants to go through you! , and you are not walkable
         gameElement.onBeingCollidedOnYou(this); /// tell him!
 
     }
-
     public void onBeingCollidedOnYou(GameElement gameElement) {
         // Create a reaction here if needed
     }
@@ -497,4 +492,11 @@ public abstract class GameElement implements CommandListener {
 
     }
 
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
+    }
 }
