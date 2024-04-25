@@ -173,30 +173,18 @@ public class GameStatus implements CommandListener {
             saveGame = false;
         }
 
-        if (lives <= 0 || elapsedTimeInMileSeconds > TIME_LIMIT_IN_MILESECONDS || co2Collected > MAX_CO2_LEVEL) {
+        if (lives <= 0 || getElapsedTimeInMileSeconds() > TIME_LIMIT_IN_MILESECONDS || getCO2Collected() > MAX_CO2_LEVEL) {
             gameOver = true;
             triggerLevelScreen();
             System.out.println("Game Over! You have lost.");
-            MapLoader.reloadCurrentLevel(); // Keep this to reload the level if needed
-        }
-        if (this.getCO2Collected() > MAX_CO2_LEVEL) {
-            gameOver = true;
-            triggerLevelScreen();
-            System.out.println("Game Over! You have lost.");
-        }
-        if (this.elapsedTimeInMileSeconds > TIME_LIMIT_IN_MILESECONDS) {
-            System.out.println("Time's up! Game over!");
-            triggerLevelScreen();
-
+            MapLoader.loadNextLevel(); // Keep this to reload the level if needed
         }
         else if (gemsAcquired >= REQUIRED_GEMS) {
-            gameOver = true;
             gameWon = true;
             triggerLevelScreen();
             System.out.println("Congratulations! You have won.");
             MapLoader.loadNextLevel();
         }
-
     }
 
 

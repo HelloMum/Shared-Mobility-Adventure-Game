@@ -21,7 +21,7 @@ public class LevelScreen {
     }
 
     public void render(Graphics g) {
-        if ((gameStatus.isGameOver() || gameStatus.isGameWon()) && gameStatus.shouldShowLevelScreen()) {
+        if (gameStatus.isGameOver() == true || gameStatus.isGameWon() == true) {
             // rectangle
             Color bgColour = new Color(0, 102, 17);
             g.setColor(bgColour);
