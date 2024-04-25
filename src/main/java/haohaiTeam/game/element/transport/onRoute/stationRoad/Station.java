@@ -10,7 +10,7 @@ import java.util.TimerTask;
 
 public abstract class Station extends Road {
     public AutoMoveTransport transportReference; // Reference to the transport
-//    CommandListener commandListener;
+    //    CommandListener commandListener;
     public static final int CO2_PER_CELL = 0;
     public int distanceNext = 0;
 
