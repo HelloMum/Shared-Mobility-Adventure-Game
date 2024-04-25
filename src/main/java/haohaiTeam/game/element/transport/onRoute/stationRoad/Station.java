@@ -52,15 +52,19 @@ public abstract class Station extends Road {
     @Override
     public void handleNearbyElement(GameElement element) {
         System.out.println("The next station is at " + distanceNext);
-        new PopUp(this.X, this.Y,"The next station cost " + distanceNext + " CO2",3000);
+    }
+    public int calculateCO2(int distance) {
+        return (int) (distance * CO2_PER_CELL); // Calculate CO2 emissions based on distance
     }
 
     @Override
     public void onBeingCollidedOnYou(GameElement element) {
-        new PopUp(this.X, this.Y,"The next station cost " + distanceNext + " CO2",3000);
+        new PopUp(this.X, this.Y,"The next station cost " + calculateCO2(distanceNext) + " CO2",3000);
 
         if (element instanceof Player player) {
             if (transportReference != null) {
+                this.commandListener.onPickedCoin(this);
+                this.commandListener.onCO2Generated(calculateCO2(distanceNext));
                 this.transportReference.linkElement(element);
                 element.linkElement(this.transportReference);
                 element.setBeingControlled(false);

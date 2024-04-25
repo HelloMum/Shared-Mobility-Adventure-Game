@@ -17,12 +17,10 @@ public class CommandHandler implements CommandListener {
 
     @Override
     public void onTick() {
-
     }
 
     @Override
     public void onCO2Generated(int value) {
-        System.out.println("Added CO2!");
-
+        System.out.println("Added CO2 " + value);
     }
 }

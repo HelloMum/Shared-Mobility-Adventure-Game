@@ -15,6 +15,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
+import haohaiTeam.game.input.CommandListener;
 
 public abstract class AutoMoveTransport extends TransportMode implements CommandListener {
     protected Color color;
