@@ -36,7 +36,7 @@ public class LevelScreen {
             int gems = gameStatus.getGemsAcquired();
             int coins = gameStatus.getCoinsCollected();
             int c02 = gameStatus.getCO2Collected();
-            long timeCost =  (gameStatus.getElapsedTimeInMileSeconds() / 1000);
+            long timeCost = (gameStatus.getElapsedTimeInMileSeconds() / 1000);
 
             g.drawString("Score: " + score, 150, 200);
             g.drawString("Gems: " + gems, 150, 230);

@@ -16,7 +16,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
-import haohaiTeam.game.input.CommandListener;
 
 public abstract class AutoMoveTransport extends TransportMode implements CommandListener {
     protected Color color;
@@ -29,6 +28,7 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
     private Station onStation = null;
     private Station lastStation = null;
     private int stepsCount = 0; // Step counter
+
     public AutoMoveTransport(int x, int y) {
         super(x, y);
         startMoving();
@@ -108,8 +108,9 @@ public abstract class AutoMoveTransport extends TransportMode implements Command
 
         for (GameElement element : elements) {
             if ((element instanceof TransportMode || element instanceof Player) && element.X == x && element.Y == y) {
-                if (!(element instanceof Player2)){ // If not an instance of player 2
-                    transportModeFound = true;}
+                if (!(element instanceof Player2)) { // If not an instance of player 2
+                    transportModeFound = true;
+                }
             }
             if (element instanceof Road && element.X == x && element.Y == y) {
                 roadFound = true;

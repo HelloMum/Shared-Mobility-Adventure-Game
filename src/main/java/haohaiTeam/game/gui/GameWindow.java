@@ -10,13 +10,13 @@ import haohaiTeam.game.logic.OverlayHUD;
 import haohaiTeam.game.logic.TickGenerator;
 
 import javax.swing.*;
-import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class GameWindow {
@@ -213,7 +213,6 @@ public class GameWindow {
             element.handleKeyEvent(e);
         }
     }
-
 
 
 }

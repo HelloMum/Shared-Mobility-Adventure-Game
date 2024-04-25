@@ -41,6 +41,7 @@ public class GameStatus implements CommandListener {
     private boolean showLevelScreen = false;
 
     public static boolean saveGame = false;
+
     public GameStatus() {
         // Initialize the CO2 timer
         gameTimer();
@@ -85,12 +86,15 @@ public class GameStatus implements CommandListener {
     private void setScore(int newScore) {
         score = newScore;
     }
+
     public void setGemsAcquired(int newGems) {
         gemsAcquired = newGems;
     }
+
     public void setCO2Collected(int newco2) {
         co2Collected = newco2;
     }
+
     public void setCoinsCollected(int newCoins) {
         coinsCollected = newCoins;
     }
@@ -108,6 +112,7 @@ public class GameStatus implements CommandListener {
     public boolean shouldShowLevelScreen() {
         return showLevelScreen;
     }
+
     public void gameTimer() {
         timer = new Timer();
         TimerTask timerTask = new TimerTask() {
@@ -242,6 +247,7 @@ public class GameStatus implements CommandListener {
         elapsedTimeInMileSeconds = 0; // Reset time if it tracks overall game time, not per level
         // Optionally reset other conditions as needed
     }
+
     @Override
     public void onPickedCoin(GameElement element) {
         addCoins(1);

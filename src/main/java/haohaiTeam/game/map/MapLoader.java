@@ -3,7 +3,10 @@ package haohaiTeam.game.map;
 
 import haohaiTeam.game.element.*;
 import haohaiTeam.game.element.transport.Bike;
-import haohaiTeam.game.element.transport.onRoute.auto.*;
+import haohaiTeam.game.element.transport.onRoute.auto.Bus;
+import haohaiTeam.game.element.transport.onRoute.auto.Car;
+import haohaiTeam.game.element.transport.onRoute.auto.Luas;
+import haohaiTeam.game.element.transport.onRoute.auto.Taxi;
 import haohaiTeam.game.element.transport.onRoute.stationRoad.*;
 import haohaiTeam.game.gui.GameWindow;
 import org.json.JSONArray;
@@ -120,7 +123,9 @@ public class MapLoader {
             case 'l':
                 GameWindow.addElement(new LuasStation(posX, posY));
                 break;
-            case 'a': GameWindow.addElement(new Car(posX, posY)); break;
+            case 'a':
+                GameWindow.addElement(new Car(posX, posY));
+                break;
             case ' ':
                 validGemCoordinates.add(posX);
                 validGemCoordinates.add(posY);
