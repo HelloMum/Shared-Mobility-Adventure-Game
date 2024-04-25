@@ -13,6 +13,8 @@ import java.io.IOException;
 
 public class AppStarter {
 
+    public static Font gameFont;
+
     public static void main(String[] args) {
         // Create an instance of the AppStarter class and run it
         System.out.println("App is starting...");
@@ -23,7 +25,7 @@ public class AppStarter {
         // font
         try {
             File fontFile = new File("src/main/resources/Text/Quinquefive-ALoRM.ttf");
-            Font gameFont = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+            gameFont = Font.createFont(Font.TRUETYPE_FONT, fontFile);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(gameFont);
         } catch (IOException | FontFormatException e) {
