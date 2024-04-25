@@ -1,7 +1,9 @@
 package haohaiTeam.game.logic;
 
 import haohaiTeam.game.gui.GameWindow;
+import haohaiTeam.app.AppStarter;
 
+import java.awt.Font; 
 import java.awt.*;
 
 public class LevelScreen {
@@ -21,41 +23,49 @@ public class LevelScreen {
     public void render(Graphics g) {
         if ((gameStatus.isGameOver() || gameStatus.isGameWon()) && gameStatus.shouldShowLevelScreen()) {
             // rectangle
-            g.setColor(Color.WHITE);
+            Color bgColour = new Color(0, 102, 17);
+            g.setColor(bgColour);
             g.fillRect(0, 0, width, height);
 
             // text
-            g.setColor(Color.BLACK);
-            g.setFont(new Font("Arial", Font.BOLD, 20));
+            g.setColor(Color.WHITE);
+            int fontSize = 20;
+            Font font = new Font(AppStarter.gameFont.getName(), AppStarter.gameFont.getStyle(), fontSize);
+            g.setFont(font);
             String gameOverMessage = "Game Over!";
             String winMessage = "Level finished!";
-            int messageWidth = g.getFontMetrics().stringWidth(gameOverMessage);
-            int x = (width - messageWidth) / 2; // center the text
+            int gameOverWidth = g.getFontMetrics().stringWidth(gameOverMessage);
+            int winWidth = g.getFontMetrics().stringWidth(winMessage);
+            int widthWinMessage = (width - winWidth) / 2; // center the text
+            int widthLoseMessage = (width - gameOverWidth) / 2;
 
-            int score = gameStatus.getScore();
-            int gems = gameStatus.getGemsAcquired();
-            int coins = gameStatus.getCoinsCollected();
-            int c02 = gameStatus.getCO2Collected();
-            long timeCost = (gameStatus.getElapsedTimeInMileSeconds() / 1000);
+            g.drawString("Score: " + gameStatus.getScore(), 150, 200);
+            g.drawString("Gems: " + gameStatus.getGemsAcquired(), 150, 230);
+            g.drawString("Coins: " + gameStatus.getCoinsCollected(), 150, 260);
+            g.drawString("C02: " + gameStatus.getCO2Collected(), 150, 290);
+            g.drawString("Cost Time: " + (gameStatus.getElapsedTimeInMileSeconds() / 1000), 150, 320);
 
-            g.drawString("Score: " + score, 150, 200);
-            g.drawString("Gems: " + gems, 150, 230);
-            g.drawString("Coins: " + coins, 150, 260);
-            g.drawString("C02: " + c02, 150, 290);
-            g.drawString("Cost Time: " + timeCost, 150, 320);
+            // Next Level Button
+            int buttonWidth = 100;
+            int buttonHeight = 30;
+            int buttonX = (width - buttonWidth) / 2;
+            int buttonY = height - 100;
+            g.setColor(Color.BLUE);
+            g.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
+            g.setColor(Color.WHITE);
+            g.drawString("Next Level", buttonX + 20, buttonY + 20);
 
             //Enviroventure at the bottom:
             String enviroVentureText = "EnviroVenture";
-            int enviroVentureWidth = g.getFontMetrics().stringWidth(enviroVentureText);
-            int enviroVentureX = (width - enviroVentureWidth) / 2;
+            int enviroVentureX = (width - g.getFontMetrics().stringWidth(enviroVentureText)) / 2;
             int enviroVentureY = height - 50;
             g.drawString(enviroVentureText, enviroVentureX, enviroVentureY);
 
             if (this.gameStatus.isGameWon()) {
-                g.drawString(winMessage, x, 50);
+                g.drawString(winMessage, widthWinMessage, 50);
             } else {
                 if (this.gameStatus.isGameOver()) {
-                    g.drawString(gameOverMessage, x, 50);
+                    g.drawString(gameOverMessage, widthLoseMessage, 50);
                 }
             }
         }
