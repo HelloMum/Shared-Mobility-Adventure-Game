@@ -316,7 +316,6 @@ public abstract class GameElement implements CommandListener {
 
     public void resetMovementControl() {
         if (canMove) {
-            gameStatus.co2increase = false;
             final Direction lastDirection = direction;
             moveFacing();
             keyPressTimestamp = System.currentTimeMillis(); // Capture the timestamp when keypress occurs

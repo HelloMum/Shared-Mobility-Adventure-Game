@@ -31,7 +31,6 @@ public class GameStatus implements CommandListener {
 
     private volatile boolean started = false;
     private static final long TIMER_DELAY = 300;
-    public static boolean co2increase = false;
     private static final int REQUIRED_GEMS = 3; // Number of gems required to win
     private boolean gameWon = false;
 
@@ -118,17 +117,12 @@ public class GameStatus implements CommandListener {
                 if (started) {
                     if (!gameOver) {  // Only update game time if the game isn't over
                         updateElapsedTime(TIMER_DELAY);
-                        if (co2increase) {
-                            increaseCO2();
-                        }
                         if (saveGame) {
                             saveGame();
                             saveGame = false;
                         }
                     }
-                    if (GameStatus.this.gemsAcquired >= REQUIRED_GEMS) {
-                        checkGameConditions();
-                    }
+                    checkGameConditions();
                 }
             }
         };
@@ -152,22 +146,7 @@ public class GameStatus implements CommandListener {
         }
     }
 
-    public void trackCO2Level() {
-        if (this.getCO2Collected() > MAX_CO2_LEVEL) {
-            this.setGameOver(true);
-            checkGameConditions();
-            System.out.println("CO2 level exceeded maximum amount. Game Over!");
-        }
-    }
 
-    public void increaseCO2() {
-        this.co2Collected++;
-    }
-
-    public void addCO2(int co2Cost) {
-        this.co2Collected += co2Cost;
-        System.out.println(co2Cost + " CO2(s) added to the game status. Total Co2 costed: " + co2Collected);
-    }
 
     public void addCoins(int numCoins) {
         this.coinsCollected += numCoins;
@@ -205,26 +184,21 @@ public class GameStatus implements CommandListener {
             gameOver = true;
             triggerLevelScreen();
             System.out.println("Game Over! You have lost.");
-
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
             MapLoader.reloadCurrentLevel(); // Keep this to reload the level if needed
-        } else if (gemsAcquired >= REQUIRED_GEMS) {
+        }
+        if (this.getCO2Collected() > MAX_CO2_LEVEL) {
+            gameOver = true;
+            triggerLevelScreen();
+            System.out.println("Game Over! You have lost.");
+        }
+        else if (gemsAcquired >= REQUIRED_GEMS) {
             gameOver = true;
             gameWon = true;
             triggerLevelScreen();
             System.out.println("Congratulations! You have won.");
-
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            MapLoader.loadNextLevel(); // Keep this to reload the level if needed
+            MapLoader.loadNextLevel();
         }
+
     }
 
 
@@ -235,18 +209,16 @@ public class GameStatus implements CommandListener {
         gemsAcquired = 0;
         coinsCollected = 0;
         co2Collected = 0;  // Depending on whether you want to reset per level
-
         gameOver = false;
         gameWon = false;
-        co2increase = false;
         showLevelScreen = false;
         saveGame = false;
         tickCount = 0;
-
         started = false;
         elapsedTimeInMileSeconds = 0; // Reset time if it tracks overall game time, not per level
         // Optionally reset other conditions as needed
     }
+
     @Override
     public void onPickedCoin(GameElement element) {
         addCoins(1);
@@ -270,7 +242,9 @@ public class GameStatus implements CommandListener {
 
     @Override
     public void onCO2Generated(int value) {
-        addCO2(value);
+        this.co2Collected += value;
+        checkGameConditions();
+        System.out.println(value + " CO2(s) added to the game status. Total CO2 collected: " + co2Collected);
     }
 
     public void saveGame() {
