@@ -3,10 +3,7 @@ package haohaiTeam.game.map;
 
 import haohaiTeam.game.element.*;
 import haohaiTeam.game.element.transport.Bike;
-import haohaiTeam.game.element.transport.onRoute.auto.Bus;
-import haohaiTeam.game.element.transport.onRoute.auto.Car;
-import haohaiTeam.game.element.transport.onRoute.auto.Luas;
-import haohaiTeam.game.element.transport.onRoute.auto.Taxi;
+import haohaiTeam.game.element.transport.onRoute.auto.*;
 import haohaiTeam.game.element.transport.onRoute.stationRoad.*;
 import haohaiTeam.game.gui.GameWindow;
 import org.json.JSONArray;
@@ -22,10 +19,13 @@ import static haohaiTeam.game.gui.GameWindow.gameStatus;
 
 public class MapLoader {
     private static int currentLevel = 1; // Track the current level
+    private static int maxLevel = 2; // Track the current level
 
     public static void loadNextLevel() {
         currentLevel++;  // Increment to next level
-        loadCurrentLevel(); // Load the next level
+        if (currentLevel <= maxLevel) {
+            loadCurrentLevel(); // Load the next level
+        }
     }
 
     public static void loadCurrentLevel() {
@@ -123,15 +123,11 @@ public class MapLoader {
             case 'l':
                 GameWindow.addElement(new LuasStation(posX, posY));
                 break;
-            case 'a':
-                GameWindow.addElement(new Car(posX, posY));
-                break;
+            case 'a': GameWindow.addElement(new Car(posX, posY)); break;
             case ' ':
                 validGemCoordinates.add(posX);
                 validGemCoordinates.add(posY);
                 break;
-
-            // Additional cases can be added here
         }
     }
 
