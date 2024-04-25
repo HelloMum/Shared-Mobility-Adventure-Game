@@ -39,22 +39,15 @@ public class LevelScreen {
             int widthWinMessage = (width - winWidth) / 2; // center the text
             int widthLoseMessage = (width - gameOverWidth) / 2;
 
-            int score = gameStatus.getScore();
-            int gems = gameStatus.getGemsAcquired();
-            int coins = gameStatus.getCoinsCollected();
-            int c02 = gameStatus.getCO2Collected();
-            long timeCost = (gameStatus.getElapsedTimeInMileSeconds() / 1000);
-
-            g.drawString("Score: " + score, 150, 200);
-            g.drawString("Gems: " + gems, 150, 230);
-            g.drawString("Coins: " + coins, 150, 260);
-            g.drawString("C02: " + c02, 150, 290);
-            g.drawString("Cost Time: " + timeCost, 150, 320);
+            g.drawString("Score: " + gameStatus.getScore(), 150, 200);
+            g.drawString("Gems: " + gameStatus.getGemsAcquired(), 150, 230);
+            g.drawString("Coins: " + gameStatus.getCoinsCollected(), 150, 260);
+            g.drawString("C02: " + gameStatus.getCO2Collected(), 150, 290);
+            g.drawString("Cost Time: " + (gameStatus.getElapsedTimeInMileSeconds() / 1000), 150, 320);
 
             //Enviroventure at the bottom:
             String enviroVentureText = "EnviroVenture";
-            int enviroVentureWidth = g.getFontMetrics().stringWidth(enviroVentureText);
-            int enviroVentureX = (width - enviroVentureWidth) / 2;
+            int enviroVentureX = (width - g.getFontMetrics().stringWidth(enviroVentureText)) / 2;
             int enviroVentureY = height - 50;
             g.drawString(enviroVentureText, enviroVentureX, enviroVentureY);
 
