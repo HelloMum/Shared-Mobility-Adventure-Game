@@ -11,7 +11,12 @@ public class BusStation extends Station {
         super(x, y);
     }
 
-
+    @Override
+    public void goingToBeWalkedOverBy(GameElement gameElement) {
+        if (gameElement instanceof Bus transport) {
+            correctStationMethod(transport);
+        }
+    }
     @Override
     public void draw(Graphics2D g2d) {
         // Draw black background square

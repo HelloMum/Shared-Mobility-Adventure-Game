@@ -32,7 +32,7 @@ public abstract class GameElement implements CommandListener {
     public boolean isVisible; // hide the visibility
     public boolean playerOnTop;
     public Direction direction; // Direction the element is facing
-    protected CommandListener commandListener;
+    public CommandListener commandListener;
     public int tickCount = 0;
     private boolean canMove = true;
 
@@ -78,6 +78,7 @@ public abstract class GameElement implements CommandListener {
     public int getMoveInterval() {
         return moveInterval;
     }
+
 
 
     // direction that the element is facing
@@ -365,6 +366,8 @@ public abstract class GameElement implements CommandListener {
     }
 
 
+
+
     ////  Drawing methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -414,19 +417,16 @@ public abstract class GameElement implements CommandListener {
             }
         }
     }
-
     public void interactKeyPressedOnYou(GameElement gameElement) {
         System.out.println(gameElement + " wants to interact with" + this);
         // Override in your class
     }
-
     public void onBeingCollidedByYou(GameElement gameElement) {
         System.out.println(this + " collision on the element " + gameElement);
         //// Hey other class, this silly guy wants to go through you! , and you are not walkable
         gameElement.onBeingCollidedOnYou(this); /// tell him!
 
     }
-
     public void onBeingCollidedOnYou(GameElement gameElement) {
         // Create a reaction here if needed
     }
