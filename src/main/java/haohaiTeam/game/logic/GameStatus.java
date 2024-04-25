@@ -36,11 +36,12 @@ public class GameStatus implements CommandListener {
     private boolean gameWon = false;
 
     // a timer for checking game time
-    public static final long TIME_LIMIT_IN_MILESECONDS = 500 * 1000; // this is for limiting the player to pass current level in 600 seconds1
+    public static final long TIME_LIMIT_IN_MILESECONDS = 100 * 1000; // this is for limiting the player to pass current level in 600 seconds1
 
     private boolean showLevelScreen = false;
 
     public static boolean saveGame = false;
+
 
     public GameStatus() {
         // Initialize the CO2 timer
@@ -86,15 +87,12 @@ public class GameStatus implements CommandListener {
     private void setScore(int newScore) {
         score = newScore;
     }
-
     public void setGemsAcquired(int newGems) {
         gemsAcquired = newGems;
     }
-
     public void setCO2Collected(int newco2) {
         co2Collected = newco2;
     }
-
     public void setCoinsCollected(int newCoins) {
         coinsCollected = newCoins;
     }
@@ -112,7 +110,6 @@ public class GameStatus implements CommandListener {
     public boolean shouldShowLevelScreen() {
         return showLevelScreen;
     }
-
     public void gameTimer() {
         timer = new Timer();
         TimerTask timerTask = new TimerTask() {
@@ -128,6 +125,9 @@ public class GameStatus implements CommandListener {
                             saveGame();
                             saveGame = false;
                         }
+                    }
+                    if (GameStatus.this.gemsAcquired >= REQUIRED_GEMS) {
+                        checkGameConditions();
                     }
                 }
             }
@@ -179,7 +179,6 @@ public class GameStatus implements CommandListener {
 
     public void addGems(int numGems) {
         this.gemsAcquired += numGems;
-        checkGameConditions();
         int points = numGems * 50;
         addScore(points);
     }
@@ -195,6 +194,7 @@ public class GameStatus implements CommandListener {
     public int getCO2Collected() {
         return co2Collected;
     }
+
 
     public void checkGameConditions() {
         if (gameOver) {  // If the game is already over, avoid rechecking conditions
@@ -247,7 +247,6 @@ public class GameStatus implements CommandListener {
         elapsedTimeInMileSeconds = 0; // Reset time if it tracks overall game time, not per level
         // Optionally reset other conditions as needed
     }
-
     @Override
     public void onPickedCoin(GameElement element) {
         addCoins(1);
@@ -259,7 +258,6 @@ public class GameStatus implements CommandListener {
         // Implementation for handling picked gems if needed
         addGems(1);
         System.out.println("Gem received signal");
-        checkGameConditions();
     }
 
     @Override
