@@ -186,7 +186,8 @@ public class GameStatus implements CommandListener {
         }
         if (this.elapsedTimeInMileSeconds > TIME_LIMIT_IN_MILESECONDS) {
             System.out.println("Time's up! Game over!");
-            checkGameConditions();
+            triggerLevelScreen();
+
         }
         else if (gemsAcquired >= REQUIRED_GEMS) {
             gameOver = true;
