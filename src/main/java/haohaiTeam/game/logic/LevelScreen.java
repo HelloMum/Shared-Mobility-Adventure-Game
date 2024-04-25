@@ -1,7 +1,6 @@
 package haohaiTeam.game.logic;
 
 import haohaiTeam.game.gui.GameWindow;
-import haohaiTeam.game.map.MapLoader;
 
 import java.awt.*;
 
@@ -37,11 +36,13 @@ public class LevelScreen {
             int gems = gameStatus.getGemsAcquired();
             int coins = gameStatus.getCoinsCollected();
             int c02 = gameStatus.getCO2Collected();
+            long timeCost =  (gameStatus.getElapsedTimeInMileSeconds() / 1000);
 
             g.drawString("Score: " + score, 150, 200);
             g.drawString("Gems: " + gems, 150, 230);
             g.drawString("Coins: " + coins, 150, 260);
             g.drawString("C02: " + c02, 150, 290);
+            g.drawString("Cost Time: " + timeCost, 150, 320);
 
             //Enviroventure at the bottom:
             String enviroVentureText = "EnviroVenture";
@@ -50,11 +51,12 @@ public class LevelScreen {
             int enviroVentureY = height - 50;
             g.drawString(enviroVentureText, enviroVentureX, enviroVentureY);
 
-            if (this.gameStatus.isGameOver()) {
-                g.drawString(gameOverMessage, x, 50);
-            }
             if (this.gameStatus.isGameWon()) {
                 g.drawString(winMessage, x, 50);
+            } else {
+                if (this.gameStatus.isGameOver()) {
+                    g.drawString(gameOverMessage, x, 50);
+                }
             }
         }
     }
