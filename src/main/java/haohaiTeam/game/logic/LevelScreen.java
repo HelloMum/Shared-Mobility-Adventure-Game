@@ -21,11 +21,12 @@ public class LevelScreen {
     public void render(Graphics g) {
         if ((gameStatus.isGameOver() || gameStatus.isGameWon()) && gameStatus.shouldShowLevelScreen()) {
             // rectangle
-            g.setColor(Color.WHITE);
+            Color bgColour = new Color(0, 102, 17);
+            g.setColor(bgColour);
             g.fillRect(0, 0, width, height);
 
             // text
-            g.setColor(Color.BLACK);
+            g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 20));
             String gameOverMessage = "Game Over!";
             String winMessage = "Level finished!";
