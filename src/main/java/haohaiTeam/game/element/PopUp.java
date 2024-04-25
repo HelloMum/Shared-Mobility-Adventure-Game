@@ -35,7 +35,7 @@ public class PopUp extends GameElement {
         PopupSelfRemovetimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                PopUp.this.remove();
+                PopUp.this.setRemoved(Boolean.TRUE);
             }
         }, popUpDuration);
     }
@@ -57,9 +57,6 @@ public class PopUp extends GameElement {
         this.isVisible = false;
     }
 
-    public void remove() {
-        GameWindow.removeElement(this);
-    }
 
     @Override
     public void draw(Graphics2D g2d) {
