@@ -1,7 +1,9 @@
 package haohaiTeam.game.logic;
 
 import haohaiTeam.game.gui.GameWindow;
+import haohaiTeam.app.AppStarter;
 
+import java.awt.Font; 
 import java.awt.*;
 
 public class LevelScreen {
@@ -27,11 +29,15 @@ public class LevelScreen {
 
             // text
             g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 20));
+            int fontSize = 20;
+            Font font = new Font(AppStarter.gameFont.getName(), AppStarter.gameFont.getStyle(), fontSize);
+            g.setFont(font);
             String gameOverMessage = "Game Over!";
             String winMessage = "Level finished!";
-            int messageWidth = g.getFontMetrics().stringWidth(gameOverMessage);
-            int x = (width - messageWidth) / 2; // center the text
+            int gameOverWidth = g.getFontMetrics().stringWidth(gameOverMessage);
+            int winWidth = g.getFontMetrics().stringWidth(winMessage);
+            int widthWinMessage = (width - winWidth) / 2; // center the text
+            int widthLoseMessage = (width - gameOverWidth) / 2;
 
             int score = gameStatus.getScore();
             int gems = gameStatus.getGemsAcquired();
@@ -53,10 +59,10 @@ public class LevelScreen {
             g.drawString(enviroVentureText, enviroVentureX, enviroVentureY);
 
             if (this.gameStatus.isGameWon()) {
-                g.drawString(winMessage, x, 50);
+                g.drawString(winMessage, widthWinMessage, 50);
             } else {
                 if (this.gameStatus.isGameOver()) {
-                    g.drawString(gameOverMessage, x, 50);
+                    g.drawString(gameOverMessage, widthLoseMessage, 50);
                 }
             }
         }
