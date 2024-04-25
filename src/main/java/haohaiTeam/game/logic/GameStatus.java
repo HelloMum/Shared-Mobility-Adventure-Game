@@ -36,7 +36,7 @@ public class GameStatus implements CommandListener {
     private boolean gameWon = false;
 
     // a timer for checking game time
-    public static final long TIME_LIMIT_IN_MILESECONDS = 100 * 1000; // this is for limiting the player to pass current level in 600 seconds1
+    public static final long TIME_LIMIT_IN_MILESECONDS = 500 * 1000; // this is for limiting the player to pass current level in 600 seconds1
 
     private boolean showLevelScreen = false;
 
