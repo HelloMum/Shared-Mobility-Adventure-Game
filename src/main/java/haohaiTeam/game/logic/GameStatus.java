@@ -2,33 +2,34 @@ package haohaiTeam.game.logic;
 
 import haohaiTeam.game.element.GameElement;
 import haohaiTeam.game.input.CommandListener;
+import haohaiTeam.game.map.MapLoader;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import haohaiTeam.game.map.MapLoader;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.io.IOException;
-import java.io.FileWriter;
-
 import static haohaiTeam.game.element.GameElement.elements;
 
 public class GameStatus implements CommandListener {
     private int score = 0;
-    private static final int lives = 3; // assume 3 lives at start
+    private static int lives = 3; // assume 3 lives at start
     private int coinsCollected = 0;
     private int gemsAcquired = 0;
     private int co2Collected = 0;
-    private long elapsedTimeInMileSeconds = 0; // Variable to track elapsed time
+    private volatile long elapsedTimeInMileSeconds = 0; // Variable to track elapsed time
     private boolean gameOver = false;
     private int tickCount;
     private static final int MAX_CO2_LEVEL = 100;
     private Timer timer;
+
+    private volatile boolean started = false;
     private static final long TIMER_DELAY = 300;
     public static boolean co2increase = false;
     private static final int REQUIRED_GEMS = 3; // Number of gems required to win
@@ -109,23 +110,30 @@ public class GameStatus implements CommandListener {
     }
     public void gameTimer() {
         timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                if (!gameOver) {  // Only update game time if the game isn't over
-                    updateElapsedTime(TIMER_DELAY);
-                    if (co2increase) {
-                        increaseCO2();
+                if (started) {
+                    if (!gameOver) {  // Only update game time if the game isn't over
+                        updateElapsedTime(TIMER_DELAY);
+                        if (co2increase) {
+                            increaseCO2();
+                        }
+                        if (saveGame) {
+                            saveGame();
+                            saveGame = false;
+                        }
                     }
-                    if (saveGame) {
-                        saveGame();
-                        saveGame = false;
-                    }
-                } else {
-                    cancel();  // Stop the timer if the game is over
                 }
             }
-        }, TIMER_DELAY, TIMER_DELAY);
+        };
+        timer.scheduleAtFixedRate(timerTask, TIMER_DELAY, TIMER_DELAY);
+    }
+
+    public void start() {
+        if (!started) {
+            started = true;
+        }
     }
 
 
@@ -136,7 +144,6 @@ public class GameStatus implements CommandListener {
         if (this.elapsedTimeInMileSeconds > TIME_LIMIT_IN_MILESECONDS) {
             System.out.println("Time's up! Game over!");
             checkGameConditions();
-            setGameOver(true);
         }
     }
 
@@ -193,25 +200,46 @@ public class GameStatus implements CommandListener {
             gameOver = true;
             triggerLevelScreen();
             System.out.println("Game Over! You have lost.");
+
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             MapLoader.reloadCurrentLevel(); // Keep this to reload the level if needed
-            timer.cancel(); // Stop the timer as the game is over
         } else if (gemsAcquired >= REQUIRED_GEMS) {
             gameOver = true;
             gameWon = true;
             triggerLevelScreen();
             System.out.println("Congratulations! You have won.");
-            MapLoader.loadNextLevel(); // Load next level
-            timer.cancel(); // Stop the timer as the game is over
+
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            MapLoader.loadNextLevel(); // Keep this to reload the level if needed
         }
     }
 
 
     // Add a method to reset game conditions for a new level if needed
     public void resetGameStatusForNewLevel() {
+        score = 0;
+        lives = 3;
+        gemsAcquired = 0;
+        coinsCollected = 0;
+        co2Collected = 0;  // Depending on whether you want to reset per level
+
         gameOver = false;
         gameWon = false;
+        co2increase = false;
+        showLevelScreen = false;
+        saveGame = false;
+        tickCount = 0;
+
+        started = false;
         elapsedTimeInMileSeconds = 0; // Reset time if it tracks overall game time, not per level
-        co2Collected = 0;  // Depending on whether you want to reset per level
         // Optionally reset other conditions as needed
     }
     @Override
