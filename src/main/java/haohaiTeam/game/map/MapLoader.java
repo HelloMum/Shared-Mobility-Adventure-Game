@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 import static haohaiTeam.game.gui.GameWindow.gameStatus;
@@ -137,15 +138,20 @@ public class MapLoader {
 
     private static void placeRandomGems(ArrayList<Object> validGemCoordinates) {
         Random random = new Random();
-        int maxRandomGems = 10;
-        for (int i = 0; i < maxRandomGems; i++) {
-            int randomIndex = random.nextInt(validGemCoordinates.size() / 2) * 2;
-            int gemPosX = (int) validGemCoordinates.get(randomIndex);
-            int gemPosY = (int) validGemCoordinates.get(randomIndex + 1);
+        ArrayList<Integer> indices = new ArrayList<>();
+        for (int i = 0; i < validGemCoordinates.size() / 2; i++) {indices.add(i);}
+        Collections.shuffle(indices);
+        int maxRandomGems = 45;
+        int minRandomGems = 15;
+        int randomGemCount = random.nextInt(maxRandomGems - minRandomGems + 1) + minRandomGems;
+        System.out.println("Random gems produced: " + randomGemCount);
+        for (int i = 0; i < randomGemCount; i++) {
+            int index = indices.get(i);
+            int gemPosX = (int) validGemCoordinates.get(index * 2);
+            int gemPosY = (int) validGemCoordinates.get(index * 2 + 1);
             GameWindow.addElement(new Gem(gemPosX, gemPosY));
-            validGemCoordinates.remove(randomIndex); // Remove X
-            validGemCoordinates.remove(randomIndex); // Remove Y
         }
+
     }
 
     private void placeReport(String placeName, int posX, int posY) {
