@@ -45,6 +45,16 @@ public class LevelScreen {
             g.drawString("C02: " + gameStatus.getCO2Collected(), 150, 290);
             g.drawString("Cost Time: " + (gameStatus.getElapsedTimeInMileSeconds() / 1000), 150, 320);
 
+            // Next Level Button
+            int buttonWidth = 100;
+            int buttonHeight = 30;
+            int buttonX = (width - buttonWidth) / 2;
+            int buttonY = height - 100;
+            g.setColor(Color.BLUE);
+            g.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
+            g.setColor(Color.WHITE);
+            g.drawString("Next Level", buttonX + 20, buttonY + 20);
+
             //Enviroventure at the bottom:
             String enviroVentureText = "EnviroVenture";
             int enviroVentureX = (width - g.getFontMetrics().stringWidth(enviroVentureText)) / 2;
