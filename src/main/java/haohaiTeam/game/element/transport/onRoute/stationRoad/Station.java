@@ -7,6 +7,7 @@ import haohaiTeam.game.element.transport.onRoute.auto.AutoMoveTransport;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Random;
 
 public abstract class Station extends Road {
     public AutoMoveTransport transportReference; // Reference to the transport
@@ -54,7 +55,8 @@ public abstract class Station extends Road {
 
     @Override
     public void handleNearbyElement(GameElement element) {
-        System.out.println("The next station is at " + distanceNext);
+//        System.out.println("The next station is at " + distanceNext);
+//        new PopUp(this.X, this.Y, "The next station cost " + calculateCO2(distanceNext) + " CO2", 500);
     }
 
     public int calculateCO2(int distance) {
@@ -63,8 +65,8 @@ public abstract class Station extends Road {
 
     @Override
     public void onBeingCollidedOnYou(GameElement element) {
-        new PopUp(this.X, this.Y, "The next station cost " + calculateCO2(distanceNext) + " CO2", 500);
-
+        String popupMessage = PopUpGenerator.generateRandomPopUp();
+        new PopUp(this.X, this.Y, "<html>The next station cost " + calculateCO2(distanceNext) + " CO2<br>" + popupMessage + "</html>", 500);
         if (element instanceof Player player) {
             if (transportReference != null) {
                 this.commandListener.onPickedCoin(this);

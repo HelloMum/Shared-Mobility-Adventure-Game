@@ -195,19 +195,19 @@ public abstract class GameElement implements CommandListener {
     }
 
     public void nearbyDetectorCall() {
-        List<GameElement> elements = GameWindow.getElements();
-        int x = this.X;
-        int y = this.Y;
-        int detectionRange = CELL_SIZE;
-
-        for (GameElement element : elements) {
-            // Check if the element is within the detection range
-            if (Math.abs(element.X - x) <= detectionRange && Math.abs(element.Y - y) <= detectionRange) {
-                if (element != this) {
-                    element.handleNearbyElement(this);
-                }
-            }
-        }
+//        List<GameElement> elements = GameWindow.getElements();
+//        int x = this.X;
+//        int y = this.Y;
+//        int detectionRange = CELL_SIZE;
+//
+//        for (GameElement element : elements) {
+//            // Check if the element is within the detection range
+//            if (Math.abs(element.X - x) <= detectionRange && Math.abs(element.Y - y) <= detectionRange) {
+//                if (element != this) {
+//                    element.handleNearbyElement(this);
+//                }
+//            }
+//        }
     }
 
     public void handleNearbyElement(GameElement element) {

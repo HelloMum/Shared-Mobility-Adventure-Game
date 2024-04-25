@@ -33,8 +33,11 @@ public class PopUp {
         // Set the location based on the center position of the screen
         frame.setLocation(centerX, centerY);
 
-        JLabel label = new JLabel(message, SwingConstants.CENTER);
-        frame.getContentPane().add(label, BorderLayout.CENTER);
+        // Create a JPanel to contain the message label with word wrapping
+        JPanel panel = new JPanel(new BorderLayout());
+        JLabel label = new JLabel("<html><div style='text-align: center; width: 280px;'>" + message + "</div></html>", SwingConstants.CENTER);
+        panel.add(label, BorderLayout.CENTER);
+        frame.getContentPane().add(panel, BorderLayout.CENTER);
 
         // Start a timer to close the window after the specified duration
         Timer timer = new Timer();
