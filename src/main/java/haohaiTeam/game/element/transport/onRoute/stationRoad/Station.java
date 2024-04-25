@@ -11,7 +11,7 @@ import java.util.TimerTask;
 public abstract class Station extends Road {
     public AutoMoveTransport transportReference; // Reference to the transport
 
-    public static final double CO2_PER_CELL = 99;
+    public static final double CO2_PER_CELL = 0.5;
     public int distanceNext = 99;
 
     public Station(int x, int y) {

@@ -8,7 +8,7 @@ import java.awt.*;
 import static haohaiTeam.game.gui.GameWindow.CELL_SIZE;
 
 public class BusStation extends Station {
-    public static final double CO2_PER_CELL = 0.5;
+    public static final double CO2_PER_CELL = 0.2;
 
     public BusStation(int x, int y) {
         super(x, y);
